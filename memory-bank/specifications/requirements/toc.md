@@ -1,6 +1,4 @@
 # Requirements - Table of Contents
 
-<!-- Add requirements entries below. Format:
-**[<file>.md](<file>.md)**
-: Brief description of the requirements covered.
--->
+**[prediction_markets_requirements.md](prediction_markets_requirements.md)**
+: Requirements for the prediction markets arbitrage project. Status: TBD — to be elaborated during exploratory phases.

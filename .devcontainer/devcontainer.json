@@ -1,0 +1,21 @@
+{
+    "name": "prediction_markets Dev Container",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/${localWorkspaceFolderBasename}",
+    "initializeCommand": "echo LOCAL_WORKSPACE_FOLDER_NAME=${localWorkspaceFolderBasename} > .devcontainer/.env",
+    "mounts": [
+        "source=${env:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.debugpy",
+                "gururagavendra.local-pr-review"
+            ]
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/post-create.sh /${localWorkspaceFolderBasename}",
+    "remoteUser": "root"
+}

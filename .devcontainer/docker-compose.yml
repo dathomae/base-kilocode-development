@@ -1,0 +1,15 @@
+services:
+  app:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    command: sleep infinity
+    volumes:
+      - ..:/${LOCAL_WORKSPACE_FOLDER_NAME}:cached
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
