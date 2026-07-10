@@ -1,6 +1,6 @@
 # Lessons Learned
 
-<!-- Add lessons below. Format:
-**Lesson Title**
-: Longer description of the lesson, possibly containing examples.
+<!-- Add lessons learned below. Format:
+**Lesson Name**
+: Description of the lesson, possibly with examples.
 -->

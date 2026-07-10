@@ -1,4 +1,0 @@
-types
-    # Demonstrates Boolean type derivation chains with plain inheritance
-    BaseBool = Boolean()
-    DerivedBool = BaseBool()

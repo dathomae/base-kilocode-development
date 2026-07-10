@@ -1,8 +1,0 @@
-# Conditional Int Range Example
-# Conditional specification using Int range generator for child concept values.
-# From Story121/Story122: CPL Concepts Parser/Analyzer — Conditional
-
-concepts
-	Year=[Int[2020, 2025, 1]]
-	# Months for year 2024
-	Year[2024] => Month=[Int[1, 3, 1]]

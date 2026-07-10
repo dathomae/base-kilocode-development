@@ -1,3 +1,0 @@
-types
-    # Empty pattern string in String constraint - should fail analysis
-    EmptyPattern = String(pattern="")

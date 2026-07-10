@@ -1,3 +1,0 @@
-// Type definition with missing equals sign - should fail parsing
-types
-    Currency Number(precision=2)

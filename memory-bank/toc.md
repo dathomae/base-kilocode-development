@@ -1,6 +1,6 @@
 # Memory Bank - Table of Contents
 
-This directory contains the project documentation and specifications for the Base KiloCode Development Project.
+This directory contains the project documentation and specifications for the Prediction Markets Arbitrage project.
 
 ## Project Reference
 

@@ -1,8 +1,0 @@
-types
-    # Demonstrates String type derivation chains with constraint narrowing
-    BaseString = String(minimum=0, maximum=100)
-    ShortString = BaseString(maximum=50)
-    VeryShortString = ShortString(maximum=10)
-
-    BasePattern = String(pattern="^[a-z]+$")
-    SamePattern = BasePattern(pattern="^[a-z]+$")

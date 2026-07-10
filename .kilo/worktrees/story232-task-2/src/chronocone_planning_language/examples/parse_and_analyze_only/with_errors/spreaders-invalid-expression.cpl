@@ -1,9 +1,0 @@
-# Invalid Expression Error Example
-# A spreader with an invalid expression after '='.
-
-concepts
-    Product = [Values[A, B]]
-    Country = [Values[USA]]
-
-spreaders
-    from [Product] to [Country] = )(

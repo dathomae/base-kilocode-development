@@ -1,7 +1,0 @@
-{
-  "dimensions": {
-    "Region": ["North", "South"]
-  },
-  "grain": [{ "measure": "Daily", "values": ["Monday"] }],
-  "values": [5.0, 15.0]
-}

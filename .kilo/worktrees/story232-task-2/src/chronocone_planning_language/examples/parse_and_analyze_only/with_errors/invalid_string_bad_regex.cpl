@@ -1,3 +1,0 @@
-types
-    # Malformed regex pattern in String constraint - should fail analysis
-    BadPattern = String(pattern="[")

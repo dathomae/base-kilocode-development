@@ -1,6 +1,0 @@
-# Invalid Int Range - Bad Bounds (Negative Step)
-# When step is negative, start must be greater than or equal to end.
-# From Story124: CPL Concepts Analyzer - Range
-
-concepts
-    BadRange = [Int[1, 5, -1]]
