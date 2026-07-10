@@ -1,3 +1,0 @@
-// Measure definition with missing unit keyword - should fail parsing
-measures
-	Distance = Length(Meter)

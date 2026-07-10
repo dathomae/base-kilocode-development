@@ -1,4 +1,0 @@
-types
-    # Different pattern in String derivation chain - should fail analysis
-    BasePattern = String(pattern="^[a-z]+$")
-    NumberPattern = BasePattern(pattern="^[0-9]+$")

@@ -1,6 +1,0 @@
-# Invalid Int Range - Zero Step
-# Step value cannot be zero in an Int range generator.
-# From Story124: CPL Concepts Analyzer - Range
-
-concepts
-    BadRange = [Int[1, 5, 0]]

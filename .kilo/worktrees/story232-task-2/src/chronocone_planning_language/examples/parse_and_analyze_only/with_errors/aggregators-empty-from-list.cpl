@@ -1,7 +1,0 @@
-# Empty From List Error Example
-
-concepts
-    Product = [Values[A, B]]
-
-aggregators
-    from [] to [Product] = sum(Demand)

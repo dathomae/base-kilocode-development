@@ -1,7 +1,0 @@
-{
-  "xlsx_file": "expected_output.xlsx",
-  "key_columns": ["Region", "SingleDay"],
-  "input_columns": [],
-  "metric_column": 2,
-  "value_column": 3
-}

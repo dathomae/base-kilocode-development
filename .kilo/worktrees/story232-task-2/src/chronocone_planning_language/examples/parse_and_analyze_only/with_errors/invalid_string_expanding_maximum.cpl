@@ -1,4 +1,0 @@
-types
-    # Expanding inherited maximum constraint in String derivation - should fail analysis
-    BaseString = String(maximum=50)
-    WideString = BaseString(maximum=100)

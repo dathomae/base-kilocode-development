@@ -1,3 +1,0 @@
-// Measure definition with missing parentheses - should fail parsing
-measures
-	Distance = Length unit=Meter

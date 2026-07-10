@@ -1,3 +1,0 @@
-types
-    # Invalid Instant declaration: month must be one of the recognized month names.
-    BadMonthInstant = Instant(month=NotAMonth)
