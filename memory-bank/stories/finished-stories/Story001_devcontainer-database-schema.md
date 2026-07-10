@@ -61,9 +61,9 @@ Task 6 depends on `db/__init__.py` (created by Task 5) as a module import — it
 
 Update `.devcontainer/docker-compose.yml` to add a PostgreSQL `db` service and inject database connection environment variables into the `app` service.
 
-a. Add `postgres-data` named volume to the top-level `volumes` section — Not Started
-b. Add a `db` service with `image: postgres:15`, environment variables (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` all set to `prediction_markets`), a volume mount for `postgres-data:/var/lib/postgresql/data`, port mapping `"5432"`, `restart: unless-stopped`, and the `dev-network` network — Not Started
-c. Add `PREDICTION_MARKETS_DB_HOST=db`, `PREDICTION_MARKETS_DB_PORT=5432`, `PREDICTION_MARKETS_DB_USER=prediction_markets`, `PREDICTION_MARKETS_DB_PASSWORD=prediction_markets`, and `PREDICTION_MARKETS_DB_NAME=prediction_markets` environment variables to the `app` service — Not Started
+a. Add `postgres-data` named volume to the top-level `volumes` section — Completed
+b. Add a `db` service with `image: postgres:15`, environment variables (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` all set to `prediction_markets`), a volume mount for `postgres-data:/var/lib/postgresql/data`, port mapping `"5432"`, `restart: unless-stopped`, and the `dev-network` network — Completed
+c. Add `PREDICTION_MARKETS_DB_HOST=db`, `PREDICTION_MARKETS_DB_PORT=5432`, `PREDICTION_MARKETS_DB_USER=prediction_markets`, `PREDICTION_MARKETS_DB_PASSWORD=prediction_markets`, and `PREDICTION_MARKETS_DB_NAME=prediction_markets` environment variables to the `app` service — Completed
 
 **Acceptance Criteria:**
 
@@ -77,8 +77,8 @@ c. Add `PREDICTION_MARKETS_DB_HOST=db`, `PREDICTION_MARKETS_DB_PORT=5432`, `PRED
 
 Update `.devcontainer/Dockerfile` to include the `libpq-dev` package required to build `psycopg2-binary`.
 
-a. Write a manual verification that `libpq-dev` can be installed alongside the existing packages by checking the apt package name — Not Started
-b. Add `libpq-dev` to the package list in the `apt-get install` command on line 7, alphabetically between `jq` and `iputils-ping` — Not Started
+a. Write a manual verification that `libpq-dev` can be installed alongside the existing packages by checking the apt package name — Completed
+b. Add `libpq-dev` to the package list in the `apt-get install` command on line 7, alphabetically between `jq` and `iputils-ping` — Completed
 
 **Acceptance Criteria:**
 
@@ -90,7 +90,7 @@ b. Add `libpq-dev` to the package list in the `apt-get install` command on line 
 
 Update `pyproject.toml` to add `psycopg2-binary` to the project dependencies.
 
-a. Add `"psycopg2-binary"` to the `dependencies` list under `[project]` — Not Started
+a. Add `"psycopg2-binary"` to the `dependencies` list under `[project]` — Completed
 
 **Acceptance Criteria:**
 
@@ -101,11 +101,11 @@ a. Add `"psycopg2-binary"` to the `dependencies` list under `[project]` — Not 
 
 Create `src/prediction_markets/db/schema.sql` with the three-table schema for markets, order book snapshots, and token prices.
 
-a. Write a manual check to verify the `src/prediction_markets/db/` directory exists (create it if needed) — Not Started
-b. Create the `markets` table with columns: `id TEXT PRIMARY KEY`, `condition_id TEXT NOT NULL UNIQUE`, `question TEXT NOT NULL`, `slug TEXT NOT NULL`, `token_id_yes TEXT NOT NULL UNIQUE`, `token_id_no TEXT NOT NULL UNIQUE`, `fee_rate REAL NOT NULL`, `category TEXT`, `end_date TIMESTAMPTZ`, `volume REAL`, `liquidity REAL`, `neg_risk BOOLEAN NOT NULL DEFAULT FALSE`, `enable_order_book BOOLEAN NOT NULL DEFAULT TRUE`, `created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`, `updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()` — Not Started
-c. Create the `order_book_snapshots` table with columns: `id BIGSERIAL PRIMARY KEY`, `market_id TEXT NOT NULL REFERENCES markets(id)`, `timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW()`, `best_bid_yes REAL NOT NULL`, `best_ask_yes REAL NOT NULL`, `best_bid_no REAL NOT NULL`, `best_ask_no REAL NOT NULL`. Add `UNIQUE (market_id, timestamp)` constraint, index on `timestamp`, and index on `(market_id, timestamp)` — Not Started
-d. Create the `token_prices` table with columns: `id BIGSERIAL PRIMARY KEY`, `market_id TEXT NOT NULL REFERENCES markets(id)`, `token_id TEXT NOT NULL`, `timestamp TIMESTAMPTZ NOT NULL`, `price REAL NOT NULL`. Add `UNIQUE (market_id, token_id, timestamp)` constraint, index on `timestamp`, and index on `(market_id, timestamp)` — Not Started
-e. Wrap each `CREATE TABLE` statement with `CREATE TABLE IF NOT EXISTS` for idempotency — Not Started
+a. Write a manual check to verify the `src/prediction_markets/db/` directory exists (create it if needed) — Completed
+b. Create the `markets` table with columns: `id TEXT PRIMARY KEY`, `condition_id TEXT NOT NULL UNIQUE`, `question TEXT NOT NULL`, `slug TEXT NOT NULL`, `token_id_yes TEXT NOT NULL UNIQUE`, `token_id_no TEXT NOT NULL UNIQUE`, `fee_rate REAL NOT NULL`, `category TEXT`, `end_date TIMESTAMPTZ`, `volume REAL`, `liquidity REAL`, `neg_risk BOOLEAN NOT NULL DEFAULT FALSE`, `enable_order_book BOOLEAN NOT NULL DEFAULT TRUE`, `created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`, `updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()` — Completed
+c. Create the `order_book_snapshots` table with columns: `id BIGSERIAL PRIMARY KEY`, `market_id TEXT NOT NULL REFERENCES markets(id)`, `timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW()`, `best_bid_yes REAL NOT NULL`, `best_ask_yes REAL NOT NULL`, `best_bid_no REAL NOT NULL`, `best_ask_no REAL NOT NULL`. Add `UNIQUE (market_id, timestamp)` constraint, index on `timestamp`, and index on `(market_id, timestamp)` — Completed
+d. Create the `token_prices` table with columns: `id BIGSERIAL PRIMARY KEY`, `market_id TEXT NOT NULL REFERENCES markets(id)`, `token_id TEXT NOT NULL`, `timestamp TIMESTAMPTZ NOT NULL`, `price REAL NOT NULL`. Add `UNIQUE (market_id, token_id, timestamp)` constraint, index on `timestamp`, and index on `(market_id, timestamp)` — Completed
+e. Wrap each `CREATE TABLE` statement with `CREATE TABLE IF NOT EXISTS` for idempotency — Completed
 
 **Acceptance Criteria:**
 
@@ -117,15 +117,15 @@ e. Wrap each `CREATE TABLE` statement with `CREATE TABLE IF NOT EXISTS` for idem
 
 Create `src/prediction_markets/db/__init__.py` with connection helper functions, and `tests/db/test_connection.py` with unit tests that mock the database connection.
 
-a. Write test `test_get_connection_reads_env_vars` in `tests/db/test_connection.py` that patches environment variables with `PREDICTION_MARKETS_DB_*` values, calls `get_connection()`, and asserts that `psycopg2.connect` was called with the correct parameters — Not Started
-b. Write test `test_context_manager_commits_and_closes` that uses the context manager, verifies `commit()` and `close()` are called on the connection — Not Started
-c. Write test `test_init_db_idempotent` that patches `__file__` to resolve `schema.sql`, mocks a connection cursor, calls `init_db()` twice, and asserts that schema SQL was executed exactly once (cursor.execute called twice — each `CREATE TABLE IF NOT EXISTS` is a separate execute call — but the function ran successfully both times) — Not Started
-d. Write test `test_get_connection_raises_on_missing_env_vars` that clears one `PREDICTION_MARKETS_DB_*` environment variable at a time and asserts `get_connection()` raises a clear error whose message includes the name of the missing variable — Not Started
-e. Write test `test_init_db_logs_schema_path` that patches `__file__`, mocks a connection cursor and the module logger, calls `init_db()`, and asserts an `INFO`-level log message was emitted containing the resolved schema file path — Not Started
-f. Implement `get_connection()` in `src/prediction_markets/db/__init__.py` — imports `logging`, creates a module-level logger via `logging.getLogger(__name__)`, reads `PREDICTION_MARKETS_DB_HOST`, `PREDICTION_MARKETS_DB_PORT`, `PREDICTION_MARKETS_DB_USER`, `PREDICTION_MARKETS_DB_PASSWORD`, `PREDICTION_MARKETS_DB_NAME` from environment, raises a clear error (with `logger.error(...)`) naming the missing variable if any are absent, logs connection parameters at `INFO` level (host, port, dbname — redact password), and returns a `psycopg2.connect()` connection — Not Started
-g. Implement a `@contextmanager` in `__init__.py` that yields a connection from `get_connection()`, calls `conn.commit()` on successful exit, and calls `conn.close()` on both success and failure — Not Started
-h. Implement `init_db()` in `__init__.py` that locates `schema.sql` relative to `__file__` (the `__init__.py` file's directory), logs the resolved path at `INFO` level, reads it, splits on semicolons, executes each non-empty statement against a connection, and logs the number of executed statements at `INFO` level — Not Started
-i. Run `uv run pytest tests/db/test_connection.py -v` and verify all tests pass — Not Started
+a. Write test `test_get_connection_reads_env_vars` in `tests/db/test_connection.py` that patches environment variables with `PREDICTION_MARKETS_DB_*` values, calls `get_connection()`, and asserts that `psycopg2.connect` was called with the correct parameters — Completed
+b. Write test `test_context_manager_commits_and_closes` that uses the context manager, verifies `commit()` and `close()` are called on the connection — Completed
+c. Write test `test_init_db_idempotent` that patches `__file__` to resolve `schema.sql`, mocks a connection cursor, calls `init_db()` twice, and asserts that schema SQL was executed exactly once (cursor.execute called twice — each `CREATE TABLE IF NOT EXISTS` is a separate execute call — but the function ran successfully both times) — Completed
+d. Write test `test_get_connection_raises_on_missing_env_vars` that clears one `PREDICTION_MARKETS_DB_*` environment variable at a time and asserts `get_connection()` raises a clear error whose message includes the name of the missing variable — Completed
+e. Write test `test_init_db_logs_schema_path` that patches `__file__`, mocks a connection cursor and the module logger, calls `init_db()`, and asserts an `INFO`-level log message was emitted containing the resolved schema file path — Completed
+f. Implement `get_connection()` in `src/prediction_markets/db/__init__.py` — imports `logging`, creates a module-level logger via `logging.getLogger(__name__)`, reads `PREDICTION_MARKETS_DB_HOST`, `PREDICTION_MARKETS_DB_PORT`, `PREDICTION_MARKETS_DB_USER`, `PREDICTION_MARKETS_DB_PASSWORD`, `PREDICTION_MARKETS_DB_NAME` from environment, raises a clear error (with `logger.error(...)`) naming the missing variable if any are absent, logs connection parameters at `INFO` level (host, port, dbname — redact password), and returns a `psycopg2.connect()` connection — Completed
+g. Implement a `@contextmanager` in `__init__.py` that yields a connection from `get_connection()`, calls `conn.commit()` on successful exit, and calls `conn.close()` on both success and failure — Completed
+h. Implement `init_db()` in `__init__.py` that locates `schema.sql` relative to `__file__` (the `__init__.py` file's directory), logs the resolved path at `INFO` level, reads it, splits on semicolons, executes each non-empty statement against a connection, and logs the number of executed statements at `INFO` level — Completed
+i. Run `uv run pytest tests/db/test_connection.py -v` and verify all tests pass — Completed
 
 **Acceptance Criteria:**
 
@@ -142,18 +142,18 @@ i. Run `uv run pytest tests/db/test_connection.py -v` and verify all tests pass 
 
 Create `src/prediction_markets/db/queries.py` with insert/upsert and select functions, and `tests/db/test_queries.py` with unit tests that mock database cursors.
 
-a. Write test `test_insert_markets_upsert` in `tests/db/test_queries.py` that passes a list of market dicts, verifies `INSERT ... ON CONFLICT ... UPDATE` SQL is generated with correct columns, and verifies rows are passed as parameters — Not Started
-b. Write test `test_insert_order_book_snapshot_conflict_do_nothing` that passes snapshot data, verifies `INSERT ... ON CONFLICT DO NOTHING` SQL, and asserts rows are passed as parameters — Not Started
-c. Write test `test_insert_token_prices_conflict_do_nothing` that passes a list of price dicts, verifies `INSERT ... ON CONFLICT DO NOTHING` SQL, and asserts rows are passed as parameters — Not Started
-d. Write test `test_get_markets_returns_list_of_dicts` that mocks a cursor returning `description` and rows, calls `get_markets()`, and verifies the returned list of dicts matches the mocked rows — Not Started
-e. Write test `test_get_market_by_id_returns_single_dict` that mocks a cursor returning one row, calls `get_market_by_id()`, and verifies the returned dict matches — Not Started
-f. Write test `test_query_functions_log_at_debug_level` that patches the module logger and verifies each query function emits a `DEBUG`-level log message containing the function name on call — Not Started
-g. Implement `insert_markets(conn, markets: list[dict])` in `src/prediction_markets/db/queries.py` — imports `logging`, creates a module-level logger, logs a `DEBUG`-level message with the function name and market count, uses parameterized `INSERT ... ON CONFLICT (id) DO UPDATE SET ...` with all market columns — Not Started
-h. Implement `insert_order_book_snapshot(conn, market_id, best_bid_yes, best_ask_yes, best_bid_no, best_ask_no, timestamp)` — logs `DEBUG`-level message, uses parameterized `INSERT ... ON CONFLICT (market_id, timestamp) DO NOTHING` — Not Started
-i. Implement `insert_token_prices(conn, rows: list[dict])` — logs `DEBUG`-level message with row count, uses parameterized `INSERT ... ON CONFLICT (market_id, token_id, timestamp) DO NOTHING`, iterates over rows to build the multi-row INSERT — Not Started
-j. Implement `get_markets(conn)` — logs `DEBUG`-level message, executes `SELECT * FROM markets` and returns a list of dicts keyed by column name — Not Started
-k. Implement `get_market_by_id(conn, market_id)` — logs `DEBUG`-level message, executes `SELECT * FROM markets WHERE id = %s` with parameter, returns a single dict — Not Started
-l. Run `uv run pytest tests/db/test_queries.py -v` and verify all tests pass — Not Started
+a. Write test `test_insert_markets_upsert` in `tests/db/test_queries.py` that passes a list of market dicts, verifies `INSERT ... ON CONFLICT ... UPDATE` SQL is generated with correct columns, and verifies rows are passed as parameters — Completed
+b. Write test `test_insert_order_book_snapshot_conflict_do_nothing` that passes snapshot data, verifies `INSERT ... ON CONFLICT DO NOTHING` SQL, and asserts rows are passed as parameters — Completed
+c. Write test `test_insert_token_prices_conflict_do_nothing` that passes a list of price dicts, verifies `INSERT ... ON CONFLICT DO NOTHING` SQL, and asserts rows are passed as parameters — Completed
+d. Write test `test_get_markets_returns_list_of_dicts` that mocks a cursor returning `description` and rows, calls `get_markets()`, and verifies the returned list of dicts matches the mocked rows — Completed
+e. Write test `test_get_market_by_id_returns_single_dict` that mocks a cursor returning one row, calls `get_market_by_id()`, and verifies the returned dict matches — Completed
+f. Write test `test_query_functions_log_at_debug_level` that patches the module logger and verifies each query function emits a `DEBUG`-level log message containing the function name on call — Completed
+g. Implement `insert_markets(conn, markets: list[dict])` in `src/prediction_markets/db/queries.py` — imports `logging`, creates a module-level logger, logs a `DEBUG`-level message with the function name and market count, uses parameterized `INSERT ... ON CONFLICT (id) DO UPDATE SET ...` with all market columns — Completed
+h. Implement `insert_order_book_snapshot(conn, market_id, best_bid_yes, best_ask_yes, best_bid_no, best_ask_no, timestamp)` — logs `DEBUG`-level message, uses parameterized `INSERT ... ON CONFLICT (market_id, timestamp) DO NOTHING` — Completed
+i. Implement `insert_token_prices(conn, rows: list[dict])` — logs `DEBUG`-level message with row count, uses parameterized `INSERT ... ON CONFLICT (market_id, token_id, timestamp) DO NOTHING`, iterates over rows to build the multi-row INSERT — Completed
+j. Implement `get_markets(conn)` — logs `DEBUG`-level message, executes `SELECT * FROM markets` and returns a list of dicts keyed by column name — Completed
+k. Implement `get_market_by_id(conn, market_id)` — logs `DEBUG`-level message, executes `SELECT * FROM markets WHERE id = %s` with parameter, returns a single dict — Completed
+l. Run `uv run pytest tests/db/test_queries.py -v` and verify all tests pass — Completed
 
 **Acceptance Criteria:**
 
