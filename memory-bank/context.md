@@ -4,11 +4,12 @@ This file tracks the current active tasks and work-in-progress context. It is NO
 
 ## Active Tasks
 
-- [ ] [Plan: Create Generic Base KiloCode Development Project](plans/create-base-development-project-plan.md) — In Progress
+- [x] Project initialization (Python scaffolding, devcontainer, memory bank)
+- [ ] Phase 1: PolyMarket exploration — upload API docs, concepts, explore data
 
 ## Current Context
 
-- Project configuration defined in `kilo.jsonc`
-- Agent rules defined in `.kilocode/rules/`
-- PDD scripts defined in `scripts/`
-- Templates defined in `resources/templates/`
+- Project initialized as a Python project with `src/prediction_markets/` package
+- Devcontainer configured with Python 3.12, uv, and common tools
+- Phase 1 focus: PolyMarket API integration and data exploration
+- Goal: Find exploitable arbitrage opportunities between prediction markets

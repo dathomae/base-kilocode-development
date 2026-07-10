@@ -1,7 +1,0 @@
-types
-    ExactCurrency = Number(precision=0)
-    FlexibleCurrency = ExactCurrency(precision=2)
-    StrictRange = Number(minimum=10, maximum=100)
-    ExpandedRange = StrictRange(minimum=0)
-    TightMax = Number(maximum=100)
-    LooseMax = TightMax(maximum=1000)

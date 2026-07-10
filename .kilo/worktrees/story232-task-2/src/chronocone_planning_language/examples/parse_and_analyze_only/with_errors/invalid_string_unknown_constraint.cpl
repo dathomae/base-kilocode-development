@@ -1,3 +1,0 @@
-types
-    # Unknown constraint name on String type - should fail analysis
-    BadString = String(foo=bar)

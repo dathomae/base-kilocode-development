@@ -1,7 +1,0 @@
-types
-    # Demonstrates valid String type declarations with various constraints
-    AnyString = String()
-    ShortString = String(maximum=50)
-    NamePattern = String(pattern="^[A-Z][a-z]+$")
-    BoundedName = String(minimum=1, maximum=100)
-    StrictName = String(minimum=5, maximum=20, pattern="^[a-zA-Z]+$")

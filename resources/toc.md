@@ -8,6 +8,9 @@ This directory contains reference materials, templates, API documentation, and o
 **[templates/](templates/)**
 : Document templates for stories, epics, EROs, design decisions, and PDD scripts.
 
+**[polymarket/](polymarket/toc.md)**
+: Polymarket platform concepts — markets, tokens, orders, resolution, authentication, fees, and APIs.
+
 **[code_review/](code_review/)**
 : Code review guidelines and best practices.
 

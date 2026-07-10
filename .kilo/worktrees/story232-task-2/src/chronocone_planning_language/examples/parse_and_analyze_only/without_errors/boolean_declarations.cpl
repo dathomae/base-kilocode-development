@@ -1,4 +1,0 @@
-types
-    # Demonstrates valid Boolean type declarations
-    ActiveFlag = Boolean()
-    EnabledFlag = Boolean()

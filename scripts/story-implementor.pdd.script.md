@@ -138,12 +138,13 @@ The following operations are implemented by the **story-implementor** agent unle
 
 3. **story-implementor**: Construct the full path to the story file by combining `memory-bank/stories/` with the story_file parameter.
 
-3a. **story-implementor**: Ensure the worktrees directory and feature branch subdirectory exist. If they do not exist, create them:
+3a. **story-implementor**: Ensure the worktrees directory exists. If it does not exist, create it:
      ```bash
-     mkdir -p .kilo/worktrees/
-     ln -sfn .kilo/worktrees/ worktrees
+     mkdir -p worktrees/
      ```
-     This creates the actual worktrees storage under `.kilo/worktrees/` and a symbolic link at `worktrees/` pointing to it. The symlink provides a non-dot-directory path to the worktrees — sub-agents use the `worktrees/` path to avoid permission conflicts that occur when accessing dot-directories (`.kilo/`). Each task gets a subdirectory named `<sanitized_feature_branch>-task-N` (e.g., `worktrees/story-005-task-3/`).
+     This creates a real directory at `worktrees/` for all worktree storage. Each task gets a subdirectory named `<sanitized_feature_branch>-task-N` (e.g., `worktrees/story-005-task-3/`).
+
+     > **CRITICAL — NEVER USE DOT-DIRECTORIES FOR WORKTREES**: Worktree paths MUST be under the `worktrees/` directory at the project root — a real directory, NOT a symlink into `.kilo/` or any other dot-directory. Sub-agents cannot access paths under dot-directories (`.kilo/`, `.git/`, etc.) due to permission restrictions. Using a real `worktrees/` directory ensures `git worktree list` reports paths like `/project/worktrees/story-005-task-3` (not `/project/.kilo/worktrees/story-005-task-3`), which sub-agents can access freely.
 
 3b. **story-implementor**: Verify the user is NOT on the `main` or `master` branch before proceeding:
 
@@ -261,10 +262,10 @@ The following operations are implemented by the **story-implementor** agent unle
         git worktree add worktrees/<sanitized_feature_branch>-task-N -b <sanitized_feature_branch>-task-N
         ```
       - The worktree branch is derived from the sanitized feature branch (e.g., if `<feature_branch>` is `story/005`, the sanitized form is `story-005`, and the worktree branch for Task 3 is `story-005-task-3`).
-      - **Environment setup in worktree**: If `.kilo/setup-script.sh` was detected in Operation 7a, run it inside each newly-created worktree to install build dependencies (Gradle wrapper, Go modules, etc.):
-        ```bash
-        bash ../../../.kilo/setup-script.sh
-        ```
+       - **Environment setup in worktree**: If `.kilo/setup-script.sh` was detected in Operation 7a, run it inside each newly-created worktree to install build dependencies (Gradle wrapper, Go modules, etc.):
+         ```bash
+         bash ../../.kilo/setup-script.sh
+         ```
         using `workdir` set to `worktrees/<sanitized_feature_branch>-task-N`. If the setup script fails, report the error to the user, delete the worktree (`git worktree remove --force worktrees/<sanitized_feature_branch>-task-N && git branch -D <sanitized_feature_branch>-task-N`), mark the task as `Blocked` in the story file with the reason "Setup script failed in worktree", and do NOT dispatch the sub-agent. The task cannot proceed without a working build environment.
 
      **Sub-agent dispatch (per task)**:
@@ -678,7 +679,8 @@ Specific error conditions handled:
 - **Context Size Management**: The primary goal of the handoff protocol is to keep implementation details (large file contents, code snippets) out of the story-implementor's context window. The story-implementor coordinates at the task level while sub-agents handle the full file content needed for implementation.
 - **One Task Per Handoff Rule**: The story-implementor MUST NOT further decompose tasks into sub-elements (phases, subtasks, steps) for separate handoffs. Doing so would multiply round-trips without reducing context load, since the same files would be re-read in each sub-handoff. Each task is handed off as a single unit. The EXCEPTION is parallel groups: multiple complete tasks can be launched simultaneously as separate handoffs.
 - **Parallel Execution**: When a story declares parallel groups in its "Parallel Execution" section, the story-implementor creates one git worktree per incomplete task in the group (under `worktrees/<sanitized_feature_branch>-task-N/`) and launches all sub-agents concurrently. Each task is still a single-unit handoff. After individual tasks are reviewed and their worktrees are merged (one at a time), the story-implementor runs integration tests before proceeding.
-- **Mandatory Worktree Isolation**: EVERY task — sequential or parallel — is executed in an isolated git worktree under `worktrees/<sanitized_feature_branch>-task-N/`. Worktrees are created from `<feature_branch>` using `git worktree add`, sub-agents work in the worktree via the `workdir` parameter, and only successful, reviewed work is merged back into `<feature_branch>`. Failed work is deleted with the worktree and never contaminates `<feature_branch>`. This eliminates the need for stash, reset, or revert operations entirely.
+- **Mandatory Worktree Isolation**: EVERY task — sequential or parallel — is executed in an isolated git worktree under `worktrees/<sanitized_feature_branch>-task-N/`. `worktrees/` is a real directory at the project root (never a symlink into a dot-directory). Worktrees are created from `<feature_branch>` using `git worktree add`, sub-agents work in the worktree via the `workdir` parameter, and only successful, reviewed work is merged back into `<feature_branch>`. Failed work is deleted with the worktree and never contaminates `<feature_branch>`. This eliminates the need for stash, reset, or revert operations entirely.
+- **No Dot-Directories**: All worktree paths must resolve to `worktrees/` (no `.kilo/` prefix). This requirement exists because sub-agents are blocked from accessing dot-directories (`.kilo/`, `.git/`, etc.). The `worktrees/` directory at the project root is a real directory — never a symlink into `.kilo/`. This ensures `git worktree list` output and all git commands report clean paths like `/project/worktrees/...`.
 - **Worktree Environment Setup**: If `.kilo/setup-script.sh` exists in the repository root, the story-implementor runs it inside each newly-created worktree to install build dependencies (Gradle wrapper, Go modules, etc.). If absent, the story-implementor warns the user once at the start of the story and proceeds — the user may have already prepared their environment manually or the worktree may not need additional setup.
 - **Worktree Merge Serialization**: Merges happen one at a time. For parallel groups, a task is eligible for merge as soon as it completes + passes review — it is NOT necessary to wait for all parallel tasks to complete. Merge order follows the reintegration instructions from the story's "Reintegration" subsection when specified; when reintegration says "any order" or "None", or is absent, use finish-order (first task reviewed-ok first, task-number tiebreaker). Sequential tasks merge trivially (fast-forward) since no other worktree is active concurrently.
 - **Task Size Determination**: Tasks annotated with `[Small]` on their status line are routed to small-code-for-story-implementor. Unannotated tasks fall back to heuristic analysis. When in doubt, default to medium (code-for-story-implementor).
