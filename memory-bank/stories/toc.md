@@ -8,7 +8,7 @@ This file contains a table of active stories for the project. Stories that are p
 
 Stories that are pending or currently in progress.
 
-**[Story001_devcontainer-database-schema.md](Story001_devcontainer-database-schema.md)** — _Not Started_
+**[Story001_devcontainer-database-schema.md](Story001_devcontainer-database-schema.md)** — _Done_
 : Add a PostgreSQL database service to the devcontainer and create the prediction markets database schema
 
 **[Story002_market-interface-module.md](Story002_market-interface-module.md)** — _Not Started_

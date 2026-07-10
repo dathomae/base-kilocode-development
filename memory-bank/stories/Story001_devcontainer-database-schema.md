@@ -57,7 +57,7 @@ Task 6 depends on `db/__init__.py` (created by Task 5) as a module import — it
 
 ---
 
-### Task 1: Add db service to docker-compose.yml — Not Started [Small]
+### Task 1: Add db service to docker-compose.yml — Completed [Small]
 
 Update `.devcontainer/docker-compose.yml` to add a PostgreSQL `db` service and inject database connection environment variables into the `app` service.
 
@@ -73,7 +73,7 @@ c. Add `PREDICTION_MARKETS_DB_HOST=db`, `PREDICTION_MARKETS_DB_PORT=5432`, `PRED
 - `postgres-data` named volume is defined
 - Both services share the `dev-network` network
 
-### Task 2: Add libpq-dev to Dockerfile — Not Started [Small]
+### Task 2: Add libpq-dev to Dockerfile — Completed [Small]
 
 Update `.devcontainer/Dockerfile` to include the `libpq-dev` package required to build `psycopg2-binary`.
 
@@ -86,7 +86,7 @@ b. Add `libpq-dev` to the package list in the `apt-get install` command on line 
 - Existing packages remain unchanged and in alphabetical order
 - `docker build -f .devcontainer/Dockerfile .` succeeds (or runs without `libpq-dev`-related errors)
 
-### Task 3: Add psycopg2-binary dependency — Not Started [Small]
+### Task 3: Add psycopg2-binary dependency — Completed [Small]
 
 Update `pyproject.toml` to add `psycopg2-binary` to the project dependencies.
 
@@ -97,7 +97,7 @@ a. Add `"psycopg2-binary"` to the `dependencies` list under `[project]` — Not 
 - `dependencies = ["psycopg2-binary"]` in `pyproject.toml`
 - `uv sync` completes successfully and resolves `psycopg2-binary`
 
-### Task 4: Create database schema DDL — Not Started [Small]
+### Task 4: Create database schema DDL — Completed [Small]
 
 Create `src/prediction_markets/db/schema.sql` with the three-table schema for markets, order book snapshots, and token prices.
 
@@ -113,7 +113,7 @@ e. Wrap each `CREATE TABLE` statement with `CREATE TABLE IF NOT EXISTS` for idem
 - Contains `CREATE TABLE IF NOT EXISTS` for `markets`, `order_book_snapshots`, and `token_prices`
 - All columns, constraints, foreign keys, and indexes match the plan specification
 
-### Task 5: Create database connection module with tests — Not Started [Small]
+### Task 5: Create database connection module with tests — Completed [Small]
 
 Create `src/prediction_markets/db/__init__.py` with connection helper functions, and `tests/db/test_connection.py` with unit tests that mock the database connection.
 
@@ -138,7 +138,7 @@ i. Run `uv run pytest tests/db/test_connection.py -v` and verify all tests pass 
 - `init_db()` is safe to call multiple times (idempotent via `IF NOT EXISTS`)
 - All unit tests pass with mocked database connections
 
-### Task 6: Create query helper functions with tests — Not Started
+### Task 6: Create query helper functions with tests — Completed
 
 Create `src/prediction_markets/db/queries.py` with insert/upsert and select functions, and `tests/db/test_queries.py` with unit tests that mock database cursors.
 
