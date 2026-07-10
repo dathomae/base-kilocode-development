@@ -10,6 +10,29 @@ services:
       - ..:/${LOCAL_WORKSPACE_FOLDER_NAME}:cached
     networks:
       - dev-network
+    environment:
+      PREDICTION_MARKETS_DB_HOST: db
+      PREDICTION_MARKETS_DB_PORT: 5432
+      PREDICTION_MARKETS_DB_USER: prediction_markets
+      PREDICTION_MARKETS_DB_PASSWORD: prediction_markets
+      PREDICTION_MARKETS_DB_NAME: prediction_markets
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: prediction_markets
+      POSTGRES_PASSWORD: prediction_markets
+      POSTGRES_DB: prediction_markets
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - dev-network
+
+volumes:
+  postgres-data:
 
 networks:
   dev-network:
