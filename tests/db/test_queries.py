@@ -88,6 +88,17 @@ class TestInsertMarkets:
         assert params[0] == "m1"
         assert params[14] == "m2"
 
+    def test_insert_markets_empty(self):
+        """Test that insert_markets with empty list does not execute any query."""
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cursor)
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        queries.insert_markets(mock_conn, [])
+
+        mock_cursor.execute.assert_not_called()
+
 
 class TestInsertOrderBookSnapshot:
     """Tests for insert_order_book_snapshot function."""
@@ -155,6 +166,17 @@ class TestInsertTokenPrices:
         assert params[6] == "2025-01-01T12:00:00+00:00"
         assert params[7] == 0.45
 
+    def test_insert_token_prices_empty(self):
+        """Test that insert_token_prices with empty list does not execute any query."""
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cursor)
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        queries.insert_token_prices(mock_conn, [])
+
+        mock_cursor.execute.assert_not_called()
+
 
 class TestGetMarkets:
     """Tests for get_markets function."""
@@ -188,6 +210,24 @@ class TestGetMarkets:
             {"id": "m2", "question": "Will the stock go up?", "slug": "will-stock-go-up"},
         ]
 
+    def test_get_markets_empty(self):
+        """Test that get_markets returns empty list when no rows."""
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cursor)
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        mock_cursor.description = [
+            ("id",),
+            ("question",),
+            ("slug",),
+        ]
+        mock_cursor.fetchall.return_value = []
+
+        result = queries.get_markets(mock_conn)
+
+        assert result == []
+
 
 class TestGetMarketById:
     """Tests for get_market_by_id function."""
@@ -216,6 +256,24 @@ class TestGetMarketById:
         assert params == ("m1",)
 
         assert result == {"id": "m1", "question": "Will it rain?", "slug": "will-it-rain"}
+
+    def test_get_market_by_id_not_found(self):
+        """Test that get_market_by_id returns None when market is not found."""
+        mock_conn = MagicMock()
+        mock_cursor = MagicMock()
+        mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cursor)
+        mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+
+        mock_cursor.description = [
+            ("id",),
+            ("question",),
+            ("slug",),
+        ]
+        mock_cursor.fetchone.return_value = None
+
+        result = queries.get_market_by_id(mock_conn, "nonexistent")
+
+        assert result is None
 
 
 class TestQueryLogging:

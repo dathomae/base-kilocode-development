@@ -37,12 +37,6 @@ def insert_markets(conn, markets: list[dict]):
     placeholders = ", ".join(["%s"] * len(columns))
     updates = ", ".join([f"{col} = EXCLUDED.{col}" for col in columns if col != "id"])
 
-    sql = f"""
-        INSERT INTO markets ({col_str})
-        VALUES ({placeholders})
-        ON CONFLICT (id) DO UPDATE SET {updates}
-    """
-
     rows = []
     for market in markets:
         rows.extend([market[col] for col in columns])
