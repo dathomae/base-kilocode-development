@@ -1,0 +1,14 @@
+concepts
+	Mass = [Values[Kilogram]]
+	Length = [Values[Meter]]
+	Density = [Values[Default]]
+
+units
+	Mass = Mass
+	Length = Length
+
+types
+	Number = Number()
+
+measures
+	AreaDensity = Number(unit=Mass/(Length^2))

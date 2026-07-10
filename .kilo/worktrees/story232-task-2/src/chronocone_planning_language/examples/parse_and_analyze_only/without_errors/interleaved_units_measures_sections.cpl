@@ -1,0 +1,42 @@
+# Interleaved Units and Measures Sections Example
+# This file demonstrates that units and measures sections can be interleaved
+# in any order within a single CPL file.
+# From Story163: CPL Units and Measures Multiple Sections
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+    Mass = [Values[kg, lb, oz]]
+    Distance = [Values[m, km, mi]]
+
+units
+    # First units section defines currency
+    Currency = Country
+
+types
+    CurrencyType = Number()
+
+measures
+    # First measures section references currency
+    Price = CurrencyType(unit=Currency)
+
+units
+    # Second units section defines weight
+    Weight = Mass
+
+types
+    MassType = Number()
+
+measures
+    # Second measures section references weight
+    ShippingWeight = MassType(unit=Weight)
+
+units
+    # Third units section defines length
+    Length = Distance
+
+types
+    LengthType = Number()
+
+measures
+    # Third measures section references length
+    DistanceMeasure = LengthType(unit=Length)

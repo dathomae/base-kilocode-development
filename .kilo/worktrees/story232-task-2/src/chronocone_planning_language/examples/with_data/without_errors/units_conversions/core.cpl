@@ -1,0 +1,19 @@
+# Core infrastructure for units_conversions examples.
+# Defines shared concepts, units, types, measures, and conversion pairs
+# for testing unit type checking and conversion injection.
+
+concepts
+    Region = [Values[North, South]]
+    Length = [Values[Meter, Kilometer, Centimeter]]
+    Week = [Values[Monday]]
+
+units
+    Region = Region
+    Length = Length
+    Week = Week
+
+types
+    Distance = Number(precision=2)
+
+measures
+    SingleDay = Interval(unit=Week)

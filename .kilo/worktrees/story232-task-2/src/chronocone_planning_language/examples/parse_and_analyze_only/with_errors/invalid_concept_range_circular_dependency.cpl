@@ -1,0 +1,10 @@
+# Invalid Concept Range - Circular Dependency
+# Two concepts reference each other via Concept Ranges, creating a cycle.
+# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
+
+concepts
+	# A references B
+	A=[B[Value1..Value2]]
+
+	# B references A, forming a circular dependency
+	B=[A[Value1..Value2]]

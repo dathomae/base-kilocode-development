@@ -1,0 +1,16 @@
+# Unary negation applied to an input.
+# Demonstrates unary '-' on connector data.
+# Declares its own connectors with celltype packages.
+# Uses full Daily grain (all 7 days).
+
+connectors
+    input_a = dimensions [Region] grain Daily celltype packages
+    input_b = dimensions [Region] grain Daily celltype packages
+
+metrics
+    negate_metric
+        inputs
+            metric input_a
+            metric input_b
+        calculate
+            -input_a + input_b

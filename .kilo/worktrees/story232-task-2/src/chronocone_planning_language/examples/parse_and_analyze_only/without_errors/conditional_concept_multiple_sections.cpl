@@ -1,0 +1,11 @@
+# Conditional Multiple Sections Example
+# Parent concept defined in one section with conditional specs in a later section.
+# From Story121/Story122: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Country=[Values[USA, Canada, Mexico]]
+
+concepts
+	# Conditional specs in a separate section
+	Country[USA] => State=[Values[NY, CA, TX]]
+	Country[Canada] => Province=[Values[Ontario, Quebec]]

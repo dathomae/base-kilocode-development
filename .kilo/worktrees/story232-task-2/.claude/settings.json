@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '=== Project Rules and Conventions ===' && cat /work/.cursorrules && echo '\n=== Agent Rules ===' && cat /work/.agents/rules/*.md"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(make test *)",
+      "Bash(go test *)",
+      "Bash(make fetch-db *)",
+      "Bash(su ubuntu *)",
+      "Bash(find *)",
+      "Read(//home/ubuntu/go/pkg/mod/**)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
+    ]
+  }
+}

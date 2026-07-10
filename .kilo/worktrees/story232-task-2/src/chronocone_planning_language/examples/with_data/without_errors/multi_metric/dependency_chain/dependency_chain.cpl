@@ -1,0 +1,22 @@
+# Multi-metric dependency chain example.
+# Demonstrates metrics with inter-metric dependencies:
+#   - base_revenue: identity from connector (no metric dependencies)
+#   - tax: depends on base_revenue (base_revenue / 10)
+#   - total: depends on base_revenue and tax
+#   - unreachable_metric: depends on base_revenue but is not in IO spec outputs
+#     (used to verify dead-code elimination)
+
+connectors
+    revenue_data = dimensions [Region, Product] grain SingleDay celltype revenue
+
+metrics
+    base_revenue
+        inputs
+            metric revenue_data
+            dimension Region
+            dimension Product
+        calculate
+            revenue_data
+    tax = base_revenue / 10
+    total = base_revenue + tax
+    unreachable_metric = base_revenue * 2

@@ -1,0 +1,9 @@
+# Spreader with dimensional mismatch
+# Expression does not produce the correct dimensional transformation.
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+    Product = [Values[A, B, C]]
+
+spreaders
+    from [Product] to [Country, Product] = Country

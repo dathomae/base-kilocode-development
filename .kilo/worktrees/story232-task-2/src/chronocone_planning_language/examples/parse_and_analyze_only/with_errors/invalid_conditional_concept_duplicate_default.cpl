@@ -1,0 +1,7 @@
+# Conditional Concept — Missing Concept Range Reference
+# Analyzer error: conditional specification uses a concept range that references a concept which does not exist.
+# From Story121/Story122/Story209: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Country=[Values[USA, Canada]]
+	Country[USA] => State=[Missing[Foo..Bar]]

@@ -1,0 +1,8 @@
+# Missing From Clause Error Example
+# A spreader declaration with 'to' but no 'from' clause.
+
+concepts
+    Product = [Values[A, B]]
+
+spreaders
+    to [Product] = Demand

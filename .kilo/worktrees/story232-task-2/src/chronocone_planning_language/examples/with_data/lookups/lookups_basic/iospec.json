@@ -1,0 +1,44 @@
+{
+    "connectors": [
+        {
+            "connector": "raw_strength",
+            "data_format": "parquet",
+            "driver": "file",
+            "driver_parameters": [
+                {
+                    "path": "raw_strength.parquet"
+                }
+            ]
+        }
+    ],
+    "outputs": [
+        {
+            "metric": "product_strength",
+            "dimensions": [
+                "Product",
+                "Material"
+            ],
+            "celltype": "Strength",
+            "grain": [
+                "Daily"
+            ]
+        }
+    ],
+    "lookups": [
+        {
+            "lookup": "strength_adjusted_for_material",
+            "data_format": "parquet",
+            "driver": "file",
+            "driver_parameters": [
+                {
+                    "path": "strength_adjusted_for_material.parquet"
+                }
+            ]
+        }
+    ],
+    "architecture": {
+        "cpu_cores": 4,
+        "cache_size": 8388608,
+        "main_memory_size": 8589934592
+    }
+}

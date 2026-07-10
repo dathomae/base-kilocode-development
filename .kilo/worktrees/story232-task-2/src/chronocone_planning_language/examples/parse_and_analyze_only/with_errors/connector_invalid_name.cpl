@@ -1,0 +1,13 @@
+# Error: Invalid connector name
+# This file demonstrates a connector with an invalid name (starts with number).
+
+concepts
+    Region = [Values[North, South]]
+
+measures
+    Sales = Number(unit=Dollar)
+    Day = Interval(unit=Day)
+
+connectors
+    # ERROR: Connector name starts with a number
+    123_sales = dimensions [Region] grain Day celltype Sales

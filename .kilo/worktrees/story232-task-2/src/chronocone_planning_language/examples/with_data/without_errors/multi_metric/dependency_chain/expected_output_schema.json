@@ -1,0 +1,11 @@
+{
+  "xlsx_file": "expected_output.xlsx",
+  "key_columns": [
+    "Product",
+    "Region",
+    "SingleDay"
+  ],
+  "input_columns": [],
+  "metric_column": 3,
+  "value_column": 4
+}

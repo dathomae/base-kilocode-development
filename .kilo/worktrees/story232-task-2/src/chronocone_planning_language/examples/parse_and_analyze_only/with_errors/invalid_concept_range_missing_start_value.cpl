@@ -1,0 +1,10 @@
+# Invalid Concept Range - Missing Start Value
+# Start value is not present in the referenced source concept.
+# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
+
+concepts
+	# Source concept with known values
+	Source=[Values[A, B, C]]
+
+	# Subset references a start value that does not exist in Source
+	Subset=[Source[Missing..C]]

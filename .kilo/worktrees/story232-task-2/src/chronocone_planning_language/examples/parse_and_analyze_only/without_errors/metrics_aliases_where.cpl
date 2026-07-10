@@ -1,0 +1,53 @@
+# Metrics Aliases and Where Clauses Example
+# Demonstrates input aliases (as) and where clauses (aspect=ACTUALS/FORECAST)
+# with logical operators (and, or, not).
+
+concepts
+	Region = [Values[North, South]]
+	Price = [Values[Low, High]]
+	Package = [Values[Each]]
+	Day = [Values[Monday]]
+
+units
+	Package = Package
+	Region = Region
+	Day = Day
+
+types
+	Count = Number(precision=0)
+
+measures
+	packages = Count(unit=Package)
+	Daily = Interval(unit=Day)
+
+connectors
+	demand_fc = dimensions [Region] grain Daily celltype packages
+	price_dim = dimensions [Region] grain Daily celltype packages
+
+metrics
+	alias_only
+		inputs
+			metric demand_fc as demand
+		calculate
+			0
+	alias_and_where
+		inputs
+			metric demand_fc as df where aspect=actuals
+			dimension Price as price where aspect=forecast
+		calculate
+			0
+	complex_where
+		inputs
+			metric demand_fc as cmplx where aspect=actuals and aspect=forecast
+		calculate
+			0
+	not_where
+		inputs
+			metric demand_fc as nd where not aspect=forecast
+		calculate
+			0
+	or_where
+		inputs
+			metric demand_fc as or_ex where aspect=actuals or aspect=forecast
+		calculate
+			0

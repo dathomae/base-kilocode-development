@@ -1,0 +1,13 @@
+# Basic lookup example.
+# Demonstrates a timeless lookup mapping Material-based strength adjustment.
+
+lookups
+    strength_adjusted_for_material
+        dimensions[Material]
+        celltype Strength
+
+connectors
+    raw_strength = dimensions [Product, Material] grain Daily celltype Strength
+
+metrics
+    product_strength = raw_strength * strength_adjusted_for_material

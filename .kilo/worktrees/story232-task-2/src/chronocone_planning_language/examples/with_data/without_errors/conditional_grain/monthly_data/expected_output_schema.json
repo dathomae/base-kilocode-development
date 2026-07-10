@@ -1,0 +1,13 @@
+{
+  "xlsx_file": "expected_output.xlsx",
+  "key_columns": [
+    "Month",
+    "DayInMonth",
+    "Monthly"
+  ],
+  "input_columns": [
+    "monthly_data"
+  ],
+  "metric_column": 4,
+  "value_column": 5
+}

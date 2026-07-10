@@ -1,0 +1,28 @@
+# Conditional Truthiness
+# This file demonstrates that numeric values can be used directly as boolean
+# conditions (zero = falsy, non-zero = truthy). Also demonstrates False and True
+# literal usage in conditions.
+
+measures
+    data_a = Count(unit=Package)
+    data_b = Count(unit=Package)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype data_a
+    data_b = dimensions [Region] grain Daily celltype data_b
+
+metrics
+    truthiness_metric
+        inputs
+            metric data_a
+            metric data_b
+        calculate
+            if data_a
+                data_a * 2
+            else if False
+                data_b
+            else if True
+                data_a + data_b
+            else
+                0
+            end if

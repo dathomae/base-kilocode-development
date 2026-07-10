@@ -1,0 +1,10 @@
+concepts
+    DurationUnit = [Values[month]]
+
+units
+    month = DurationUnit
+
+types
+    # Invalid Interval declaration: starts_at must reference an Instant-derived type.
+    SomeNumber = Number(precision=2)
+    FiscalMonth = Interval(starts_at=SomeNumber, unit=month)

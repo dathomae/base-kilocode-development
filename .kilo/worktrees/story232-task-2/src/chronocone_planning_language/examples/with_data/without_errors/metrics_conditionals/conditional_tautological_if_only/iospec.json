@@ -1,0 +1,31 @@
+{
+  "connectors": [
+    {
+      "connector": "data_a",
+      "data_format": "parquet",
+      "driver": "file",
+      "driver_parameters": [
+        {
+          "path": "data_a.parquet"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "metric": "tautology_metric",
+      "dimensions": [
+        "Region"
+      ],
+      "celltype": "packages",
+      "grain": [
+        "Daily"
+      ]
+    }
+  ],
+  "architecture": {
+    "cpu_cores": 4,
+    "cache_size": 8388608,
+    "main_memory_size": 8589934592
+  }
+}

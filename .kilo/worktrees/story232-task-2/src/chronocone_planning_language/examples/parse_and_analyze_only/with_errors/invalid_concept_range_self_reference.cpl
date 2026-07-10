@@ -1,0 +1,7 @@
+# Invalid Concept Range - Self Reference
+# A concept references itself via a Concept Range.
+# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
+
+concepts
+	# Self references itself, creating a circular dependency
+	Self=[Self[A..B]]

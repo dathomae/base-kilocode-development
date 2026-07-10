@@ -1,0 +1,14 @@
+# Multiple Concepts Sections Example
+# This file demonstrates multiple concepts sections in a single CPL file.
+# Each section creates its own ConceptsScope symbol table.
+# From Story119: CPL Concepts Parser - Multi-Section
+
+concepts
+    # First section defines location-related concepts
+    Country=[Values[USA, Canada, Mexico]]
+    Region=[Values[North, South, East, West]]
+
+concepts
+    # Second section defines priority and status concepts
+    Priority=[Values[Low, Medium, High]]
+    Status=[Values[Active, Inactive, Pending]]

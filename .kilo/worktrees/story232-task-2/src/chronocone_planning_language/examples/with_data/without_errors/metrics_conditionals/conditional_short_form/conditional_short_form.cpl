@@ -1,0 +1,18 @@
+# Conditional Short Form Example
+# Demonstrates that short-form metric declarations support conditional expressions.
+
+
+measures
+    data_a = Count(unit=Package)
+    data_b = Count(unit=Package)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype data_a
+    data_b = dimensions [Region] grain Daily celltype data_b
+
+metrics
+    short_cond_metric = if data_a > data_b
+        data_a + data_b
+    else
+        data_a - data_b
+    end if

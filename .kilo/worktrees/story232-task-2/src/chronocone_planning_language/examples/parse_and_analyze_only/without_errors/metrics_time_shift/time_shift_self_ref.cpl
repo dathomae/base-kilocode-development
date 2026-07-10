@@ -1,0 +1,17 @@
+# Self-referencing metric with time shift.
+# Metric Revenue calculates revenue + revenue.backward(year).
+
+concepts
+    Region = [Values[North, South]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+measures
+    Daily = Interval(unit=Day)
+
+metrics
+    revenue
+        inputs
+            metric revenue backward(year)
+        calculate
+            0

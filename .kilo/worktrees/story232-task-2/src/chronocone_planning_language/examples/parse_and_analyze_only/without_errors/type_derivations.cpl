@@ -1,0 +1,10 @@
+types
+    # Simple types with Number base type
+    Currency = Number(precision=2)
+    Percentage = Number(minimum=0, maximum=100)
+    Count = Number()
+
+    # Single inheritance examples (for current grammar, identifier support pending parser regeneration)
+    # Note: These use Number as base until the ANTLR parser is regenerated
+    SmallCurrency = Currency(precision=0)
+    StrictPercentage = Percentage(minimum=10, maximum=90)

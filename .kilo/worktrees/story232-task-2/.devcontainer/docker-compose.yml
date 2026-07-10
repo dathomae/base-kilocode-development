@@ -1,0 +1,44 @@
+services:
+  app:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    # Keep the container running to act as the primary environment
+    command: sleep infinity
+    volumes:
+      - ..:/${LOCAL_WORKSPACE_FOLDER_NAME}:cached
+    environment:
+      # Inject credentials to easily locate the sibling `db` container
+      - CHRONOCONE_DB_HOST=db
+      - CHRONOCONE_DB_PORT=5432
+      - CHRONOCONE_DB_USER=chronocone
+      - CHRONOCONE_DB_PASSWORD=chronocone
+      - CHRONOCONE_DB_NAME=chronocone
+    depends_on:
+      - db
+    networks:
+      - dev-network
+
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: chronocone
+      POSTGRES_PASSWORD: chronocone
+      POSTGRES_DB: chronocone
+    volumes:
+      # Use a named volume so that PG data persists after rebuilding the container
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    networks:
+      - dev-network
+
+volumes:
+  postgres-data:
+
+
+networks:
+  dev-network:

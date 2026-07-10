@@ -1,0 +1,10 @@
+# Simple Spreader Example
+# Demonstrates a basic spreader from one concept to two concepts
+# using equal-proportion distribution.
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+    Product = [Values[A, B, C]]
+
+spreaders
+    from [Product] to [Country, Product] = Product / (Product * Country)

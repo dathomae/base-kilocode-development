@@ -1,0 +1,14 @@
+# Error: Undefined celltype
+# This file demonstrates a connector referencing an undefined measure.
+# This is a semantic error that should be caught during analysis.
+
+concepts
+    Region = [Values[North, South]]
+
+measures
+    Sales = Number(unit=Dollar)
+    Day = Interval(unit=Day)
+
+connectors
+    # ERROR: 'UndefinedMeasure' is not defined in measures section
+    sales_data = dimensions [Region] grain Day celltype UndefinedMeasure

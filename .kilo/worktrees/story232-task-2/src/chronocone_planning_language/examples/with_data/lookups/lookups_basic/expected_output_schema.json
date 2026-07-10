@@ -1,0 +1,13 @@
+{
+  "xlsx_file": "expected_output.xlsx",
+  "key_columns": [
+    "Product",
+    "Material",
+    "Daily"
+  ],
+  "input_columns": [
+    "raw_strength"
+  ],
+  "metric_column": 4,
+  "value_column": 5
+}

@@ -1,0 +1,18 @@
+measures
+    temperature = Temperature(unit=Celsius)
+
+connectors
+    connector_a = dimensions [Region] grain SingleDay celltype temperature
+
+metrics
+    temp_out
+        inputs
+            metric connector_a
+        calculate
+            connector_a
+
+units
+    BadUnit = TemperatureScale
+        conversion
+            pattern BadUnit(c) = Fahrenheit(f)
+            calculation 32 * 5 / 9

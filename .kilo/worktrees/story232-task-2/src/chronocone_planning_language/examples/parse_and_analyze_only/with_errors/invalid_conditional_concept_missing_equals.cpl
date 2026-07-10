@@ -1,0 +1,7 @@
+# Conditional Concept — Missing Equals
+# Parser error: child concept definition in conditional spec is missing the = before the generator list.
+# From Story121/Story122: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Country=[Values[USA, Canada]]
+	Country[USA] => State[Values[NY, CA, TX]]

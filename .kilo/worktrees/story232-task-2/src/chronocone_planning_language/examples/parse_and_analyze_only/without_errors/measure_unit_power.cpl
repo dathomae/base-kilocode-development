@@ -1,0 +1,14 @@
+concepts
+	Length = [Values[Meter]]
+	Time = [Values[Second]]
+	Accel = [Values[Gravity]]
+
+units
+	Length = Length
+	Time = Time
+
+types
+	Number = Number()
+
+measures
+	Acceleration = Number(unit=Length/Time^2)

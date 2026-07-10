@@ -1,0 +1,9 @@
+# Duplicate concept across sections - should fail analysis
+# The same concept name (Country) is defined in two different concepts sections.
+# From Story120: CPL Concepts Analyzer - Multi-Section
+
+concepts
+    Country=[Values[USA, Canada, Mexico]]
+
+concepts
+    Country=[Values[UK, France, Germany]]

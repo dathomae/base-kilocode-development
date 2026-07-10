@@ -1,0 +1,9 @@
+# Arithmetic Expression Spreader Example
+# Demonstrates a spreader with a parenthesized arithmetic expression.
+
+concepts
+    Country = [Values[USA, Canada]]
+    Product = [Values[A, B]]
+
+spreaders
+    from [Product] to [Country, Product] = Product / (Product * Country)

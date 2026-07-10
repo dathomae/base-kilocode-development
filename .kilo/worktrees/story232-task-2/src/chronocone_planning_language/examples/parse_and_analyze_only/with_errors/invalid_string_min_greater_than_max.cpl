@@ -1,0 +1,3 @@
+types
+    # Minimum greater than maximum in String constraints - should fail analysis
+    BadRange = String(minimum=50, maximum=10)

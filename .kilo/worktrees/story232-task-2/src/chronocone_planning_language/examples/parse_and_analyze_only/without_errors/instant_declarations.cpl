@@ -1,0 +1,7 @@
+types
+    # Instant declarations constrain points in time by one or more fields.
+    AnyInstant = Instant()
+    StartOfYear = Instant(month=January, day_of_month=1)
+    StartOfBusinessDay = Instant(hour=9, minute=0, second=0)
+    MondayInstant = Instant(day_of_week=Monday)
+    FirstIsoWeek = Instant(week_number=1)

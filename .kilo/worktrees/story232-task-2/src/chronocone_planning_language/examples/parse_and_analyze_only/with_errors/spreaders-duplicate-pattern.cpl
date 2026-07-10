@@ -1,0 +1,9 @@
+# Spreader with duplicate from/to pattern
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+    Product = [Values[A, B, C]]
+
+spreaders
+    from [Product] to [Country, Product] = Product / (Product * Country)
+    from [Product] to [Country, Product] = Product / Product / Country

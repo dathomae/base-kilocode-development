@@ -1,0 +1,14 @@
+# Duplicate unit names across sections - should fail analysis
+# The same unit name (Currency) is defined in two different units sections.
+# Parsing succeeds, but analysis detects the duplicate.
+# From Story163: CPL Units and Measures Multiple Sections
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+    Mass = [Values[kg, lb, oz]]
+
+units
+    Currency = Country
+
+units
+    Currency = Mass

@@ -1,0 +1,15 @@
+concepts
+    DurationUnit = [Values[day, week, month, year]]
+
+units
+    DurationUnit = DurationUnit
+
+types
+    # Instant declarations can be reused as Interval starts_at anchors.
+    StartOfWeek = Instant(day_of_week=Monday)
+
+    Midnight = Interval(starts_at=Instant(hour=0, minute=0, second=0))
+
+measures
+    Daily = Interval(starts_at=Midnight, unit=DurationUnit)
+    Weekly = Interval(starts_at=StartOfWeek, unit=DurationUnit)

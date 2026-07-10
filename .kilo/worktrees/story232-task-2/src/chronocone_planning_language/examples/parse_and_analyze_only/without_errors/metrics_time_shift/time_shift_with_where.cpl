@@ -1,0 +1,17 @@
+# Metric input with both where clause and backward time shift.
+
+concepts
+    Region = [Values[North, South]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+measures
+    sales = Number(unit=Unit)
+    Daily = Interval(unit=Day)
+
+metrics
+    adjusted_sales
+        inputs
+            metric sales where aspect=actuals backward(week_number)
+        calculate
+            0

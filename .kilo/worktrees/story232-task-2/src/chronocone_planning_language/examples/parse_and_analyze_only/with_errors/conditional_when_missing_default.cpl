@@ -1,0 +1,37 @@
+# Error: When without Default
+# This file demonstrates a when block without a default clause. The
+# whenExpr grammar rule requires a defaultClause, so a when block
+# without default is a parse error.
+#
+# Expected error: Parse error — default clause is required in when expressions
+
+concepts
+    Region = [Values[North, South]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+units
+    Region = Region
+    Unit = Unit
+
+types
+    NumberType = Number()
+
+measures
+    input_a = NumberType(unit=Unit)
+    input_b = NumberType(unit=Unit)
+    Daily = Interval(unit=Day)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype input_a
+    data_b = dimensions [Region] grain Daily celltype input_b
+
+metrics
+    no_default_metric
+        inputs
+            metric input_a
+            metric input_b
+        calculate
+            when
+                input_a > input_b =>
+                    input_a + input_b end when

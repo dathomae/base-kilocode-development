@@ -1,0 +1,9 @@
+# Multi-Concept Aggregator Example
+# Demonstrates aggregation from multiple concepts to a subset.
+
+concepts
+    Country = [Values[USA, Canada]]
+    Product = [Values[A, B]]
+
+aggregators
+    from [Country, Product] to [Product] = sum(Country)

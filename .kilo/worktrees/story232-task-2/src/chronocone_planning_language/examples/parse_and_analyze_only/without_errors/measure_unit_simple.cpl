@@ -1,0 +1,12 @@
+concepts
+	Length = [Values[Meter]]
+	Speed = [Values[Fast]]
+
+units
+	Length = Length
+
+types
+	Number = Number()
+
+measures
+	Speed = Number(unit=Length)

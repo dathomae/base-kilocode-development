@@ -1,0 +1,5 @@
+// Measure definitions with various syntax errors - should fail parsing
+measures
+	Distance == Length(unit=Meter)
+	123Invalid = Mass(unit=Kilogram)
+	Price unit=Currency(unit=Dollar)

@@ -1,0 +1,9 @@
+{
+  "xlsx_file": "expected_output.xlsx",
+  "key_columns": [
+    "Product"
+  ],
+  "input_columns": [],
+  "metric_column": 1,
+  "value_column": 2
+}

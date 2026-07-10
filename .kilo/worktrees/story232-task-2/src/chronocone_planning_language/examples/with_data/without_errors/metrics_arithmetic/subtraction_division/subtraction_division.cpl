@@ -1,0 +1,18 @@
+# Subtraction and division with precedence: / binds tighter than -.
+# Demonstrates operator precedence with three inputs.
+# Requires core.cpl for shared infrastructure (input_a, input_b).
+# Defines additional measure c and connector data_c.
+
+connectors
+    input_a = dimensions [Region] grain Daily celltype packages
+    input_b = dimensions [Region] grain Daily celltype packages
+    input_c = dimensions [Region] grain Daily celltype packages
+
+metrics
+    sub_div_metric
+        inputs
+            metric input_a
+            metric input_b
+            metric input_c
+        calculate
+            input_a - input_b / input_c

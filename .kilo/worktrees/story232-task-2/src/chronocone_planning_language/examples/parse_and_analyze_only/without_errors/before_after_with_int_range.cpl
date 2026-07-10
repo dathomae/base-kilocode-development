@@ -1,0 +1,18 @@
+# Before/After With Int Range Example
+# Before/after on a concept whose initial values are generated with Int Range plus Values anchors.
+# Demonstrates extensions inserting sentinels at both ends of an Int-Range-based concept.
+# From Story125/Story126/Story201: CPL Concepts Parser/Analyzer - Before/After
+#
+# Note: Integer-valued anchors (e.g., `before 1`) require INTEGER in the identifier rule.
+# Use Values-based anchors around Int Range values until that support is added.
+
+concepts
+	# Base concept with Int Range numeric values plus string anchor points
+	Scale=[Values[Start], Int[1, 5, 1], Values[End]]
+
+concepts
+	# Insert a priority flag before the anchor Start
+	Scale=[Values[Priority]] before Start
+
+	# Insert a final flag after the anchor End
+	Scale=[Values[Final]] after End

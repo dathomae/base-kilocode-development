@@ -1,0 +1,37 @@
+# Error: Name collision between concept and metric in short form metric
+# This file demonstrates a name collision error where the identifier 'Price'
+# matches both a concept and a metric. When a short form metric (collision_metric)
+# references 'Price', the analyzer cannot determine which entity is intended
+# and produces a collision error.
+#
+# Expected error: collision or ambiguity involving 'Price'
+
+concepts
+    Price = [Values[Low, High]]
+    Region = [Values[North, South]]
+    Package = [Values[Each]]
+
+units
+    Region = Region
+    Package = Package
+
+types
+    Count = Number(precision=0)
+
+measures
+    packages = Count(unit=Package)
+    Daily = Interval(unit=Day)
+
+connectors
+    input_a = dimensions [Region] grain Daily celltype packages
+
+metrics
+    # Long form metric named 'Price' — deliberately collides with concept 'Price'
+    Price
+        inputs
+            metric packages
+        calculate
+            10
+
+    # ERROR: 'Price' is ambiguous — it matches both concept 'Price' and metric 'Price'
+    collision_metric = Price

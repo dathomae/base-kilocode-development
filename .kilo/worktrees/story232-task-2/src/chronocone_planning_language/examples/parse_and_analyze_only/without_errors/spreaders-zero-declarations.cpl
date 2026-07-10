@@ -1,0 +1,7 @@
+# Empty Spreaders Section Example
+# Demonstrates a spreaders section with no declarations.
+
+concepts
+    Country = [Values[USA]]
+
+spreaders

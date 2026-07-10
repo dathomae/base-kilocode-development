@@ -1,0 +1,14 @@
+{
+  "xlsx_file": "expected_output.xlsx",
+  "key_columns": [
+    "Region",
+    "Daily"
+  ],
+  "input_columns": [
+    "input_a",
+    "input_b",
+    "input_c"
+  ],
+  "metric_column": 5,
+  "value_column": 6
+}

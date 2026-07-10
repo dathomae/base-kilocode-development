@@ -1,0 +1,3 @@
+types
+    # Non-integer value for String minimum constraint - should fail analysis
+    BadMin = String(minimum=abc)

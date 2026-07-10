@@ -1,0 +1,25 @@
+# Conditional Nested Arithmetic Example
+# This file demonstrates conditional branches with nested arithmetic expressions.
+# Positive values trigger first branch, negative values trigger second branch, zero triggers else.
+
+measures
+    input_a = Count(unit=Package)
+    input_b = Count(unit=Package)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype input_a
+    data_b = dimensions [Region] grain Daily celltype input_b
+
+metrics
+    conditional_nested_arithmetic_metric
+        inputs
+            metric data_a
+            metric data_b
+        calculate
+            if data_a > 0
+                (data_a + data_b) * (data_a - data_b) / 2
+            else if data_a < 0
+                data_a * data_b / 3
+            else
+                data_b * data_b / 4
+            end if

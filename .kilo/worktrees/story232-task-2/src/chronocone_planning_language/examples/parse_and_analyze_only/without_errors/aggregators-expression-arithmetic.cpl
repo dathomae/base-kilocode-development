@@ -1,0 +1,10 @@
+# Arithmetic Expression Aggregator Example
+# Demonstrates an aggregator using a simple expression (concept reference)
+# as an alternative to a function call.
+
+concepts
+    Country = [Values[USA, Canada]]
+    Product = [Values[A, B]]
+
+aggregators
+    from [Country, Product] to [Product] = Country

@@ -1,0 +1,8 @@
+# Basic Concepts Example
+# This file demonstrates simple concept definitions using the Values generator
+# From ERO001: Concepts Incremental Implementation - Increment 1
+
+concepts
+    # Simple concept with multiple values
+    Country=[Values[USA, Canada, Mexico]]
+       Region=[Values[North, South, East, West]]

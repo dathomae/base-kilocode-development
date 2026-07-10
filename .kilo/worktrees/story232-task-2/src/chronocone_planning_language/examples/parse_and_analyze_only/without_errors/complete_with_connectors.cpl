@@ -1,0 +1,57 @@
+# Complete CPL Example with Connectors
+# This file demonstrates a complete CPL specification including concepts, types,
+# units, measures, and connectors.
+
+concepts
+    # Product categories with values
+    Product = [Values[Widget, Gadget, Thingy]]
+
+    # Geographic regions
+    Region = [Values[NorthAmerica, Europe, Asia]]
+
+    # Customer segments
+    Segment = [Values[Enterprise, SMB, Consumer]]
+
+    # Time dimension
+    Month = [Values[Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]]
+
+    # Currency values for unit reference
+    Currency = [Values[USD, EUR, GBP]]
+
+    # Count values for unit reference
+    Count = [Values[Each, Pair, Dozen]]
+
+types
+    # Currency type with 2 decimal precision
+    Currency = Number(precision=2)
+    
+    # Count type for integer values
+    Count = Number(precision=0)
+
+units
+    # Dollar unit based on Currency type
+    Dollar = Currency
+    
+    # Unit for counting items
+    Unit = Count
+    
+    # Month unit based on Month concept
+    Month = Month
+
+measures
+    # Revenue measure in dollars
+    Revenue = Currency(unit=Dollar)
+    
+    # Quantity measure as a count
+    Quantity = Count(unit=Unit)
+    Monthly = Interval(unit=Month)
+
+connectors
+    # Sales forecast connector with multiple dimensions
+    sales_forecast = dimensions [Product, Region, Segment, Month] grain Monthly celltype Revenue
+    
+    # Sales actuals connector (same dimensions as forecast)
+    sales_actuals = dimensions [Product, Region, Segment, Month] grain Monthly celltype Revenue
+    
+    # Inventory levels connector
+    inventory_levels = dimensions [Product, Region] grain Monthly celltype Quantity

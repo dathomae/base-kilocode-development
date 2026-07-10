@@ -1,0 +1,20 @@
+# Core infrastructure for multi-metric examples.
+# Defines shared concepts, units, types, and measures used across
+# multiple multi-metric dependency chain examples.
+
+concepts
+    Region = [Values[North, South]]
+    Product = [Values[Widget, Gadget]]
+    Day = [Values[Monday]]
+
+units
+    Region = Region
+    Product = Product
+    Day = Day
+
+types
+    Count = Number(precision=0)
+
+measures
+    revenue = Number(unit=Product)
+    SingleDay = Interval(unit=Day)

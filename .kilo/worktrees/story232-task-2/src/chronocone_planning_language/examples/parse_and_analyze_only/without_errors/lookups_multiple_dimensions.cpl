@@ -1,0 +1,15 @@
+# Multiple Dimensions Lookup Example
+# This file demonstrates a lookup with multiple dimensions.
+
+concepts
+    Store = [Values[StoreA, StoreB]]
+    Product = [Values[Widget, Gadget]]
+    Region = [Values[North, South]]
+
+measures
+    SalesMeasure = Number(unit=Dollar)
+
+lookups
+    ProductLookup
+        dimensions[Store, Product, Region]
+        celltype SalesMeasure

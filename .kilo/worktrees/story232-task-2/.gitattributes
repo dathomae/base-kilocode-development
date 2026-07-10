@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+
+# Mark ANTLR-generated files as generated to exclude from PR diffs
+src/chronocone_planning_language/src/main/go/parser/antlr/** linguist-generated=true

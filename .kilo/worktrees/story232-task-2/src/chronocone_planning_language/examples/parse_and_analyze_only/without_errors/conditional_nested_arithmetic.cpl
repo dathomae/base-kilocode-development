@@ -1,0 +1,39 @@
+# Conditional Nested Arithmetic
+# This file demonstrates that conditional branches can contain arbitrarily complex
+# arithmetic expressions including parenthesized sub-expressions with multiple operators.
+
+concepts
+    Region = [Values[North, South]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+units
+    Region = Region
+    Unit = Unit
+    Day = Day
+
+types
+    NumberType = Number()
+
+measures
+    input_a = NumberType(unit=Unit)
+    input_b = NumberType(unit=Unit)
+    Daily = Interval(unit=Day)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype input_a
+    data_b = dimensions [Region] grain Daily celltype input_b
+
+metrics
+    complex_conditional_metric
+        inputs
+            metric input_a
+            metric input_b
+        calculate
+            if input_a > 0
+                (input_a + input_b) * (input_a - input_b)
+            else if input_a < 0
+                input_a * input_b / 2
+            else
+                input_b * input_b
+            end if

@@ -1,0 +1,23 @@
+# Conditional Unary Negation Example
+# Demonstrates 'not' used in conditional expressions to evaluate
+# whether input_a is not greater than input_b, then applies unary negation.
+
+measures
+    data_a = Count(unit=Package)
+    data_b = Count(unit=Package)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype data_a
+    data_b = dimensions [Region] grain Daily celltype data_b
+
+metrics
+    unary_metric
+        inputs
+            metric data_a
+            metric data_b
+        calculate
+            if not (data_a > data_b)
+                -data_a
+            else
+                -(data_a + data_b)
+            end if

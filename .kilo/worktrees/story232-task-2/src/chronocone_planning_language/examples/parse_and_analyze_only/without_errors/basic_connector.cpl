@@ -1,0 +1,17 @@
+# Basic Connector Example
+# This file demonstrates a simple connector definition with a single dimension.
+# Connectors define external data sources that can be read by the synthesized program.
+
+concepts
+    # Define a simple concept for regions
+    Region = [Values[North, South, East, West]]
+
+measures
+    # Define a measure for sales amounts
+    SalesAmount = Number(unit=Dollar)
+    Daily = Interval(unit=Day)
+
+connectors
+    # A simple connector with one dimension
+    # This connector expects data with a "Region" column and "SalesAmount" values
+    regional_sales = dimensions [Region] grain Daily celltype SalesAmount

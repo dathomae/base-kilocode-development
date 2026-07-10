@@ -1,0 +1,8 @@
+# Conditional Basic Example
+# Minimal valid conditional specification mapping parent values to child concept values.
+# From Story121/Story122: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Country=[Values[USA, Canada, Mexico]]
+	# Define State values for USA
+	Country[USA] => State=[Values[NY, CA, TX]]

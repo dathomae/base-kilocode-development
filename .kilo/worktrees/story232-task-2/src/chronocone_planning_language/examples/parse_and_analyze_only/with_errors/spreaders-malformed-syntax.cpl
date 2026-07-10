@@ -1,0 +1,8 @@
+# Malformed Syntax Error Example
+# A spreader with mismatched brackets, missing close bracket, and missing close paren.
+
+concepts
+    Country = [Values[USA]]
+
+spreaders
+    from [Country to [Country] = sum(Country

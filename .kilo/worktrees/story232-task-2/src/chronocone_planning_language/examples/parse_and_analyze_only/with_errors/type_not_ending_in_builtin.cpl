@@ -1,0 +1,3 @@
+types
+    CustomBase = UnknownBuiltin()
+    OrphanType = CustomBase(precision=2)

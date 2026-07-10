@@ -1,0 +1,17 @@
+# Before/After Mixed Generators Example
+# Initial definition uses multiple generators (Values + Int Range); extensions add more values with before/after.
+# From Story125/Story126/Story201: CPL Concepts Parser/Analyzer - Before/After
+#
+# Note: Integer-valued anchors (e.g., `before 10`) require INTEGER in the identifier rule.
+# Use Values-based anchors around Int Range values until that support is added.
+
+concepts
+	# Base concept with mixed generators: Values anchors + Int Range numeric values
+	Status=[Values[Start], Int[10, 50, 10], Values[End]]
+
+concepts
+	# Insert a priority flag before the first anchor value
+	Status=[Values[Priority]] before Start
+
+	# Insert a final flag after the last anchor value
+	Status=[Values[Final]] after End

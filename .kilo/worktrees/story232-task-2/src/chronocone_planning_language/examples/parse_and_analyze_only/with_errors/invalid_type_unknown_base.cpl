@@ -1,0 +1,3 @@
+// Type definition with invalid/unknown base type - should fail parsing
+types
+    Currency = UnsupportedType(precision=2)

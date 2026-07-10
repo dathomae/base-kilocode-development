@@ -1,0 +1,23 @@
+# Multi-Dimension Connector Example
+# This file demonstrates a connector with multiple dimensions.
+# Multiple dimensions allow for more complex data structures.
+
+concepts
+    # Product categories
+    Product = [Values[Widget, Gadget, Thingy]]
+    
+    # Geographic regions
+    Region = [Values[NorthAmerica, Europe, Asia]]
+    
+    # Time periods
+    Quarter = [Values[Q1, Q2, Q3, Q4]]
+
+measures
+    # Revenue measure for sales data
+    Revenue = Number(unit=Dollar)
+    Quarterly = Interval(unit=Quarter)
+
+connectors
+    # A connector with multiple dimensions
+    # The parquet file should have columns: Product, Region, Quarter, Revenue
+    sales_data = dimensions [Product, Region, Quarter] grain Quarterly celltype Revenue

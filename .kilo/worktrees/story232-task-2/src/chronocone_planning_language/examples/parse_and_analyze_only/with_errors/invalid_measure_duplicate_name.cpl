@@ -1,0 +1,4 @@
+// Duplicate measure names - should fail analysis
+measures
+	Distance = Length(unit=Meter)
+	Distance = Mass(unit=Kilogram)

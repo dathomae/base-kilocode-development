@@ -1,0 +1,14 @@
+[
+  {
+    "Material": "Steel",
+    "Value": 1.0
+  },
+  {
+    "Material": "Aluminum",
+    "Value": 0.8
+  },
+  {
+    "Material": "Copper",
+    "Value": 0.9
+  }
+]

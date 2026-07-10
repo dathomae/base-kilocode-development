@@ -1,0 +1,40 @@
+# Conditional If/Else If/Else — Multi-Branch
+# This file demonstrates a three-branch conditional with if, else if, and else.
+# Each branch computes a different arithmetic expression.
+# The branches use comparison operators (>, <) in conditions.
+
+concepts
+    Region = [Values[North, South]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+units
+    Region = Region
+    Unit = Unit
+    Day = Day
+
+types
+    NumberType = Number()
+
+measures
+    input_a = NumberType(unit=Unit)
+    input_b = NumberType(unit=Unit)
+    Daily = Interval(unit=Day)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype input_a
+    data_b = dimensions [Region] grain Daily celltype input_b
+
+metrics
+    multi_branch_metric
+        inputs
+            metric input_a
+            metric input_b
+        calculate
+            if input_a > 10
+                input_a * 2
+            else if input_a > 5
+                input_a + input_b
+            else
+                input_b - input_a
+            end if

@@ -1,0 +1,15 @@
+# Error: Undefined dimension concept
+# This file demonstrates a lookup referencing a concept not defined in the concepts section.
+# This is a semantic error that should be caught during analysis.
+
+concepts
+    Region = [Values[North, South]]
+
+measures
+    Sales = Number(unit=Dollar)
+
+lookups
+    # ERROR: 'UndefinedConcept' is not defined in concepts section
+    SalesIndex
+        dimensions [Region, UndefinedConcept]
+        celltype Sales

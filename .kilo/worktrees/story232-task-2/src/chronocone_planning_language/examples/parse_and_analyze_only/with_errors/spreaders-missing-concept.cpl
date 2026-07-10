@@ -1,0 +1,7 @@
+# Spreader referencing missing concept
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+
+spreaders
+    from [Country] to [Country, Product] = Country / Product

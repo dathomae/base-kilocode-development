@@ -1,0 +1,9 @@
+# Conditional Concept Range Example
+# Conditional specification using Concept range generator for child concept values.
+# From Story121/Story122: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Quarter=[Values[Q1, Q2, Q3, Q4]]
+	Year=[Int[2020, 2025, 1]]
+	# First half of 2024
+	Year[2024] => FirstHalf=[Quarter[Q1..Q2]]

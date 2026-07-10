@@ -1,0 +1,10 @@
+# Concept Range Full Concept Example
+# Range covering the entire source concept from first to last value.
+# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
+
+concepts
+	# Source concept with multiple values
+	Status=[Values[Active, Inactive, Pending, Archived]]
+
+	# Concept Range spanning the entire source from first to last value
+	AllStatuses=[Status[Active..Archived]]

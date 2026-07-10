@@ -1,0 +1,16 @@
+concepts
+	Mass = [Values[Kilogram]]
+	Length = [Values[Meter]]
+	Time = [Values[Second]]
+	Momentum = [Values[Default]]
+
+units
+	Mass = Mass
+	Length = Length
+	Time = Time
+
+types
+	Number = Number()
+
+measures
+	Momentum = Number(unit=Mass*Length/Time)

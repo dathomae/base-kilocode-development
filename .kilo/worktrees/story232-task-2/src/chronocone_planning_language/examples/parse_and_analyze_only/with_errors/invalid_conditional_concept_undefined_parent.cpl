@@ -1,0 +1,6 @@
+# Conditional Concept — Undefined Parent
+# Analyzer error: conditional specification references a parent concept that is not defined in the compilation unit.
+# From Story121/Story122/Story209: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Country[USA] => State=[Values[NY, CA, TX]]

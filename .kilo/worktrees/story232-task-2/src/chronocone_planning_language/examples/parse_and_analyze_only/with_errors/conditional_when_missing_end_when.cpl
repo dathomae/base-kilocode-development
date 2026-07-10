@@ -1,0 +1,37 @@
+# Error: Missing end when
+# This file demonstrates a when block that is never closed with end when,
+# causing a parse error.
+#
+# Expected error: Parse error — missing end when
+
+concepts
+    Region = [Values[North, South]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+units
+    Region = Region
+    Unit = Unit
+
+types
+    NumberType = Number()
+
+measures
+    input_a = NumberType(unit=Unit)
+    input_b = NumberType(unit=Unit)
+    Daily = Interval(unit=Day)
+
+connectors
+    data_a = dimensions [Region] grain Daily celltype input_a
+    data_b = dimensions [Region] grain Daily celltype input_b
+
+metrics
+    no_end_when_metric
+        inputs
+            metric input_a
+            metric input_b
+        calculate
+            when
+                input_a > 0 =>
+                    input_a * 2 default =>
+                        0

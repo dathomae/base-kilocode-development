@@ -1,0 +1,20 @@
+# Multiple Units Sections Example
+# This file demonstrates multiple units sections in a single CPL file.
+# Each section creates its own UnitsScope symbol table.
+# From Story163: CPL Units and Measures Multiple Sections
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+    Mass = [Values[kg, lb, oz]]
+    Distance = [Values[m, km, mi]]
+    Duration = [Values[s, min, hr]]
+
+units
+    # First section defines currency and weight units
+    Currency = Country
+    Weight = Mass
+
+units
+    # Second section defines length and time units
+    Length = Distance
+    Time = Duration

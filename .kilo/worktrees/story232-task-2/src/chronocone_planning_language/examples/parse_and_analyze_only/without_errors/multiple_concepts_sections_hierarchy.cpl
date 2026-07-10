@@ -1,0 +1,14 @@
+# Multiple Concepts Sections with Hierarchy Example
+# This file demonstrates multiple concepts sections, each containing hierarchical concepts.
+# Hierarchy within each section is preserved across multiple sections.
+# From Story119: CPL Concepts Parser - Multi-Section
+
+concepts
+    # First section with parent-child hierarchy
+    Country=[Values[USA, Canada]]
+        Region=[Values[North, South]]
+
+concepts
+    # Second section with its own hierarchy
+    Product=[Values[Widget, Gadget]]
+        Variant=[Values[A, B, C]]

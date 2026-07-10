@@ -1,0 +1,19 @@
+# Multiple Lookup Declarations Example
+# This file demonstrates multiple lookup definitions in the same section.
+
+concepts
+    Store = [Values[StoreA, StoreB]]
+    Product = [Values[Widget, Gadget]]
+    Region = [Values[North, South]]
+
+measures
+    RevenueMeasure = Number(unit=Dollar)
+    CostMeasure = Number(unit=Dollar)
+
+lookups
+    SalesLookup
+        dimensions[Store]
+        celltype RevenueMeasure
+    CostLookup
+        dimensions[Product, Region]
+        celltype CostMeasure

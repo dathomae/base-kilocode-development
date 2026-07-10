@@ -1,0 +1,14 @@
+concepts
+	Length = [Values[Meter]]
+	Time = [Values[Second]]
+	Speed = [Values[Fast]]
+
+units
+	Length = Length
+	Time = Time
+
+types
+	Number = Number()
+
+measures
+	Speed = Number(unit=Length/Time)

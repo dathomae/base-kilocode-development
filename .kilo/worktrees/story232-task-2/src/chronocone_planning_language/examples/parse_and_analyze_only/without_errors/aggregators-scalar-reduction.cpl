@@ -1,0 +1,10 @@
+# Scalar Reduction Aggregator Example
+# Demonstrates aggregation from a concept to a scalar (empty target).
+# Country/Country/Country produces {Denominator: [Country]},
+# so from {Numerator: [Country]} * expression = unitless = to [].
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+
+aggregators
+    from [Country] to [] = Country/Country/Country

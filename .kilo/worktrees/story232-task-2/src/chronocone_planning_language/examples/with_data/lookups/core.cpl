@@ -1,0 +1,16 @@
+# Core infrastructure for lookups_basic example.
+# Defines Product concept and CategoryLabel measure for lookup demonstration.
+
+concepts
+    Product = [Values[WidgetA, WidgetB, WidgetC]]
+    Material = [Values[Steel, Aluminum, Copper]]
+    Strength = [Values[PSI]]
+
+units
+    Strength=Strength
+
+types
+    Strength = Number()
+
+measures
+    Strength = Strength(unit=Strength)

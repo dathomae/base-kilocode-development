@@ -1,0 +1,10 @@
+# Invalid Concept Range - Start After End
+# Start value appears after end value in the source concept's ordering.
+# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
+
+concepts
+	# Source concept with ordered values
+	Source=[Values[A, B, C]]
+
+	# Subset has start value C which comes after end value A in Source
+	Subset=[Source[C..A]]

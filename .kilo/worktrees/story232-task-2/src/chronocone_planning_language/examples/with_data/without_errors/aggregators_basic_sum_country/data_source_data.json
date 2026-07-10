@@ -1,0 +1,6 @@
+[
+  {"Country":"USA","Product":"widget","Daily":"Monday","Value":100.0},
+  {"Country":"USA","Product":"gadget","Daily":"Monday","Value":200.0},
+  {"Country":"Canada","Product":"widget","Daily":"Monday","Value":300.0},
+  {"Country":"Canada","Product":"gadget","Daily":"Monday","Value":400.0}
+]

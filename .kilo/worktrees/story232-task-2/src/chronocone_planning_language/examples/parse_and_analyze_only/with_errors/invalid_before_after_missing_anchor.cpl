@@ -1,0 +1,10 @@
+# Invalid Before/After - Missing Anchor Value
+# The anchor value referenced by `before` does not exist in the target concept.
+# From Story125/Story126/Story201: CPL Concepts Parser/Analyzer - Before/After
+
+concepts
+	Priority=[Values[Low, Medium, High]]
+
+concepts
+	# Error: MissingValue does not exist in Priority
+	Priority=[Values[Critical]] before MissingValue

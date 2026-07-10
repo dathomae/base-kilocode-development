@@ -1,0 +1,14 @@
+# Error: Missing comma between dimensions
+# This file demonstrates a connector with dimensions missing a comma separator.
+
+concepts
+    Region = [Values[North, South]]
+    Product = [Values[Widget, Gadget]]
+
+measures
+    Sales = Number(unit=Dollar)
+    Day = Interval(unit=Day)
+
+connectors
+    # ERROR: Missing comma between Region and Product
+    sales_data = dimensions [Region Product] grain Day celltype Sales

@@ -1,0 +1,32 @@
+{
+  "connectors": [
+    {
+      "connector": "monthly_data",
+      "data_format": "parquet",
+      "driver": "file",
+      "driver_parameters": [
+        {
+          "path": "monthly_data.parquet"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "metric": "total_count",
+      "dimensions": [
+        "Month",
+        "DayInMonth"
+      ],
+      "celltype": "data_count",
+      "grain": [
+        "Monthly"
+      ]
+    }
+  ],
+  "architecture": {
+    "cpu_cores": 4,
+    "cache_size": 8388608,
+    "main_memory_size": 8589934592
+  }
+}

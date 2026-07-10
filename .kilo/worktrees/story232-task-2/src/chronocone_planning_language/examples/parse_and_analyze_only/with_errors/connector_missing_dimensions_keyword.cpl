@@ -1,0 +1,14 @@
+# Error: Missing 'dimensions' keyword
+# This file demonstrates a connector declaration missing the 'dimensions' keyword.
+# This should produce a parse error.
+
+concepts
+    Region = [Values[North, South]]
+
+measures
+    Sales = Number(unit=Dollar)
+    Day = Interval(unit=Day)
+
+connectors
+    # ERROR: Missing 'dimensions' keyword before the bracket
+    sales_data = [Region] grain Day celltype Sales

@@ -1,0 +1,18 @@
+# Duplicate measure names across sections - should fail analysis
+# The same measure name (Distance) is defined in two different measures sections.
+# Parsing succeeds, but analysis detects the duplicate.
+# From Story163: CPL Units and Measures Multiple Sections
+
+concepts
+    Length = [Values[m, km, mi]]
+    Mass = [Values[kg, lb, oz]]
+
+units
+    Meter = Length
+    Kilogram = Mass
+
+measures
+    Distance = LengthType(unit=Meter)
+
+measures
+    Distance = MassType(unit=Kilogram)

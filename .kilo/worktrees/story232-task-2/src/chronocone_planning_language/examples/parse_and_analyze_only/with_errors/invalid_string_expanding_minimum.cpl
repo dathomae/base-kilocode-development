@@ -1,0 +1,4 @@
+types
+    # Expanding inherited minimum constraint in String derivation - should fail analysis
+    BaseString = String(minimum=10)
+    LooseString = BaseString(minimum=5)

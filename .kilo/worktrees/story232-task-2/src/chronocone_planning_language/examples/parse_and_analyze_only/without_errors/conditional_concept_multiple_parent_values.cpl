@@ -1,0 +1,12 @@
+# Conditional Multiple Parent Values Example
+# Multiple parent values each mapping to different child concept value sets.
+# From Story121/Story122: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Country=[Values[USA, Canada, Mexico]]
+	# US regions
+	Country[USA] => Region=[Values[North, South, East, West]]
+	# Canadian provinces
+	Country[Canada] => Province=[Values[Ontario, Quebec, BC]]
+	# Mexican states
+	Country[Mexico] => State=[Values[Jalisco, Oaxaca, Yucatan]]

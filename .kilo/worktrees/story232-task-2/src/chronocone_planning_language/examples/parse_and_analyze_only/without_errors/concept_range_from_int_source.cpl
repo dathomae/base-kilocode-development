@@ -1,0 +1,10 @@
+# Concept Range From Int Source Example
+# Concept Range where the source concept values are ordered sequentially.
+# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
+
+concepts
+	# Source concept with ordered month names
+	Month=[Values[Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]]
+
+	# Concept Range extracting the first semester from Month
+	FirstSemester=[Month[Jan..Jun]]

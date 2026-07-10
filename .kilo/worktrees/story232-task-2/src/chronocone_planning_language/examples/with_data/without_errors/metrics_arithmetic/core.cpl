@@ -1,0 +1,22 @@
+# Core infrastructure for metrics_arithmetic examples.
+# Defines two connectors (data_a, data_b) with identical shape
+# so arithmetic metrics can operate on their cell values.
+# This file is passed to the compiler alongside each example file.
+
+# Daily measure is provided by standard_definitions/standard_measures.cpl
+# (Daily = Interval(starts_at=Midnight, unit=DayOfWeek))
+# DayOfWeek concept and unit are provided by standard definitions.
+concepts
+    Region = [Values[North, South]]
+    Package = [Values[Each]]
+
+units
+    Package=Package
+    Region=Region
+
+types
+    Count = Number(precision=0)
+
+measures
+    packages = Count(unit=Package)
+    

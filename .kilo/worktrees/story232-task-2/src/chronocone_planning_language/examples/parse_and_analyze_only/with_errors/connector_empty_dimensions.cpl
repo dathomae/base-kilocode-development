@@ -1,0 +1,11 @@
+# Error: Empty dimensions list
+# This file demonstrates a connector with an empty dimensions list.
+# The grammar requires at least one dimension identifier.
+
+measures
+    Sales = Number(unit=Dollar)
+    Day = Interval(unit=Day)
+
+connectors
+    # ERROR: Empty dimensions list []
+    sales_data = dimensions [] grain Day celltype Sales

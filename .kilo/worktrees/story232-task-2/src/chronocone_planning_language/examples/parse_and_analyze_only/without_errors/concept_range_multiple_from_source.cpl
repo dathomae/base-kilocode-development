@@ -1,0 +1,16 @@
+# Concept Range Multiple From Source Example
+# Multiple concepts extracting different ranges from the same source concept.
+# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
+
+concepts
+	# Source concept with four values
+	Quarter=[Values[Q1, Q2, Q3, Q4]]
+
+	# First half of the year
+	FirstHalf=[Quarter[Q1..Q2]]
+
+	# Second half of the year
+	SecondHalf=[Quarter[Q3..Q4]]
+
+	# Single quarter range (start equals end)
+	FirstQuarterOnly=[Quarter[Q1..Q1]]

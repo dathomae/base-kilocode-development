@@ -1,0 +1,18 @@
+# Basic time-shifted metric input.
+# Metric A references metric B with backward(year) time shift.
+
+concepts
+    Region = [Values[North, South]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+measures
+    metric_b = Number(unit=Unit)
+    Daily = Interval(unit=Day)
+
+metrics
+    metric_a
+        inputs
+            metric metric_b backward(year)
+        calculate
+            0

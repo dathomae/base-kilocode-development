@@ -1,0 +1,2 @@
+// Empty measures section with no definitions - should fail parsing
+measures

@@ -1,0 +1,21 @@
+# An example of a basic measures declaration. 
+# As the example illustrates, while it is possible that concepts, types, units and measure have
+# different names, it is allowable for their names to be the same since the semantics of CPL
+# have been defined so that the use of a name is always unambiguous in terms of whether the
+# reference is to a concept, a type, a unit or a measure.
+
+concepts
+    Currency = [Values[USD, Euro, Yen]]
+
+types
+    Currency = Number(precision=2)
+    CurrencyType = Number(precision=2)
+
+units
+    CurrencyUnit = Currency
+    Currency = Currency
+    
+
+measures
+    CurrencyMeasure = CurrencyType(unit=CurrencyUnit)
+    Currency = Currency(unit=Currency)

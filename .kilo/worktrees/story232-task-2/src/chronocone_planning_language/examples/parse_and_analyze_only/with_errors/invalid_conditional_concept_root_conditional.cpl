@@ -1,0 +1,7 @@
+# Conditional Concept — Invalid Concept Range Start Value
+# Analyzer error: conditional specification uses a concept range with a start value that does not exist in the referenced concept.
+# From Story121/Story122/Story209: CPL Concepts Parser/Analyzer — Conditional
+
+concepts
+	Country=[Values[USA, Canada]]
+	Country[USA] => State=[Country[Mexico..Canada]]

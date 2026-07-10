@@ -1,0 +1,17 @@
+# Error: Duplicate connector name
+# This file demonstrates duplicate connector names.
+# This is a semantic error that should be caught during analysis.
+
+concepts
+    Region = [Values[North, South]]
+
+measures
+    Sales = Number(unit=Dollar)
+    Day = Interval(unit=Day)
+
+connectors
+    # First connector definition
+    sales_data = dimensions [Region] grain Day celltype Sales
+    
+    # ERROR: Duplicate connector name 'sales_data'
+    sales_data = dimensions [Region] grain Day celltype Sales

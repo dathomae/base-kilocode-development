@@ -1,0 +1,59 @@
+
+
+I'm reading your concept doc now:
+
+>Line 23-27: The Conceptual Structure of ChronoCone Plans
+
+This section seems a bit rigid compared to business reality. I think business reality is a bit more iterative even though the system itself has to do exactly what you said: reduce each iteration to a DAG for execution of that iteration. I'm probably just nitpicking.
+
+
+> Line 43: there will be restrictions on which type versions can be used with each plan OR ChronoCone will need to define a migration strategy for older plans to migrate to newer types.
+
+Everything is versioned. The system can reproduce an old plan (source control + versioned metadata) but evolution is a process allowed and facilitated by but not controlled by the system. So no migrating to new formats, unless somebody wants to create "today's new look at 2024's plan" but I can't see why someone would do that.
+
+> Lines 48-59: Built-in Types
+
+I think this is jumping the gun a little bit; i.e., a bit too much detail for the level of abstraction in the document and for the point-in-time of the current design status. It's _mostly_ correct, so probably good for advancing system understanding to the next stage.
+
+> Line 58-59: User defined types and adapter defined types
+
+Collectively, that's the purpose of the metrics + dimensions which rely on categories and elements. It's a deceptively harder problem than described by line 58. Adapters described on line 59 are the entire set of transforms of one or more metrics into another metric.
+Doug: Adapters were meant to be entirely about interfacing with external systems
+(strictly in the ports/adapters sense), not about
+metric to metric transforms inside the system. The conceptual organization of metrics and 
+dimensions, particularly relating to time series, is, I suspect, the part of the idea that I'm a vague on yet.
+
+> Line 82: Demand forecast source connector
+
+Ideally, we want to become their demand forecaster, capacity forecaster, and demand-capacity forecast reconciler. So reading the demand forecast from an adapter is not ideal.
+Doug: Sure thing. It's a general purpose planning/forecasting system so the more
+brought in the better, but some customers are going to have systems in place
+that they're going to want to keep using even if the functionality could be
+provided by ChronoCone. I was trying to explore the ideas of building a plan where
+some of the input comes from the outside world, and in the case of the demand
+forecast dealing with a parameterized time series (i.e., a family of timeseries/curves 
+rather than a single curve).
+
+
+> Line 83: Product availability connector
+
+This makes more sense as an input for the capacity forecast that we ideally create.
+
+> Lines 95-100: customer service planning example
+
+Recognizing that this portion of the document is largely in a TODO status, I won't comment too much about it. I think it will be clarifying to specify which inputs to the final customer service plan capacity plan are from external systems and which ones are other Chronocone plans input to this plan. A huge feature is the transitive DAG of both the metrics and plans; i.e. low-level and medium-level transitivity.
+Doug: Yes, I was starting to come up with a specific example for the Retail
+forecast which would feed into the others, but haven't done anything with the
+others yet, they're just a basic placeholder at this point.
+> Line 135
+
+I love the call-out. In fact, Monte Carlo is used frequently; however, it's perceived as overly complex by the organizations that use it. That's almost certainly related to the presentation (UI and training) that you also called out. I agree with the conclusions of "have AI explain it" and "use uncertainty to call attention to greatest risks" because humans are notoriously terrible at risk assessment: long-tail, extreme risks are overweighted while fat-tail, nuance risks are underweighted (your soft rain example). Both kinds of risk are usually just ignored, which might be the right answer as long as we have a way to capture what happened so that it does not impact future baseline forecasts.
+
+> Lines 162-169: DCFG representation
+
+Is this just a more specific way of talking about transform execution DAGs? I love the GPU element (as demonstrated by my 2013 Kill Excel Now presentation) for this purpose; however, it was not necessary within Amazon for the 50k plans per day. Of course, that was not Monte Carlo modeling of specific plans which could inflate that number to 500 million to 5 billion plans per day.
+Doug: Yes, thinking about the specifics of how they'd be represented taking into
+consideration what we'd want to do with them (which in this case means
+being able to capture business logic not just straight formulas).  Also, touching on the thought
+that this may be an area where we don't really need to come up with anything
+new, just use the existing techniques.

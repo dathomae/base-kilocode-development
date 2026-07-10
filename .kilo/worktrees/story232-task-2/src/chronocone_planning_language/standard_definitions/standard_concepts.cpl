@@ -1,0 +1,27 @@
+# The concepts defined in this file MUST exist in some form. These are defined in a .cpl file,
+# in a full up production version these will likely be read from the database. They're special,
+# because the analysis logic assumes that they exist with the names given here. Unlike normal
+# concepts a change in the names of the concepts and in some cases their values may required
+# corresponding changes in the analysis logic.
+
+
+concepts
+    Year = [Int[1900, 3000, 1]]
+        DayOfYear = [Int[1, 366, 1]]
+        FiscalQuarter = [Int[1, 4, 1]]
+        WeekNumber = [Int[1, 53, 1]]
+            DayOfWeek = [Values[Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]]
+        Month=[Values[January, February, March, April, May, June, July, August, September, October, November, December]]
+            DayOfMonth = [Int[1, 31, 1]]
+
+        Hour =  [Int[0, 23, 1]]
+            Minute =  [Int[0, 59, 1]]
+                 Second =  [Int[0, 59, 1]]
+
+    Duration = [Values[Second, Minute, Hour, Day]]
+       
+
+        
+            
+        
+

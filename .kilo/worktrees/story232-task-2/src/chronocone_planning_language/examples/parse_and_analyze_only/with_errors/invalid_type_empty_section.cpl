@@ -1,0 +1,2 @@
+// Empty types section with no type definitions - should fail parsing
+types

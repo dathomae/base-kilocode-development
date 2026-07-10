@@ -1,0 +1,3 @@
+// Measure definition with missing equals sign - should fail parsing
+measures
+	Distance Length(unit=Meter)

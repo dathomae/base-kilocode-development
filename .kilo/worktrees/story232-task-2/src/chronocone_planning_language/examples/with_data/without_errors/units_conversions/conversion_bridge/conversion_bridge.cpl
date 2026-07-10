@@ -1,0 +1,24 @@
+# Compile-time unit type checking example.
+# The CPL compiler validates that the Kilometer -> Meter conversion exists at compile time,
+# but runtime conversion injection (emitting convertUnit calls) is not yet implemented.
+# Story232 covers the runtime conversion injection work.
+# Until then, values pass through unchanged (identity) at runtime.
+units
+    Kilometer = Length
+        conversion
+            pattern Kilometer(km) = Meter(m)
+            calculation m / 1000
+    Meter = Length
+
+measures
+    distance_km = Distance(unit=Kilometer)
+
+connectors
+    connector_a = dimensions [Region] grain SingleDay celltype distance_km
+
+metrics
+    distance_meters
+        inputs
+            metric connector_a
+        calculate
+            connector_a

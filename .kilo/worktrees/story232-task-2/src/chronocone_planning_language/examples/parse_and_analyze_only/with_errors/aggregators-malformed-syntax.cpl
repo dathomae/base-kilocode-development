@@ -1,0 +1,7 @@
+# Malformed Syntax Error Example
+
+concepts
+    Country = [Values[USA]]
+
+aggregators
+    from [Country to [Country] = sum(Country

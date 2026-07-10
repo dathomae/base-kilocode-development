@@ -1,0 +1,11 @@
+# Invalid Before/After - Duplicate Anchor Position
+# Two extensions reference the same anchor position creating ambiguity about their relative order.
+# From Story125/Story126/Story201: CPL Concepts Parser/Analyzer - Before/After
+
+concepts
+	Priority=[Values[Low, Medium, High]]
+
+concepts
+	# Both extensions insert before Low — ambiguous ordering between them
+	Priority=[Values[Critical]] before Low
+	Priority=[Values[VeryHigh]] before Low

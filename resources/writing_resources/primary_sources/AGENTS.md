@@ -1,0 +1,1 @@
+Do not read the files in this directory or add them to the context. These are here as a historical record of the original files that were used to create the context. Instead, when looking for writing advice or writing review advice read the files resources/writing_advice.md and resources/writing_review_advice.md respectively.

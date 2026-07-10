@@ -1,0 +1,8 @@
+# Scalar Spreader Example
+# Demonstrates a spreader from empty (scalar) to a single concept.
+
+concepts
+    Country = [Values[USA, Canada, Mexico]]
+
+spreaders
+    from [] to [Country] = Country / (Country * Country)

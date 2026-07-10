@@ -1,0 +1,4 @@
+lookups
+    BadLookup
+        dimensions[]
+        celltype SomeMeasure

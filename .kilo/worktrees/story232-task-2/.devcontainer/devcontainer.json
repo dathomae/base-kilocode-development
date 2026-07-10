@@ -1,0 +1,35 @@
+{
+    "name": "Chronocone Dev Container",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    // Set the remote workspace folder to use the name of the local folder
+    "workspaceFolder": "/${localWorkspaceFolderBasename}",
+    "initializeCommand": "echo LOCAL_WORKSPACE_FOLDER_NAME=${localWorkspaceFolderBasename} > .devcontainer/.env",
+    "mounts": [
+        "source=${env:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+     ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "golang.go",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "gururagavendra.local-pr-review"
+            ]
+        }
+    },
+    "forwardPorts": [
+        8080,
+        5173
+    ],
+    "portsAttributes": {
+        "8080": {
+            "label": "Go Backend API"
+        },
+        "5173": {
+            "label": "Vite Frontend"
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/post-create.sh /${localWorkspaceFolderBasename}",
+    "remoteUser": "root"
+}

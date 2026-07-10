@@ -1,0 +1,49 @@
+# Example CPL file demonstrating arithmetic metrics.
+# Two connectors (revenue_data, cost_data) feed into three arithmetic metrics:
+#   profit = revenue - cost
+#   margin_pct = (revenue - cost) / revenue * 100
+#   markup = (revenue / cost - 1) * 100
+
+concepts
+    Region = [Values[North, South, East, West]]
+    Product = [Values[Widget, Gadget, Doohickey]]
+    Year = [Values[2023, 2024]]
+
+units
+    Region=Region
+    Product=Product
+    Year=Year
+
+types
+    Currency = Number(precision=2)
+
+measures
+    revenue_amt = Number(unit=Region)
+    cost_amt = Number(unit=Region)
+    YearGrain = Interval(unit=Year)
+
+connectors
+    revenue_data = dimensions [Region, Product] grain YearGrain celltype revenue_amt
+    cost_data = dimensions [Region, Product] grain YearGrain celltype cost_amt
+
+metrics
+    profit
+        inputs
+            metric revenue_amt
+            metric cost_amt
+        calculate
+            revenue_amt - cost_amt
+
+    margin_pct
+        inputs
+            metric revenue_amt
+            metric cost_amt
+        calculate
+            (revenue_amt - cost_amt) / revenue_amt * 100
+
+    markup
+        inputs
+            metric revenue_amt
+            metric cost_amt
+        calculate
+            (revenue_amt / cost_amt - 1) * 100

@@ -1,0 +1,34 @@
+# Basic Metrics Example
+# This file demonstrates basic metric declarations with inputs and calculate clauses.
+# Metrics define calculations that can reference measures (metric inputs) and concepts (dimension inputs).
+# In Increment 1, metric-to-metric and metric-to-connector references are deferred to future increments.
+
+concepts
+    Price = [Values[Low, Medium, High]]
+    Cost = [Values[Low, Medium, High]]
+    Region = [Values[North, South, East, West]]
+    Unit = [Values[Each]]
+    Day = [Values[Monday]]
+
+measures
+    demand_forecast = Number(unit=Unit)
+    cost_forecast = Number(unit=Unit)
+    Daily = Interval(unit=Day)
+
+connectors
+    demand_data = dimensions [Region] grain Daily celltype demand_forecast
+    cost_data = dimensions [Region] grain Daily celltype cost_forecast
+
+metrics
+    revenue
+        inputs
+            metric demand_forecast
+            dimension Price
+        calculate
+            0
+    profit
+        inputs
+            metric cost_forecast
+            dimension Cost
+        calculate
+            1

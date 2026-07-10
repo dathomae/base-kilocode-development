@@ -1,0 +1,22 @@
+# Int Range Concepts Example
+# This file demonstrates concept definitions using the Int range generator.
+# From Story124: CPL Concepts Analyzer - Range
+
+concepts
+    # Month numbers using Int range with explicit step
+    Month = [Int[1, 12, 1]]
+
+    # Fiscal quarter range with explicit step
+    FiscalQuarter = [Int[1, 4, 1]]
+
+    # Even numbers from 2 to 10 using custom step
+    EvenNumber = [Int[2, 10, 2]]
+
+    # Two-parameter Int range defaults step to 1
+    SmallCount = [Int[1, 5]]
+
+    # Single-value range (start equals end)
+    Singleton = [Int[7, 7, 1]]
+
+    # Counting by fives
+    Fives = [Int[0, 20, 5]]
