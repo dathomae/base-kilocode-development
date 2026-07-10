@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl wget git build-essential util-linux \
     python3.12 python3.12-venv python3.12-dev \
-    ca-certificates vim emacs-nox jq \
+    ca-certificates vim emacs-nox jq libpq-dev \
     iputils-ping dnsutils net-tools traceroute netcat-openbsd iproute2 tcpdump nmap openssh-client xxd \
     && rm -rf /var/lib/apt/lists/*
 
