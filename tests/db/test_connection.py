@@ -1,8 +1,6 @@
 """Tests for database connection module."""
 
-import logging
 import os
-from contextlib import contextmanager
 from pathlib import Path
 from unittest.mock import MagicMock, mock_open, patch
 
@@ -63,10 +61,38 @@ class TestGetConnection:
             del env_vars[missing_var]
 
             with patch.dict(os.environ, env_vars, clear=True):
-                with pytest.raises(ValueError) as exc_info:
-                    get_connection()
+                with patch("prediction_markets.db.logger") as mock_logger:
+                    with pytest.raises(ValueError) as exc_info:
+                        get_connection()
 
-                assert missing_var in str(exc_info.value)
+                    assert missing_var in str(exc_info.value)
+                    mock_logger.error.assert_called_once_with(
+                        "Missing required environment variable: %s", missing_var
+                    )
+
+    @patch.dict(
+        os.environ,
+        {
+            "PREDICTION_MARKETS_DB_HOST": "testhost",
+            "PREDICTION_MARKETS_DB_PORT": "5433",
+            "PREDICTION_MARKETS_DB_USER": "testuser",
+            "PREDICTION_MARKETS_DB_PASSWORD": "s3cr3t_p@ss",
+            "PREDICTION_MARKETS_DB_NAME": "testdb",
+        },
+        clear=True,
+    )
+    @patch("prediction_markets.db.psycopg2.connect")
+    def test_get_connection_does_not_log_password(self, mock_connect):
+        """Test that get_connection never logs the database password."""
+        mock_connect.return_value = MagicMock()
+
+        with patch("prediction_markets.db.logger") as mock_logger:
+            get_connection()
+
+        for call in mock_logger.info.call_args_list:
+            assert "s3cr3t_p@ss" not in str(call), (
+                f"Password found in log call: {call}"
+            )
 
 
 class TestManagedConnection:
@@ -96,6 +122,7 @@ class TestManagedConnection:
                 raise RuntimeError("Test error")
 
         mock_conn.commit.assert_not_called()
+        mock_conn.rollback.assert_called_once()
         mock_conn.close.assert_called_once()
 
 
