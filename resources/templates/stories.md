@@ -81,19 +81,16 @@ All file paths in story tasks are relative to the project's `source_root` — th
 
 **Concrete path rules:**
 
-1. **Include the full package path within `source_root`.** Go source files in the CPL project live under `src/main/go/` within `source_root` (`src/chronocone_planning_language`). Every Go file path must include this prefix:
-   - ✅ `src/main/go/analysis/foo.go`
-   - ❌ `analysis/foo.go`
+1. **Include the full path within `source_root`.** File paths in task descriptions must include the complete directory structure from `source_root` down. This ensures sub-agents can locate files without ambiguity regardless of project layout.
+   - ✅ `src/packages/utils/helper.py` (full path from source_root)
+   - ❌ `utils/helper.py` (ambiguous)
 
-2. **Go commands use fully-qualified package paths from `source_root`:**
-   - ✅ `go test ./src/main/go/analysis/...`
-   - ❌ `go test ./analysis/...`
-   - ✅ `go build ./src/main/go/...`
+2. **Commands run from `source_root`.** The sub-agent is told to `cd <source_root>` before running build and test commands. All paths in command examples must be relative to `source_root`.
+   - ✅ `cd src && go test ./packages/utils/...`
+   - ❌ `go test ./utils/...`
 
-3. **All commands run from `source_root`.** The sub-agent is told to `cd <source_root> &&` before running Go commands. Do not repeat `src/main/go/` redundantly — use the path relative to `source_root`.
-
-4. **Tests that span multiple packages list each package path:**
-   - ✅ `go test ./src/main/go/parsing/... ./src/main/go/analysis/...`
+3. **Tests that span multiple packages or directories list each path explicitly:**
+   - ✅ `go test ./packages/parsing/... ./packages/analysis/...`
    - ❌ `go test ./parsing/... ./analysis/...`
 
 These conventions ensure sub-agents can locate and operate on files without ambiguity, regardless of the project's source directory structure.
@@ -258,7 +255,7 @@ All tasks below touch single files or follow established patterns. Tasks 1 and 2
 
 **Group A (Tasks 1, 2):**
 - Merge order: any order (fully disjoint files, no shared infrastructure)
-- Integration tests: `cd src/chronocone_planning_language && ./gradlew test` — verify combined workspace configuration
+- Integration tests: `cd <source_root> && <test_command>` — verify combined workspace configuration
 - Watch for conflicts in: none expected
 
 ### Task 1: Create workspace configuration — Not Started [Small]
@@ -275,6 +272,6 @@ All tasks below touch single files or follow established patterns. Tasks 1 and 2
 
 ## Notes
 
-- The backend uses Python 3.11+ with FastAPI
+- The project uses the chosen language and framework for its backend
 - This story focuses on basic setup; detailed structure is in Story002
 ```

@@ -11,6 +11,9 @@ Read additional instructions that apply to all personas from the .kilocode/rules
 
 ## Related Scripts
 
-- [`run-pytest-with-coverage.pdd.script.md`](../../../scripts/run-pytest-with-coverage.pdd.script.md) - Runs pytest with coverage reporting
-- [`start-core-service.pdd.script.md`](../../../scripts/start-core-service.pdd.script.md) - Starts the core service for development
-- [`shutdown-servers.pdd.script.md`](../../../scripts/shutdown-servers.pdd.script.md) - Shuts down running development servers
+- [`run-go-tests.pdd.script.md`](../../../scripts/run-go-tests.pdd.script.md) - Runs Go tests with coverage reporting
+- [`run-python-tests.pdd.script.md`](../../../scripts/run-python-tests.pdd.script.md) - Runs Python tests with pytest
+- [`run-java-tests.pdd.script.md`](../../../scripts/run-java-tests.pdd.script.md) - Runs Java tests via Gradle
+- [`run-kotlin-tests.pdd.script.md`](../../../scripts/run-kotlin-tests.pdd.script.md) - Runs Kotlin tests via Gradle
+- [`run-rust-tests.pdd.script.md`](../../../scripts/run-rust-tests.pdd.script.md) - Runs Rust tests via Cargo
+- [`run-c-tests.pdd.script.md`](../../../scripts/run-c-tests.pdd.script.md) - Runs C tests via Make

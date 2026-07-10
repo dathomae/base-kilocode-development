@@ -2,7 +2,7 @@
 
 This script automates the process of adding a new story to the project. It generates the next available story number by scanning existing stories in both the active and finished stories directories, creates a new story file from the template, and adds an entry to the Active Stories section in toc.md.
 
-This script is executed by the **technical-writer** agent, assisted by the **architect-for-story-planning** subagent. The technical-writer owns the story structure and prose; the architect-for-story-planning evaluates task decomposition (identifying tasks that are too large for a single sub-agent handoff), judges task sizing, and assesses parallelism opportunities based on knowledge of the codebase file structure and dependency graph. See the [stories template](chronocone/resources/templates/stories.md) for the full story format including Task Sizing, Parallel Execution, and Execution Order sections.
+This script is executed by the **technical-writer** agent, assisted by the **architect-for-story-planning** subagent. The technical-writer owns the story structure and prose; the architect-for-story-planning evaluates task decomposition (identifying tasks that are too large for a single sub-agent handoff), judges task sizing, and assesses parallelism opportunities based on knowledge of the codebase file structure and dependency graph. See the [stories template](../../resources/templates/stories.md) for the full story format including Task Sizing, Parallel Execution, and Execution Order sections.
 
 ## Parameters
 
@@ -50,10 +50,7 @@ This script is executed by the **technical-writer** agent, assisted by the **arc
     - Include the description in the Goal section
     - When generating the Tasks section, you **MUST** read and strictly adhere to the rules defined in the "Test-First Development" section of the template (i.e. applying the Logical TDD Lifecycle where tests are integrated into each task, rather than broken out as separate tasks).
      - Preserve all other template sections (References, Dependencies, Dependent Stories, Constraints, Intent, etc.)
-     - **File path convention**: All file paths in task descriptions MUST be relative to the project's `source_root` (where build/test commands run from). For CPL stories, `source_root` is `src/chronocone_planning_language`, and Go packages live under `src/main/go/` within `source_root`. Therefore:
-       - Go source file paths MUST include the `src/main/go/` prefix: e.g., `src/main/go/analysis/foo.go`, NOT `analysis/foo.go`
-       - Go test commands MUST use fully-qualified package paths from `source_root`: e.g., `go test ./src/main/go/analysis/...`, NOT `go test ./analysis/...`
-       - `go build` commands must similarly use `./src/main/go/...` prefix
+     - **File path convention**: All file paths in task descriptions MUST be relative to the project's `source_root` (the directory where build/test commands run from). The story-implementor passes `source_root` to sub-agents, and sub-agents resolve file paths as `<source_root>/<story_path>`. Task descriptions should include the full package path within `source_root` so sub-agents can locate files without ambiguity.
      - Set all task statuses to "Not Started"
     - **Task Design: Prefer Small Tasks.** When decomposing story requirements into tasks, prefer creating straightforward, narrow-scope tasks that qualify as `[Small]` (at most 2 files, additive change, one concern), PROVIDED that the decomposition is natural and does not introduce additional complexity. Specifically:
       - **Prefer small when**: A piece of work naturally fits in 1-2 files, addresses a single concern, and follows an existing pattern (e.g., adding a switch case, adding a test for an existing function, a single-file helper with its test).
@@ -66,7 +63,7 @@ This script is executed by the **technical-writer** agent, assisted by the **arc
       - The files each task is expected to touch (source + test)
       - Any intermediate verification steps within each task (compile checks or test passes that occur before the final acceptance criteria)
 
-      The architect evaluates each task against the decomposition rules defined in [architect-for-story-planning's Task Decomposition Review section](chronocone/.kilo/agent/architect-for-story-planning.md) and returns a structured analysis:
+      The architect evaluates each task against the decomposition rules defined in the project's architect-for-story-planning agent definition and returns a structured analysis:
       - For each task flagged as `too_large` or `borderline`: the architect **MUST propose the best possible alternate task breakdown**. This is not optional — the architect always attempts to find a decomposition that creates smaller, more focused tasks. Only when every potential split would violate the "do NOT decompose when" rules (creating artificial complexity, intermediate artifacts, or merge conflicts with no isolation benefit) does the architect state that the task is at its natural granularity and cannot be further decomposed.
       - If all tasks are appropriately sized: a confirmation that no changes are needed
 

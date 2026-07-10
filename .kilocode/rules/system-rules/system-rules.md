@@ -76,7 +76,7 @@ All file paths that contain an `archive` directory in them are to be **ignored**
 
 ## Design and Implementation Patterns
 
-The Chronocone system follows some specific patterns in documentation, design and implemenation. Whenever performing any coding, architecture, planning or documentation activity **Always read the patterns table[`toc.md`](../../../memory-bank/specifications/patterns/toc.md) file first**
+When performing coding, architecture, planning, or documentation activities, consult the project's specifications and patterns first via the relevant toc.md files. Always start with the `memory-bank/toc.md` master index to locate the appropriate specification or pattern document.
 
 ## Mandatory Reads
 

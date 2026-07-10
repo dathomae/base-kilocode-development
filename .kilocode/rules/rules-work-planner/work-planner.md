@@ -42,7 +42,7 @@ All plan steps have a status that is one of "Not Started", "In Progress", or "Co
 
 ## Logical TDD Lifecycle Compliance
 
-When creating coding tasks, the work-planner **MUST strictly adhere to the Logical TDD Lifecycle (BTDD)** as defined in `memory-bank/concepts.md`.
+When creating coding tasks, the work-planner **MUST strictly adhere to the Logical TDD Lifecycle** as defined in `memory-bank/concepts.md`.
 - You **MUST NOT** break tests out as separate, isolated tasks or steps (e.g. creating a separate "Write tests" task at the end of a story).
 - Instead, the test-and-implement cycle **MUST be integrated within each functional coding task**. Every coding task must naturally enforce the progression of Phase A (Structural Definition) -> Phase B (Logical Tests) -> Phase C (Implementation).
 

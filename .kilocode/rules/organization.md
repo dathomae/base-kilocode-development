@@ -23,8 +23,12 @@ The following files are standard in memory banks:
 4. bugs.md is a markdown file that is like lessons-learned, but that concentrates on coding specific issues. bugs.md contains a table with two columns, the first is a short description of the bug the second is a longer description of the bug, possibly with examples. bugs.md is intended to capture learnings about coding bugs that have been encountered in the past so that they won't be repeated.
 5. brief.md contains a high level overview of the project.
 6. context.md describes the task or task that is in progress, along with relevant details and pointers to other files (e.g., file that capture a plan or story) that are relevant to a task. Note that context.md is NOT a historical log of work. When a task or story is completed information for it should be removed from context.md, with the possible exception of a BRIEF statement that some task or story has already been completed. context.md should be updated at both the start and end of every task. (Note: context.md tracks active tasks and current context, while concepts.md captures broader, general concepts and should be updated as needed for conceptual changes, not necessarily tied to task start/end.)
-7. requirements.md defines the requirements for the project.
-8. design.md captures the design of the project.
+7. toc.md contains a master table of contents for the memory bank, with pointers to all subdirectories and their toc.md files.
+8. The specifications directory contains specifications for the project organized in subdirectories:
+   - `specifications/requirements/` contains requirements specifications and includes a `toc.md` file
+   - `specifications/architecture/` contains architecture specifications and includes a `toc.md` file
+   - `specifications/design/` contains design specifications (version-specific design decisions) and includes a `toc.md` file
+   - Each of these subdirectories contains a `README.md` describing the purpose and conventions for that specification type
 9. Tasks will always be broken down into fine-grained segments that will come in one of two forms, either story directories or plan files. Both are defined below.
 
 Plan files shorter or more targeted objectives will be captured in "plan" files.
@@ -39,6 +43,14 @@ file. In addition there will be a toc.md file that contains a list of
 contents with entries that name the story file,
 provide a brief description of the story, and
 capture the state of the story as one of "Not Started", "In Progress" or "Done".
+
+Completed stories are moved to `stories/finished-stories/` and their toc.md entries
+are moved from the "Active Stories" section to the "Finished Stories" section.
+Canceled stories are moved to `stories/canceled-stories/`.
+
+Even larger initiatives may be grouped into epic stories stored in the `epics/`
+directory with their own `toc.md`. Epic stories group related stories into larger
+coordinated efforts.
 
 # The scripts directory
 

@@ -1,6 +1,6 @@
 # story-implementor
 
-This script drives the "story-implementor" agent behavior for performing story tasks. The script processes a story file sequentially, executing each incomplete task by routing coding tasks to the code-for-story-implementor agent (medium/large tasks) or small-code-for-story-implementor agent (small tasks), and writing tasks to the technical-writer-for-story-implementor agent, with appropriate review cycles. It enforces the **Logical TDD Lifecycle** defined in `memory-bank/concepts.md` and uses terms defined in `memory-bank/terms.md`. Story files follow the format defined in [`resources/templates/stories.md`](chronocone/resources/templates/stories.md).
+This script drives the "story-implementor" agent behavior for performing story tasks. The script processes a story file sequentially, executing each incomplete task by routing coding tasks to the code-for-story-implementor agent (medium/large tasks) or small-code-for-story-implementor agent (small tasks), and writing tasks to the technical-writer-for-story-implementor agent, with appropriate review cycles. It enforces the **Logical TDD Lifecycle** defined in `memory-bank/concepts.md` and uses terms defined in `memory-bank/terms.md`. Story files follow the format defined in [`resources/templates/stories.md`](../../resources/templates/stories.md).
 
 ## HANDOFF COMPLIANCE
 
@@ -123,9 +123,9 @@ For **pure refactoring tasks** (moving code between files, renaming, reorganizin
 
 | feature_branch_sanitized | string | Derived: `<feature_branch>` with all `/` characters replaced by `-`, for use in git branch and worktree names (Git can become confused by `/` in branch names). | N/A | Derived automatically |
 | checkpoint_mode        | string | When to pause for user approval: `"every"` (after each task), `"none"` (run to completion), or a task number (e.g., `"5"` to stop after Task 5) | No       | `"every"`                                            |
-| source_root            | string | Root source directory for build/test commands (e.g., `src/chronocone_planning_language`) | No       | Auto-detected for CPL stories; prompted if missing for other stories |
-| build_command          | string | Command to build the project (e.g., `./gradlew build`)                                  | No       | Auto-detected for CPL stories; prompted if missing for other stories |
-| test_command           | string | Command to run the full test suite (e.g., `./gradlew test`)                             | No       | Auto-detected for CPL stories; prompted if missing for other stories |
+| source_root            | string | Root source directory for build/test commands (e.g., `src/`) | No       | Auto-detected from project structure; prompted if ambiguous |
+| build_command          | string | Command to build the project (e.g., `./gradlew build`)                                  | No       | Auto-detected from project structure; prompted if missing |
+| test_command           | string | Command to run the full test suite (e.g., `./gradlew test`)                             | No       | Auto-detected from project structure; prompted if missing |
 | review_iteration_limit | number | Maximum review-fix iterations per task before stopping and asking the user for guidance  | No       | 3                                                    |
 
 ## Operations
@@ -184,12 +184,8 @@ The following operations are implemented by the **story-implementor** agent unle
      **Resolve defaults**:
      - `checkpoint_mode`: Use the provided value or default `"every"`.
      - `review_iteration_limit`: Use the provided value or default `3`.
-     - Determine whether this is a CPL story. If the story file or any of its references mention `chronocone_planning_language`, `CPL`, `CIL`, or `src/chronocone_planning_language`, it is a CPL story.
-     - **For CPL stories**:
-       - `source_root` defaults to `src/chronocone_planning_language`
-       - `build_command` defaults to `./gradlew build`
-       - `test_command` defaults to `./gradlew test`
-     - **For non-CPL stories**: If `source_root`, `build_command`, or `test_command` are not provided, prompt the user for each missing value.
+     - Determine the project's source root, build, and test commands from available conventions (e.g., detect `go.mod` for Go, `Cargo.toml` for Rust, `build.gradle` for Java/Kotlin, `Makefile` for C, `pyproject.toml` for Python). If the project structure provides unambiguous defaults, use them.
+     - If `source_root`, `build_command`, or `test_command` cannot be auto-detected or were not provided as parameters, prompt the user for each missing value.
 
      **Confirmation**:
      - Present the resolved values for ALL parameters to the user:
@@ -319,7 +315,7 @@ The following operations are implemented by the **story-implementor** agent unle
      - The full task details from the story file (all phases and subtasks within the task)
      - Any relevant file paths or references mentioned in the task
       - **Worktree instruction**: The sub-agent MUST use `workdir` parameter set to `worktree_path` (from story_context) for ALL bash commands. The sub-agent is working in an isolated git worktree. Files inside the worktree directory ARE part of the project's directory tree — do NOT ask for permission to read, write, edit, list, or search files within the worktree.
-       - **Source path resolution**: All file paths in story tasks are relative to `source_root` (from story_context). Resolve file paths within the worktree as `<source_root>/<story_path>`. For the CPL project specifically, `source_root` is `src/chronocone_planning_language`; Go packages live under `src/main/go/` within `source_root`. When a story path omits the `src/main/go/` prefix (bare paths like `analysis/foo.go` or `go test ./parsing/...`), prepend `src/main/go/`. Go commands must run from `source_root`: `cd <source_root> && go test ./src/main/go/<pkg>/...`.
+       - **Source path resolution**: All file paths in story tasks are relative to `source_root` (from story_context). Resolve file paths within the worktree as `<source_root>/<story_path>`. Commands that involve building or testing should run from `source_root`.
        - **Commit requirement**: The sub-agent MUST commit all changes within the worktree before returning results. The merge step (Operation 27) only picks up committed changes; uncommitted changes will cause `git worktree remove` to fail. Use a descriptive commit message referencing the task and story.
       - **Routing logic**:
        - For **small tasks**: Use the small-code-for-story-implementor agent. Instruct it to make the change directly, keeping modifications minimal and focused. Verify existing tests still pass. The full Logical TDD Lifecycle is not required for small tasks.
@@ -408,7 +404,7 @@ The following operations are implemented by the **story-implementor** agent unle
     - Any relevant file paths or references mentioned in the task
     - The story file name for reference
      - **Worktree instruction**: The sub-agent MUST use `workdir` parameter set to `worktree_path` (from story_context) for ALL bash commands and file operations. Files inside the worktree directory ARE part of the project's directory tree — do NOT ask for permission to read, write, edit, list, or search files within the worktree.
-     - **Source path resolution**: All file paths in story tasks are relative to `source_root` (from story_context). Resolve file paths within the worktree as `<source_root>/<story_path>`. For the CPL project specifically, `source_root` is `src/chronocone_planning_language`; Go packages live under `src/main/go/` within `source_root`. When a story path omits the `src/main/go/` prefix (bare paths like `analysis/foo.go`), prepend `src/main/go/`.
+      - **Source path resolution**: All file paths in story tasks are relative to `source_root` (from story_context). Resolve file paths within the worktree as `<source_root>/<story_path>`.
      - **Commit requirement**: The sub-agent MUST commit all changes within the worktree before returning results. Use a descriptive commit message referencing the task and story.
     - **CRITICAL**: Instruct the technical-writer-for-story-implementor to include the story_context section in their results exactly as provided, without modification
 
