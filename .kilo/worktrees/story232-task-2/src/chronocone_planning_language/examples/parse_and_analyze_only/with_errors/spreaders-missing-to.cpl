@@ -1,8 +1,0 @@
-# Missing To Clause Error Example
-# A spreader declaration with 'from' but no 'to' clause.
-
-concepts
-    Demand = [Values[A, B]]
-
-spreaders
-    from [Demand] = Demand

@@ -1,4 +1,3 @@
 # Bugs
 
-| Bug Description | Longer Description |
-| --------------- | ------------------ |
+Record recurring defect patterns and their resolutions here.

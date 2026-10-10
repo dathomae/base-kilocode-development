@@ -1,7 +1,0 @@
-# Conditional Concept — Invalid Parent Value
-# Analyzer error: conditional specification references a parent value that does not exist in the parent concept's value set.
-# From Story121/Story122/Story209: CPL Concepts Parser/Analyzer — Conditional
-
-concepts
-	Country=[Values[USA, Canada]]
-	Country[Mexico] => State=[Values[Jalisco]]

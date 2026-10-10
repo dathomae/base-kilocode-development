@@ -1,3 +1,0 @@
-types
-    # Constraint passed to Boolean type - should fail analysis
-    BadBool = Boolean(active=true)

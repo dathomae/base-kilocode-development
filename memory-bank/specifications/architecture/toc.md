@@ -1,6 +1,5 @@
-# Architecture - Table of Contents
+# Architecture Table of Contents
 
-<!-- Add architecture entries below. Format:
-**[<file>.md](<file>.md)**
-: Brief description of the architecture document.
--->
+- [`README.md`](README.md) — scope and completion criteria.
+- [`introduction.md`](introduction.md) — system context and top-level architecture.
+- [`testing.md`](testing.md) — testing responsibilities and levels.

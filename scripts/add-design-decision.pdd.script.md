@@ -6,12 +6,12 @@ This script automates adding a design decision entry to a `*_design_decisions.md
 
 | Name             | Type   | Description                                                                                                                                                     | Required | Default Value |
 | ---------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------- |
-| design_doc_path  | string | Relative path from project root to the design document the decision relates to (e.g., "memory-bank/specifications/design/cpl/go-synthesis-target/synthesis.md") | Yes      | N/A           |
+| design_doc_path  | string | Relative path from project root to the design document the decision relates to (e.g., "memory-bank/specifications/design/backend/job-runner.md") | Yes      | N/A           |
 | decision_title   | string | Bold header phrase for the decision, easily searchable (e.g., "Use strconv.FormatFloat for literal value formatting")                                           | Yes      | N/A           |
 | decision_summary | string | 1-2 sentence description of what was decided                                                                                                                    | Yes      | N/A           |
 | alternatives     | string | Alternatives considered and why rejected (bullet list, one per line)                                                                                            | Yes      | N/A           |
 | rationale        | string | Why the chosen option was selected (constraints, principles, tradeoffs)                                                                                         | Yes      | N/A           |
-| references       | string | References to design docs and/or EROs (relative paths, one per line)                                                                                            | No       | ""            |
+| references       | string | References to durable requirements, architecture, or design documents (relative paths, one per line)                                                           | No       | ""            |
 
 ## Operations
 
@@ -28,7 +28,7 @@ This script automates adding a design decision entry to a `*_design_decisions.md
    - Extract the design doc filename (e.g., `synthesis.md` → `synthesis`)
    - Construct the decisions filename: `<name>_design_decisions.md`
    - Place it in the same directory as the design doc
-   - Example: `memory-bank/specifications/design/cpl/go-synthesis-target/synthesis_design_decisions.md`
+   - Example: `memory-bank/specifications/design/backend/job-runner_design_decisions.md`
 
 4. Check if the design decisions file already exists:
    - If it does NOT exist: read the template from [`resources/templates/design_decision.md`](resources/templates/design_decision.md), remove the placeholder entry, and create the new file with the first decision entry
@@ -87,6 +87,7 @@ Specific error conditions handled:
 
 ## Notes
 
-- Design decisions reference design docs and EROs, never stories (which are transient artifacts)
+- Design decisions reference durable requirements, architecture, or design documents, never stories
+  (which are transient artifacts)
 - One design decisions file per design document, co-located in the same directory
 - Entries use the lessons-learned.md style: bold header phrase followed by colon and detailed explanation

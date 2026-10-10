@@ -1,7 +1,0 @@
-# Empty Aggregators Section Example
-# Demonstrates an aggregators section with no declarations.
-
-concepts
-    Country = [Values[USA]]
-
-aggregators

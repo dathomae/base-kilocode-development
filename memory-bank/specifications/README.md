@@ -1,9 +1,11 @@
-# Requirements Specifications
+# Specifications
 
-Requirements specifications define what the system must do. They extend concepts with lower-level details — specific behaviors, constraints, acceptance criteria, and use cases.
+Specifications are organized by abstraction level:
 
-## Conventions
+- `requirements/` records externally observable behavior and constraints.
+- `architecture/` records component placement, ownership, boundaries, and contracts.
+- `design/` records version-specific and technique-level decisions.
+- `patterns/` records reusable project standards that implementations must follow.
 
-- Requirements are stored as individual markdown files
-- Each file covers a specific feature area or domain
-- All requirements documents are listed in `toc.md`
+Reference higher-level material rather than repeating it. Implementation work must not invent missing
+requirements, architecture, or design decisions.

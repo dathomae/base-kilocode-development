@@ -1,15 +1,15 @@
 # Story Template
 
-Stories break large plans into manageable chunks. Each story is a single markdown file stored in `memory-bank/stories/`.
+Stories break large plans into manageable chunks. Each story is a single markdown file stored in `memory-bank/planning/stories/active-stories/` (finished stories live in `memory-bank/planning/stories/finished-stories/`, canceled stories in `memory-bank/planning/stories/canceled-stories/`).
 
 ## File Naming Convention
 
-Story files use the format `StoryNNN_<short-purpose>.md`, where `NNN` is a unique three-digit number (e.g., `Story001_workspace-setup.md`). If a story is
-part of an epic story, the file name should reference the epic story number as well, for example `StoryNNN_epicEEE_<short_purpose>.md`
+Story files use the format `StoryNNN_<short-purpose>.md`, where `NNN` is a unique three-digit
+number (for example, `Story001_workspace-setup.md`).
 
 ## Table of Contents
 
-Each story appears in `memory-bank/stories/toc.md` with its current status and a brief goal statement.
+Each active story appears in `memory-bank/planning/stories/active-stories/toc.md` with its current status and a brief goal statement. When a story reaches a terminal state it moves to the finished or canceled directory and is listed in that directory's toc.md.
 
 Valid statuses are:
 
@@ -17,7 +17,8 @@ Valid statuses are:
 - **In Progress**: Work is actively being done
 - **Completed**: All tasks are finished
 
-Most stories involve writing code, though some cover documentation or planning tasks.
+Stories may produce code or documentation. Use the same lifecycle and record the appropriate build or
+verification command for the artifact being changed.
 
 ## Header Section
 
@@ -25,21 +26,19 @@ Most stories involve writing code, though some cover documentation or planning t
 
 Explain the functionality being implemented in this story. Provide enough context so a reader can understand what the story accomplishes without reading the entire plan.
 
-If the story is part of an epic, include a link to the epic story file in the goal statement.
-
 ### 2. References
 
 List links to relevant documents. These links are relative to the `memory-bank` directory:
 
-- [requirements](specifications/requirements/requirements.md)
-- [architecture](specifications/architecture/architecture.md)
-- [design](specifications/design/design.md)
+- [requirements](../../memory-bank/specifications/requirements/README.md)
+- [architecture](../../memory-bank/specifications/architecture/README.md)
+- [design](../../memory-bank/specifications/design/README.md)
 
 ### 3. Dependencies
 
 List any stories that must complete before work on this story can begin:
 
-- [StoryNNN\_<short-purpose>.md](memory-bank/stories/StoryNNN_<short-purpose>.md) - <status>
+- [StoryNNN\_<short-purpose>.md](memory-bank/planning/stories/active-stories/StoryNNN_<short-purpose>.md) - <status>
 
 If this story has no dependencies, write "None" and briefly explain why (e.g., "This is the foundational story for the project").
 
@@ -47,9 +46,39 @@ If this story has no dependencies, write "None" and briefly explain why (e.g., "
 
 List any stories that are blocked by this story:
 
-- [StoryNNN\_<short-purpose>.md](memory-bank/stories/StoryNNN_<short-purpose>.md) - <status>
+- [StoryNNN\_<short-purpose>.md](memory-bank/planning/stories/active-stories/StoryNNN_<short-purpose>.md) - <status>
 
 If no stories depend on this one, write "None".
+
+### 5. Footprint and Dependency Metadata
+
+This section is machine-read by `milestone-generation-coordinator` to compute the milestone schedule; it must be
+specific enough to schedule from without reading prose.
+
+- **Hard dependencies (`blocked-by`):** stories that must complete first, by story id — functional
+  prerequisites.
+- **Soft dependencies:** preferred-but-not-required ordering, by story id, with a one-line reason.
+- **Footprint:** the files and packages this story is expected to touch, with a `shared-infra` flag for
+  files many stories touch (lock files, shared test fixtures, build files, toc files).
+- **Conflicts-with:** leave empty; `milestone-generation-coordinator` computes it from footprint overlap.
+- **Flows covered (`flows`):** the milestone acceptance flows this story covers (e.g. `FG1/F1.1`), by id;
+  may be empty for infrastructure stories. A flow's automated test is a task of the story in which the
+  flow's functionality is expected to exist; a story that cannot yet support a flow's verification does
+  not carry its test.
+
+```markdown
+### Footprint and Dependency Metadata
+
+- **blocked-by:** StoryNNN, StoryMMM
+- **soft:** StoryPPP (preferred first so the shared type exists), StoryQQQ (same package; avoids a
+  rebase)
+- **footprint:**
+  - `src/analysis/evaluator.py` — new
+  - `tests/analysis/test_evaluator.py` — new
+  - `Makefile` — modified (`shared-infra`)
+- **flows:** FG1/F1.1, FG1/F1.2 (omit, or leave empty, for an infrastructure story)
+- **conflicts-with:** (computed by milestone-generation-coordinator)
+```
 
 ## Body Section
 
@@ -67,37 +96,40 @@ Use this format:
 
 Valid statuses: Not Started, In Progress, Completed.
 
-Tasks can be annotated with `[Small]` on the status line to route them to the lightweight `small-code-for-story-implementor` agent:
+A task that implements a milestone acceptance flow's **automated test** is annotated `[Flow: FG1/F1.1]`
+with the test path; its acceptance criterion is that the flow's test passes. `story-implementation` runs
+a story's declared flow tests at story completion **only where the flow's functionality exists**
+(otherwise the flow is verified at milestone close). See `resources/agent/report-formats.md` for the
+shared flow-verification result.
+
+Tasks can be annotated with `[Small]` on the status line to route them to the lightweight `small-code-implementor` agent:
 
 ```markdown
 ### Task 3: Extend evaluator for comparison operators — Not Started [Small]
 ```
 
-When `[Small]` is absent, tasks route to `code-for-story-implementor` (medium) or `technical-writer-for-story-implementor` (writing). See the Task Sizing subsection below for rules on when to use `[Small]`.
+When `[Small]` is absent, coding tasks route to `code-implementor` (medium) or `big-code-implementor` (large); writing tasks route to `small-write-implementor`, `write-implementor`, or `big-write-implementor` by size. See the Task Sizing subsection below.
 
 ### File Path Conventions
 
-All file paths in story tasks are relative to the project's `source_root` — the directory where build and test commands run. The story-implementor passes `source_root` to sub-agents via `story_context`, and sub-agents resolve file paths as `<source_root>/<story_path>`.
+All file paths in story tasks are relative to the project's `source_root` — the directory where build and test commands run. `story-implementation-coordinator` passes `source_root` to subagents in the `work_context` block, and subagents resolve file paths as `<source_root>/<story_path>`.
 
 **Concrete path rules:**
 
-1. **Include the full path within `source_root`.** File paths in task descriptions must include the complete directory structure from `source_root` down. This ensures sub-agents can locate files without ambiguity regardless of project layout.
-   - ✅ `src/packages/utils/helper.py` (full path from source_root)
-   - ❌ `utils/helper.py` (ambiguous)
+1. Include the complete package-relative path within `source_root`; do not abbreviate it based on an
+   assumed working directory.
+2. State the directory from which every build or test command runs.
+3. Use the project's recorded package syntax and tooling rather than inferring commands from file
+   extensions.
+4. When verification spans multiple packages, name each package or use the project's documented full
+   suite entry point.
 
-2. **Commands run from `source_root`.** The sub-agent is told to `cd <source_root>` before running build and test commands. All paths in command examples must be relative to `source_root`.
-   - ✅ `cd src && go test ./packages/utils/...`
-   - ❌ `go test ./utils/...`
-
-3. **Tests that span multiple packages or directories list each path explicitly:**
-   - ✅ `go test ./packages/parsing/... ./packages/analysis/...`
-   - ❌ `go test ./parsing/... ./analysis/...`
-
-These conventions ensure sub-agents can locate and operate on files without ambiguity, regardless of the project's source directory structure.
+These conventions let subagents locate files and reproduce commands without guessing the repository
+layout.
 
 ### Task Sizing
 
-Tasks should be sized to enable efficient subagent routing by the story-implementor PDD script. A task annotated `[Small]` on its status line is routed to the lightweight `small-code-for-story-implementor` agent; unannotated tasks are routed to `code-for-story-implementor`.
+Tasks should be sized to enable efficient subagent routing by the story-implementation PDD script. A task annotated `[Small]` is routed to `small-code-implementor`; an unannotated coding task is routed to `code-implementor` (or `big-code-implementor` when it is large); a writing task is routed to the appropriate `write` implementor tier.
 
 **Design principle — prefer small tasks when natural.** When creating tasks, prefer decomposing work into straightforward, narrow-scope tasks that meet the Small criteria below, provided the decomposition is natural and does not introduce complexity. Do NOT force smallness by:
 - Creating artificial intermediate artifacts (temp modules, adapters) just to stay under 2 files
@@ -119,7 +151,9 @@ A task is likely **not Small** when:
 - It adds a new operation kind that requires coordination between a struct producer and a struct consumer
 - It spans multiple packages with interdependent changes
 
-**When in doubt, do not annotate `[Small]`.** Defaulting to `code-for-story-implementor` is the safer choice. The story author consults the `architect-for-story-planning` subagent for uncertain cases.
+**When in doubt, do not annotate `[Small]`.** Defaulting to `code-implementor` is the safer choice. The story author consults `story-critic` and `design-critic` for uncertain sizing and design-decision cases.
+
+An implementor that needs a requirements, architecture, or design decision returns `Blocked — needs decision` rather than guessing; the coordinator escalates it and does **not** retry the implementor ladder on a blocked result.
 
 ### Parallel Execution
 
@@ -134,7 +168,7 @@ Format:
   but each will run in its own isolated worktree.
 ```
 
-These groups are referenced in the Execution Order subsection as parallel branches. The story-implementor PDD script reads this section to determine which tasks to hand off as concurrent subagent invocations, each in its own git worktree.
+These groups are referenced in the Execution Order subsection as parallel branches. The story-implementation PDD script reads this section to determine which tasks to hand off as concurrent subagent invocations, each in its own git worktree.
 
 If no tasks can be parallelized, write "None — all tasks have sequential dependencies."
 
@@ -154,7 +188,7 @@ Example:
 
 ### Reintegration
 
-Documents how to merge worktree branches back into the story branch and verify the combined result for each parallel group. Generated by the `add-new-story.pdd.script.md` step 9d based on the architect-for-story-planning's reintegration analysis.
+Documents how to merge worktree branches back into the story branch and verify the combined result for each parallel group. Generated by `story-planning-coordinator` from the `story-critic` and `design-critic` analyses.
 
 Each parallel group must specify:
 - **Merge order**: which worktree branch to merge first, or "any order"
@@ -165,16 +199,16 @@ Format:
 ```markdown
 **Group A (Tasks 3, 4):**
 - Merge order: Task 3 first (modifies Makefile — shared infrastructure), then Task 4
-- Integration tests: `go test ./pkg/evaluator/... -count=1 -timeout 60s` — verify combined evaluator behavior
-- Watch for conflicts in: `go.sum` (dependency resolution may differ per worktree)
+- Integration tests: `pytest tests/evaluator -q` — verify combined evaluator behavior
+- Watch for conflicts in: the dependency lock file (resolution may differ per worktree)
 
 **Group B (Tasks 7, 8):**
 - Merge order: any order (fully disjoint packages, no shared infrastructure)
-- Integration tests: `go test ./pkg/parser/... ./pkg/formatter/... -count=1 -timeout 60s`
+- Integration tests: `pytest tests/parser tests/formatter -q`
 - Watch for conflicts in: none expected
 ```
 
-All branch references should use "story branch" generically. The story-implementor determines the actual branch at runtime.
+All branch references should use "story branch" generically. `story-implementation-coordinator` determines the actual branch at runtime.
 
 If no parallel groups exist, omit this subsection or write "None — no parallel groups."
 
@@ -207,9 +241,11 @@ If at any point during story construction there is confusion or ambiguity about 
 
 Include any additional information relevant to the story:
 
-1. **Open Questions**: Questions that need answers before work can begin
-2. **Known Issues**: Issues identified that need addressing
-3. **Additional Context**: Any other relevant information
+1. **Open Questions**: must be **empty** when the story is complete; a non-empty section blocks completion. A figure-it-out item is not a task — it is an escalation (categories 1–5).
+2. **Deferred**: only references to a requirements or architecture document section, each with human sign-off. Most apparent deferrals are open questions under another label.
+3. **Revision**: when the story is revised (change-control R1–R3), record what changed, why, and the triggering issue, and mark the story revised.
+4. **Known Issues**: Issues identified that need addressing.
+5. **Additional Context**: Any other relevant information.
 
 ## Example Story
 
@@ -255,7 +291,7 @@ All tasks below touch single files or follow established patterns. Tasks 1 and 2
 
 **Group A (Tasks 1, 2):**
 - Merge order: any order (fully disjoint files, no shared infrastructure)
-- Integration tests: `cd <source_root> && <test_command>` — verify combined workspace configuration
+- Integration tests: run the project's documented full-suite command from `source_root`
 - Watch for conflicts in: none expected
 
 ### Task 1: Create workspace configuration — Not Started [Small]
@@ -272,6 +308,6 @@ All tasks below touch single files or follow established patterns. Tasks 1 and 2
 
 ## Notes
 
-- The project uses the chosen language and framework for its backend
-- This story focuses on basic setup; detailed structure is in Story002
+- Record project-specific prerequisites explicitly.
+- Link any follow-up story rather than leaving an implicit dependency.
 ```
