@@ -104,7 +104,7 @@ they do not re-litigate the assignment. See [`standards-manifests.md`](standards
 
 | Persona | Mode | Critiques | Standards manifest | Input → Output |
 |---|---|---|---|---|
-| `design-critic` | all | specs (requirements/architecture/design) | architecture/design specs, patterns toc, EROs, architecture Definition of Done | artifact → critic report |
+| `design-critic` | all | specs (requirements/architecture/design) | architecture/design specs, patterns toc, architecture Definition of Done | artifact → critic report |
 | `plan-critic` | all | plans | plan template, `artifact-standards.md`, planning organization, toc-format spec | artifact → critic report |
 | `story-critic` | all | stories | story template, sizing/parallelism rules, `artifact-standards.md`, toc-format spec | artifact → critic report |
 | `code-critic` | all | code changes and walkthroughs | `resources/code-conventions.md`, `resources/code_review/*`, patterns toc | artifact → critic report |
@@ -149,7 +149,7 @@ The integrator never merges and never pushes `main`.
 ## Standards manifests (critic reference sets)
 
 - **`design-critic`:** `memory-bank/specifications/architecture/**`, `memory-bank/specifications/design/**`,
-  `memory-bank/specifications/patterns/toc.md`, EROs, the architecture Definition of Done,
+  `memory-bank/specifications/patterns/toc.md`, the architecture Definition of Done,
   `resources/agent/artifact-standards.md`.
 - **`plan-critic`:** `resources/templates/plan.template.md`, `resources/agent/artifact-standards.md`,
   `.kilo/rules/organization.md`, `memory-bank/specifications/toc-format-spec.md`.

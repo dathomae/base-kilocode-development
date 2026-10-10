@@ -12,7 +12,6 @@ This script automates the process of adding a new Architecture Design Record (AD
 | decision_status       | string | Current status of the decision: "Draft", "Decided", or "Superseded".                                                                          | Yes      | N/A                       |
 | implementation_status | string | Implementation state: "Not Yet Implemented" or "Implemented".                                                                                 | Yes      | N/A                       |
 | related_stories       | list   | List of related story filenames (e.g., ["Story041_relational-schema-implementation.md"]). May be empty.                                       | No       | Empty list                |
-| related_epics         | list   | List of related epic filenames (e.g., ["Epic001_data-persistence.md"]). May be empty.                                                         | No       | Empty list                |
 | related_documents     | list   | List of related documents. Each document requires: doc_path (string - relative path), description (string - brief description).               | No       | Empty list                |
 | adr_location          | string | Location for the ADR: "architecture" or "design". Determines whether it goes in specifications/architecture/ or specifications/design/.       | No       | "architecture"            |
 | project_root          | string | The root directory of the project where the ADR will be created.                                                                              | No       | Current working directory |
@@ -30,7 +29,6 @@ This script automates the process of adding a new Architecture Design Record (AD
    - implementation_status must be one of: "Not Yet Implemented", "Implemented"
    - adr_location must be one of: "architecture", "design"
    - Each story filename must match the pattern `^Story\d+_[a-zA-Z0-9_-]+\.md$`
-   - Each epic filename must match the pattern `^Epic\d+_[a-zA-Z0-9_-]+\.md$`
 
 2. Construct the ADR directory path by combining project_root with `memory-bank/specifications/<adr_location>/adrs`.
 
@@ -69,20 +67,12 @@ This script automates the process of adding a new Architecture Design Record (AD
       - If found: create link `[Story<NNN>_<name>.md](../stories/Story<NNN>_<name>.md) - <status>`
       - If not found: use text `Story<NNN>_<name>.md (not yet defined)`
 
-11. Process related epics:
-    - If related_epics is empty, prepare an empty table placeholder
-    - For each epic filename:
-      - Verify the epic file exists in `memory-bank/epics/`
-      - Extract the epic number from the filename
-      - If found: create link `[Epic<NNN>_<name>.md](../epics/Epic<NNN>_<name>.md) - <status>`
-      - If not found: use text `Epic<NNN>_<name>.md (not yet defined)`
-
-12. Process related documents:
+11. Process related documents:
     - If related_documents is empty, use "None - No related documents at this time."
     - For each document:
       - Create link `[description](<doc_path>)`
 
-13. Create the new ADR file at the calculated path:
+12. Create the new ADR file at the calculated path:
     - Start with the header: `# ADR<NNN>: <title>`
     - Add Title section with the provided title
     - Add Purpose/Goal section with the provided purpose
@@ -90,8 +80,8 @@ This script automates the process of adding a new Architecture Design Record (AD
     - Add Implementation Status section:
       - Include implementation_status
       - If related_stories is not empty, add Related Stories subsection with a table
-      - If related_epics is not empty, add Related Epics subsection with a table
-      - If both are empty, add a note: "None - This ADR documents a decision not tied to specific work items."
+      - If related_stories is empty, add a note: "None - This ADR documents a decision not tied to
+        specific work items."
     - Add Proposed Date section with proposed_date
     - Add Decision Date section with decision_date
     - Add Context section with "To Be Written" placeholder for Situation, Constraints, Requirements, and Assumptions
@@ -101,23 +91,23 @@ This script automates the process of adding a new Architecture Design Record (AD
     - Add Implications section with "To Be Written" placeholder for Positive Implications, Negative Implications/Trade-offs, Impact on System Qualities, and Future Considerations
     - Add Notes section (optional) with related_documents if any
 
-14. Read the current toc.md file in the ADR directory:
+13. Read the current toc.md file in the ADR directory:
     - If the file doesn't exist or doesn't contain an "ADRs" section, create/initialize it with the proper header
 
-15. Add the new ADR entry to the ADRs section in toc.md:
+14. Add the new ADR entry to the ADRs section in toc.md:
     - Insert a new entry in the list using the three-column format:
       - Title line: `**[ADR<NNN>_<adr_name>.md](adrs/ADR<NNN>_<adr_name>.md)** — _<decision_status>_`
       - Description line: `: <description>` where description is a brief summary from the purpose (truncated if necessary to 100 characters)
     - Insert the new entry in ADR number order
     - Ensure entries are separated by blank lines
 
-16. Verify the new ADR file was created successfully:
+15. Verify the new ADR file was created successfully:
     - Confirm the file exists at the expected path
     - Confirm the file is readable and contains the expected content
     - Verify all section headers are present
     - Verify "To Be Written" placeholders are in place for body sections
 
-17. Verify the toc.md file was updated successfully:
+16. Verify the toc.md file was updated successfully:
     - Confirm the new ADR entry appears in the ADRs section
     - Confirm the entry has the correct filename, description, and decision status
 
@@ -134,10 +124,9 @@ The script outputs:
   - The purpose/summary that was used
 - Summary of related items:
   - Number of related stories (with count of existing vs not yet defined)
-  - Number of related epics (with count of existing vs not yet defined)
   - Number of related documents
 - Confirmation that the ADR was added to the ADRs section in toc.md
-- Any warnings encountered (e.g., if referenced stories or epics don't exist yet)
+- Any warnings encountered (e.g., if referenced stories don't exist yet)
 
 ## Error Handling
 
@@ -154,7 +143,6 @@ Specific error conditions handled:
 - Invalid adr_location (not one of: architecture, design)
 - ADR template file (resources/templates/adr.md) is missing
 - Invalid story filename format
-- Invalid epic filename format
 - Failure to create ADRs directory
 - Failure to create or read toc.md
 - ADR file already exists (collision with existing filename)
@@ -170,7 +158,6 @@ Specific error conditions handled:
 - decision_status: "Decided"
 - implementation_status: "Implemented"
 - related_stories: ["Story041_relational-schema-implementation.md"]
-- related_epics: []
 - related_documents:
   - doc_path: "specifications/architecture/backend/foundation/database/overview.md", description: "Database Architecture Design"
 - adr_location: "architecture"
@@ -183,7 +170,6 @@ Specific error conditions handled:
 - Title: "Database Technology Selection for Primary Data Store"
 - Purpose: "Select a primary relational database technology..."
 - 1 related story (1 existing, 0 not yet defined)
-- 0 related epics
 - 1 related document
 - Entry added to toc.md ADRs section
 
@@ -195,7 +181,6 @@ Specific error conditions handled:
 - decision_status: "Draft"
 - implementation_status: "Not Yet Implemented"
 - related_stories: []
-- related_epics: []
 - related_documents: []
 - adr_location: "architecture"
 
@@ -205,5 +190,4 @@ Specific error conditions handled:
 - File created: memory-bank/specifications/architecture/adrs/ADR002_api-versioning-strategy.md
 - Location: architecture
 - Empty Related Stories table created (to be filled in later)
-- Empty Related Epics table created (to be filled in later)
 - Entry added to toc.md ADRs section with "Draft" status

@@ -4,8 +4,8 @@ Stories break large plans into manageable chunks. Each story is a single markdow
 
 ## File Naming Convention
 
-Story files use the format `StoryNNN_<short-purpose>.md`, where `NNN` is a unique three-digit number (e.g., `Story001_workspace-setup.md`). If a story is
-part of an epic story, the file name should reference the epic story number as well, for example `StoryNNN_epicEEE_<short_purpose>.md`
+Story files use the format `StoryNNN_<short-purpose>.md`, where `NNN` is a unique three-digit
+number (for example, `Story001_workspace-setup.md`).
 
 ## Table of Contents
 
@@ -25,8 +25,6 @@ verification command for the artifact being changed.
 ### 1. Goal
 
 Explain the functionality being implemented in this story. Provide enough context so a reader can understand what the story accomplishes without reading the entire plan.
-
-If the story is part of an epic, include a link to the epic story file in the goal statement.
 
 ### 2. References
 

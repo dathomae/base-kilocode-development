@@ -11,7 +11,7 @@ This script automates adding a design decision entry to a `*_design_decisions.md
 | decision_summary | string | 1-2 sentence description of what was decided                                                                                                                    | Yes      | N/A           |
 | alternatives     | string | Alternatives considered and why rejected (bullet list, one per line)                                                                                            | Yes      | N/A           |
 | rationale        | string | Why the chosen option was selected (constraints, principles, tradeoffs)                                                                                         | Yes      | N/A           |
-| references       | string | References to design docs and/or EROs (relative paths, one per line)                                                                                            | No       | ""            |
+| references       | string | References to durable requirements, architecture, or design documents (relative paths, one per line)                                                           | No       | ""            |
 
 ## Operations
 
@@ -87,6 +87,7 @@ Specific error conditions handled:
 
 ## Notes
 
-- Design decisions reference design docs and EROs, never stories (which are transient artifacts)
+- Design decisions reference durable requirements, architecture, or design documents, never stories
+  (which are transient artifacts)
 - One design decisions file per design document, co-located in the same directory
 - Entries use the lessons-learned.md style: bold header phrase followed by colon and detailed explanation

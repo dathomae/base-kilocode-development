@@ -7,7 +7,8 @@ This file captures design decisions related to a specific design document. Desig
 - This file is co-located with the design document it references
 - Naming: if the design doc is `<name>.md`, the decisions file is `<name>_design_decisions.md`
 - One design decisions file per design document (not per directory)
-- References must be to design documents and/or EROs, never to stories (which are transient)
+- References must be to durable requirements, architecture, or design documents, never to stories
+  (which are transient)
 
 ## Format
 
@@ -30,7 +31,6 @@ Each entry follows the lessons-learned.md style: a **bold header phrase** that i
 
 : **References:**
 : - [`<design_doc_name>.md`](relative/path/to/design_doc.md)
-: - [ERO<NNN>: <ero_title>](../relative/path/to/ero.md)
 
 ---
 
@@ -48,6 +48,5 @@ Each entry follows the lessons-learned.md style: a **bold header phrase** that i
 
 : **References:**
 : - [`<design_doc_name>.md`](relative/path/to/design_doc.md)
-: - [ERO<NNN>: <ero_title>](../relative/path/to/ero.md)
 
 ---

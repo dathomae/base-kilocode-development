@@ -17,8 +17,8 @@ applies), [`persona-registry.md`](persona-registry.md).
 - `memory-bank/specifications/patterns/toc.md` and the pattern files it lists.
 - `memory-bank/specifications/glossary.md`, `memory-bank/terms.md` — shared vocabulary.
 - `resources/templates/subsystem-architecture.template.md`,
-  `resources/templates/subsystem-contract.template.md`, `resources/templates/design_decision.md`,
-  `resources/templates/ero.md`.
+  `resources/templates/subsystem-contract.template.md`, and
+  `resources/templates/design_decision.md`.
 - `resources/agent/artifact-standards.md`.
 
 Checks: non-overlapping responsibilities; contracts with non-happy paths; interface vs implementation

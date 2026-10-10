@@ -1,8 +1,5 @@
 # Templates Table of Contents
 
-**[ero.md](ero.md)**
-: Template for Epic Restraining Orders (for new EROs; pre-2026-09-16 EROs are archived)
-
 **[prompt-driven-development-script.template.md](prompt-driven-development-script.template.md)**
 : Template for creating prompt-driven development scripts, including the coordinator dispatch, escalation, and disposition conventions
 
@@ -20,9 +17,6 @@
 
 **[design_decision.md](design_decision.md)**
 : Template for capturing design decisions alongside design docs
-
-**[epics.md](epics.md)**
-: Template for epic stories (collections of related stories; suspended pending a decision)
 
 **[subsystem-architecture.template.md](subsystem-architecture.template.md)**
 : Template for a component or subsystem `README.md` — responsibilities, owned data, dependencies, seams, what it does not own, and access modality.

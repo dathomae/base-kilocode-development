@@ -20,8 +20,8 @@ coordinators never author specs, they only detect and escalate spec defects.
 - `memory-bank/specifications/README.md` — the specification levels.
 - `memory-bank/specifications/patterns/toc.md` — the patterns you must conform to.
 - `resources/templates/subsystem-architecture.template.md`,
-  `resources/templates/subsystem-contract.template.md`, `resources/templates/design_decision.md`,
-  `resources/templates/ero.md`.
+  `resources/templates/subsystem-contract.template.md`, and
+  `resources/templates/design_decision.md`.
 - `memory-bank/terms.md`, `memory-bank/specifications/glossary.md`.
 
 ## Working with the human
