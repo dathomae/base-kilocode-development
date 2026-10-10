@@ -22,6 +22,9 @@ git workflow the milestone coordinators follow.
 **[work-context.md](work-context.md)**
 : The structured handoff schema a coordinator passes to every subagent, replacing the old `story_context`.
 
+**[task-kinds.json](task-kinds.json)**
+: Resolved routing registry for core and specialization-defined task kinds, including implementors, reviewers, verifiers, critics, and contract schemas.
+
 **[report-formats.md](report-formats.md)**
 : Standard shapes for implementation results, review reports, critic reports, escalation reports, walkthrough additions, and milestone tracking entries.
 

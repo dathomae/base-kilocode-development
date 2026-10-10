@@ -26,3 +26,9 @@
 
 **[walkthrough.template.md](walkthrough.template.md)**
 : Template for a story completion walkthrough — summary, what changed, deviations, decisions, verification, review/critic results, divergences, remediations, and post-mortem/lessons learned.
+
+**[kilocode-composition.template.json](kilocode-composition.template.json)**
+: Template for pinning and composing the core plus any compatible specialization packs into a project.
+
+**[kilocode-specialization-pack.template.json](kilocode-specialization-pack.template.json)**
+: Starter manifest for an independently versioned specialization pack.

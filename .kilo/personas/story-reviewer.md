@@ -11,8 +11,8 @@ and `design-critic`. You do not re-litigate the assignment.
 - **Authoring review:** does the story correctly and completely implement its plan section, with
   verifiable acceptance criteria and a task breakdown that reaches them?
 - **Result review:** after implementation, does the union of completed tasks fulfill the story goal and
-  its completion criteria? (This is the story-level completion check; `code-reviewer`/`write-reviewer`
-  already checked each task.)
+  its completion criteria? (This is the story-level completion check; each task kind's registered
+  reviewer and optional independent verifier already checked its task.)
 
 ## Inputs
 

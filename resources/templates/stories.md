@@ -110,6 +110,22 @@ Tasks can be annotated with `[Small]` on the status line to route them to the li
 
 When `[Small]` is absent, coding tasks route to `code-implementor` (medium) or `big-code-implementor` (large); writing tasks route to `small-write-implementor`, `write-implementor`, or `big-write-implementor` by size. See the Task Sizing subsection below.
 
+Specialization-defined work uses an explicit task-kind annotation:
+
+```markdown
+### Task 4: <specialized task> — Not Started [Kind: <registered-id>]
+
+**Task contract**
+
+<Fields required by the task kind's `contract_schema`.>
+```
+
+The id must exist in `resources/agent/task-kinds.json`. The registry supplies the implementor ladder,
+reviewer, optional independent verifier, critic, artifact type, and contract schema. A task whose kind
+sets `explicit_annotation_required` must carry `[Kind: <id>]`; the coordinator must not infer a
+specialized kind from keywords. `[Small]` selects the first implementor in that kind's ladder when the
+specialization permits it; it never waives a required contract or verification gate.
+
 ### File Path Conventions
 
 All file paths in story tasks are relative to the project's `source_root` — the directory where build and test commands run. `story-implementation-coordinator` passes `source_root` to subagents in the `work_context` block, and subagents resolve file paths as `<source_root>/<story_path>`.
@@ -130,6 +146,9 @@ layout.
 ### Task Sizing
 
 Tasks should be sized to enable efficient subagent routing by the story-implementation PDD script. A task annotated `[Small]` is routed to `small-code-implementor`; an unannotated coding task is routed to `code-implementor` (or `big-code-implementor` when it is large); a writing task is routed to the appropriate `write` implementor tier.
+
+For specialization-defined work, sizing selects among the ordered `implementors` in the task-kind
+registry. A kind may use a one-persona list when size tiers do not apply.
 
 **Design principle — prefer small tasks when natural.** When creating tasks, prefer decomposing work into straightforward, narrow-scope tasks that meet the Small criteria below, provided the decomposition is natural and does not introduce complexity. Do NOT force smallness by:
 - Creating artificial intermediate artifacts (temp modules, adapters) just to stay under 2 files

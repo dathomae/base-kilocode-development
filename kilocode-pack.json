@@ -1,0 +1,42 @@
+{
+  "$schema": "resources/extensions/pack-manifest.schema.json",
+  "schema_version": 1,
+  "name": "base-kilocode-development",
+  "version": "0.1.0",
+  "kind": "core",
+  "requires": [],
+  "exports": [
+    { "source": ".agents", "target": ".agents", "strategy": "managed" },
+    { "source": ".githooks", "target": ".githooks", "strategy": "managed" },
+    { "source": ".github", "target": ".github", "strategy": "managed" },
+    { "source": ".kilo/personas", "target": ".kilo/personas", "strategy": "managed" },
+    { "source": ".kilo/rules", "target": ".kilo/rules", "strategy": "managed" },
+    { "source": "scripts", "target": "scripts", "strategy": "managed" },
+    { "source": "resources/agent", "target": "resources/agent", "strategy": "managed" },
+    { "source": "resources/code_review", "target": "resources/code_review", "strategy": "managed" },
+    { "source": "resources/extensions", "target": "resources/extensions", "strategy": "managed" },
+    { "source": "resources/templates", "target": "resources/templates", "strategy": "managed" },
+    { "source": "resources/writing_resources", "target": "resources/writing_resources", "strategy": "managed" },
+    { "source": "AGENT_REPOSITORY_SETUP.md", "target": "AGENT_REPOSITORY_SETUP.md", "strategy": "managed" },
+    { "source": ".gitattributes", "target": ".gitattributes", "strategy": "seed" },
+    { "source": ".gitignore", "target": ".gitignore", "strategy": "seed" },
+    { "source": ".kilo/.gitignore", "target": ".kilo/.gitignore", "strategy": "seed" },
+    { "source": "kilo.jsonc", "target": "kilo.jsonc", "strategy": "seed" },
+    { "source": "memory-bank", "target": "memory-bank", "strategy": "seed" },
+    { "source": "resources/code-conventions.md", "target": "resources/code-conventions.md", "strategy": "seed" }
+  ],
+  "contributions": {
+    "agents": {
+      "source": "kilo.jsonc",
+      "source_key": "agent",
+      "target": "kilo.jsonc",
+      "target_key": "agent"
+    },
+    "task_kinds": {
+      "source": "resources/agent/task-kinds.json",
+      "source_key": "task_kinds",
+      "target": "resources/agent/task-kinds.json",
+      "target_key": "task_kinds"
+    }
+  }
+}

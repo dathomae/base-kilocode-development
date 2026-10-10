@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KiloCode pack manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "name", "version", "kind", "requires", "exports"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": 1 },
+    "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$" },
+    "kind": { "enum": ["core", "specialization"] },
+    "requires": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "version"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "version": { "type": "string" }
+        }
+      }
+    },
+    "exports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "target", "strategy"],
+        "properties": {
+          "source": { "type": "string", "minLength": 1 },
+          "target": { "type": "string", "minLength": 1 },
+          "strategy": { "enum": ["managed", "seed"] }
+        }
+      }
+    },
+    "contributions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "agents": { "$ref": "#/$defs/contribution" },
+        "task_kinds": { "$ref": "#/$defs/contribution" }
+      }
+    }
+  },
+  "$defs": {
+    "contribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "source_key", "target", "target_key"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "source_key": { "type": "string", "minLength": 1 },
+        "target": { "type": "string", "minLength": 1 },
+        "target_key": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

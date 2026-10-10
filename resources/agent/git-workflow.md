@@ -79,9 +79,10 @@ The consuming project owns its build and verification workflow. Record one local
 that runs the same checks as CI, then reference that command from project documentation and milestone
 artifacts. Story coordinators run it before pushing and use CI logs to repair failures.
 
-The optional [authorship workflow](../../.github/workflows/authorship-check.yml) checks that commits
-introduced on agent-owned branches use the configured App bot email while exempting commits already
-reachable from `main`.
+The [authorship workflow](../../.github/workflows/authorship-check.yml) checks that commits introduced
+on agent-owned branches use the configured App bot email while exempting commits already reachable
+from `main`. It is required when the protected milestone workflow is enabled because the
+`agent-main` ruleset requires its `authorship` check.
 
 ## Rulesets and local guard
 

@@ -70,7 +70,13 @@ Decomposes a single approved plan into its story set, ensures cross-story cohere
        be empty for infrastructure stories)
    Ensure the dependency graph is acyclic and every plan obligation is traceable to at least one story task or acceptance criterion.
 
-11. **Apply completion gates.** Verify the story set satisfies the Story completeness criteria in `resources/agent/artifact-standards.md`: no open questions, no figure-it-out items, no missing footprint metadata. Verify **flow → story coverage**: every flow in the milestone's §4 flow definitions is covered by at least one story in the set (across all plans for the milestone; `milestone-generation-coordinator`'s coverage check is the backstop). If any gate fails, return to Operation 9.
+11. **Apply completion gates.** Verify the story set satisfies the Story completeness criteria in
+    `resources/agent/artifact-standards.md`: no open questions, no figure-it-out items, no missing
+    footprint metadata, and every specialization-defined task has a registered kind and complete
+    contract. Verify **flow → story coverage**: every flow in the milestone's §4 flow definitions is
+    covered by at least one story in the set (across all plans for the milestone;
+    `milestone-generation-coordinator`'s coverage check is the backstop). If any gate fails, return to
+    Operation 9.
 
 12. **Final checkpoint (if `checkpoint_mode` is `end`).** Update the plan file’s story-breakdown/status section to list every generated story with status `Not Started`. Update `memory-bank/planning/stories/active-stories/toc.md` with the full set.
 

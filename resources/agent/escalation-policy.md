@@ -54,8 +54,8 @@ specification vocabulary and product-domain vocabulary are easily confused.
 ## Detection and routing
 
 - **Who detects.** `spec-reviewer`/`design-critic` (specs), `plan-reviewer`/`plan-critic`/`design-critic`
-  (plans), `story-reviewer`/`story-critic`/`design-critic` (stories), `code-reviewer`/`code-critic` and
-  `write-reviewer`/`write-critic` (implementations), and any implementor via the `Blocked` status.
+  (plans), `story-reviewer`/`story-critic`/`design-critic` (stories), each task kind's registered
+  reviewer/verifier/critic (implementations), and any implementor via the `Blocked` status.
 - **Who decides the disposition.** The owning coordinator. A worker, reviewer, or critic reports
   findings and a proposed disposition; it never escalates to the human directly.
 - **Routing.** Worker → its coordinator. Coordinator → its invoker. The top-level coordinators
@@ -69,9 +69,9 @@ Two independent ladders. Neither applies to a `Blocked` result.
 
 - **Review-fix iterations (per implementor tier):** up to **3** implement → review cycles. If blocking
   findings persist after the third cycle, move up the implementor ladder.
-- **Implementor ladder:** `small-code-implementor` / `small-write-implementor` → `code-implementor` /
-  `write-implementor` → `big-code-implementor` / `big-write-implementor`. After the big tier fails,
-  escalate to the coordinator's invoker.
+- **Implementor ladder:** use the selected task kind's ordered `implementors` list and
+  `failure_retries_per_implementor` from `resources/agent/task-kinds.json`. After its final entry
+  fails, escalate to the coordinator's invoker.
 - **Blocked results:** an implementor that returns `Blocked — needs decision` (categories 1 or 5) does
   **not** consume either ladder. Escalate immediately. A bigger implementor cannot make an
   undecided design decision.

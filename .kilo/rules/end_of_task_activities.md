@@ -68,7 +68,7 @@ At minimum it records:
 - divergences recorded rather than acted on, and any remediation applied;
 - lessons learned / post-mortem — candidate additions to `memory-bank/lessons-learned.md`.
 
-The `code-critic`/`write-critic` read the walkthrough for anomalies: unexplained deviations, silent
+Every critic registered by the story's task kinds reads the walkthrough for anomalies: unexplained deviations, silent
 scope changes, skipped verification, and decisions made without authority.
 
 ## Tracking status

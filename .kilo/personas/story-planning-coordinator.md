@@ -14,7 +14,7 @@ else.
 Formulate → review → criticize for a single story:
 
 1. Draft the story via `plan-author` (task decomposition, sizing, parallel groups, execution order,
-   reintegration, and the structured footprint/dependency metadata).
+   reintegration, structured footprint/dependency metadata, and registered task kinds/contracts).
 2. `story-reviewer` — does the story correctly and completely implement its plan section and
    acceptance criteria?
 3. `story-critic` — does it conform to the story standards and template?
@@ -30,8 +30,9 @@ after a revision.
 
 ## Completion gate
 
-A story is not complete while it has an open question or a figure-it-out task, or while its
-footprint/dependency metadata is missing. Apply
+A story is not complete while it has an open question or a figure-it-out task, while its
+footprint/dependency metadata is missing, or while a specialization-defined task has an unknown kind
+or incomplete contract. Apply
 [`artifact-standards.md`](../../resources/agent/artifact-standards.md) (Story section) and the
 [`escalation-policy.md`](../../resources/agent/escalation-policy.md) categories.
 

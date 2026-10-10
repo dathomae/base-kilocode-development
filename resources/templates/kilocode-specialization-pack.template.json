@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "name": "example-domain-kilocode",
+  "version": "0.1.0",
+  "kind": "specialization",
+  "requires": [
+    {
+      "name": "base-kilocode-development",
+      "version": "0.1.0"
+    }
+  ],
+  "exports": [
+    {
+      "source": ".kilo/personas",
+      "target": ".kilo/personas",
+      "strategy": "managed"
+    },
+    {
+      "source": "resources/example-domain",
+      "target": "resources/example-domain",
+      "strategy": "managed"
+    }
+  ],
+  "contributions": {
+    "agents": {
+      "source": "agents.json",
+      "source_key": "agent",
+      "target": "kilo.jsonc",
+      "target_key": "agent"
+    },
+    "task_kinds": {
+      "source": "task-kinds.json",
+      "source_key": "task_kinds",
+      "target": "resources/agent/task-kinds.json",
+      "target_key": "task_kinds"
+    }
+  }
+}

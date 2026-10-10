@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KiloCode task-kind registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_kinds"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": 1 },
+    "task_kinds": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/taskKind" }
+    }
+  },
+  "$defs": {
+    "taskKind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "artifact", "explicit_annotation_required", "implementors", "default_implementor", "failure_retries_per_implementor", "reviewer", "verifier", "critic", "contract_schema"],
+      "properties": {
+        "description": { "type": "string", "minLength": 1 },
+        "artifact": { "type": "string", "minLength": 1 },
+        "explicit_annotation_required": { "type": "boolean" },
+        "implementors": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "default_implementor": { "type": "integer", "minimum": 0 },
+        "failure_retries_per_implementor": { "type": "integer", "minimum": 0 },
+        "reviewer": { "type": "string", "minLength": 1 },
+        "verifier": { "type": ["string", "null"] },
+        "critic": { "type": "string", "minLength": 1 },
+        "contract_schema": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

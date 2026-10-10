@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "output": ".",
+  "packs": [
+    {
+      "path": "../base-kilocode-development",
+      "name": "base-kilocode-development",
+      "version": "0.1.0"
+    }
+  ]
+}
