@@ -98,13 +98,6 @@ set, preconditions, wave schedule, evaluation criteria and results, flow verific
 record, divergences, and remediations. `milestone-generation-coordinator` owns both; they are revised as
 issues arise or specifications change.
 
-# The historical archive
-
-`memory-bank/historical-archive/` is a frozen record of the planning documents from before the
-2026-09-16 planning reorganization. `memory-bank/specifications/design/historical-archive/` is a frozen
-record of the design Epic Restraining Orders. Do not edit files in either archive and do not add new
-work there.
-
 # The scripts directory
 
 Scripts encode step-by-step procedures. A script file ends in `.script.md`; a Prompt Driven Development

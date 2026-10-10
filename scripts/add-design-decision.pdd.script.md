@@ -2,8 +2,6 @@
 
 This script automates adding a design decision entry to a `*_design_decisions.md` file co-located with a design document. It either creates a new decisions file (from the template) or appends an entry to an existing one, and updates the relevant `toc.md`.
 
-> **Note:** EROs were reorganized on 2026-09-16. Pre-existing EROs are frozen in `memory-bank/specifications/design/historical-archive/` (paths preserved relative to `specifications/design/`); when a decision references one of them, point the reference at its historical-archive path. New EROs are created under the live ERO directory by `add-new-ero.pdd.script.md`.
-
 ## Parameters
 
 | Name             | Type   | Description                                                                                                                                                     | Required | Default Value |

@@ -1,9 +1,7 @@
 # Epic Restraining Order (ERO) Template
 
-> **Note:** Pre-2026-09-16 EROs are frozen in `memory-bank/specifications/design/historical-archive/`
-> (paths preserved relative to `specifications/design/`). This template is for new EROs, which are
-> created under the live ERO directory for the current organization. Epics are also archived, so the
-> "Related Epics" links in this template refer to the pre-reorganization layout.
+> **Note:** Create EROs in the project's live architecture or design ERO directory. The optional
+> "Related Epics" links apply only when the project has enabled `memory-bank/epics/`.
 
 An Epic Restraining Order (ERO) halts architectural chaos by documenting a single technical decision and its context, consequences, and alternatives. EROs capture the reasoning behind important technical choices to preserve institutional knowledge and enforce order on future decisions.
 

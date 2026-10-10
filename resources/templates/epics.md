@@ -1,10 +1,7 @@
 # Epic Story Template
 
-> **Suspended pending a decision.** Epics are not part of the current planning framework. The
-> former `memory-bank/epics/` directory was moved to `memory-bank/historical-archive/epics/` in
-> the 2026-09-16 planning reorganization and is frozen. This template is retained in case
-> epics return as a live concept; until then, the paths in the examples below refer to the
-> pre-reorganization layout.
+> **Optional planning aid.** Epics are not required by the current arcs, milestones, plans, and
+> stories framework. Use this template only when the project explicitly enables an epic layer.
 
 Epic stories group related stories into larger initiatives. Each epic is a single markdown file stored in `memory-bank/epics/`.
 

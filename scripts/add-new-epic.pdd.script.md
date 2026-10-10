@@ -1,10 +1,8 @@
 # Add New Epic
 
-> **Suspended pending a decision.** The `memory-bank/epics/` directory was moved to
-> `memory-bank/historical-archive/epics/` in the 2026-09-16 planning reorganization and is
-> frozen. The current planning framework under `memory-bank/planning/` has plans and stories
-> but no epics concept. Do not run this script until it is decided whether epics return as a
-> live concept; if they do, update the epic paths in this script to the new location first.
+> **Optional planning aid.** The current planning framework under `memory-bank/planning/` uses
+> arcs, milestones, plans, and stories without requiring epics. Run this script only when the
+> project has explicitly enabled the optional `memory-bank/epics/` layer.
 
 This script automates the process of adding a new epic to the project. It generates the next available epic number by scanning existing epics in the memory-bank/epics directory, creates a new epic file from the template, updates the epics toc.md, and manages story associations with appropriate linking based on story file existence.
 
@@ -73,7 +71,8 @@ This script automates the process of adding a new epic to the project. It genera
      - requirements: `[description](specifications/requirements/<doc_path>)`
      - architecture: `[description](specifications/architecture/<doc_path>)`
      - design: `[description](specifications/design/<doc_path>)`
-     - ero: `[description](specifications/design/historical-archive/<doc_path>)` for pre-2026-09-16 EROs (they are archived), or the live ERO directory for new ones
+     - ero: `[description](specifications/<doc_path>)`, where `doc_path` includes the live
+       architecture or design ERO directory
 
 10. Process the dependencies list:
     - For each dependency, format the link:

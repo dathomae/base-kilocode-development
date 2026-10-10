@@ -72,7 +72,7 @@ This script automates the process of adding a new Architecture Design Record (AD
 11. Process related epics:
     - If related_epics is empty, prepare an empty table placeholder
     - For each epic filename:
-      - Verify the epic file exists in `memory-bank/historical-archive/epics/` (epics are archived and frozen; see `memory-bank/historical-archive/README.md`)
+      - Verify the epic file exists in `memory-bank/epics/`
       - Extract the epic number from the filename
       - If found: create link `[Epic<NNN>_<name>.md](../epics/Epic<NNN>_<name>.md) - <status>`
       - If not found: use text `Epic<NNN>_<name>.md (not yet defined)`

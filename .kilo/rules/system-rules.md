@@ -78,12 +78,6 @@ specifications, or documentation. For source files, consult `src/toc.md` first, 
 names. Only resort to directory searching when the toc chain is insufficient. Context window is a
 precious resource; use it wisely.
 
-## Archive handling
-
-Ignore any path containing an `archive` directory unless the user explicitly directs otherwise. The
-`memory-bank/historical-archive/` and `memory-bank/specifications/design/historical-archive/` trees are
-frozen records and must not be edited.
-
 ## Core organization rules
 
 - [`organization.md`](organization.md) — directory structure and organization.

@@ -8,7 +8,6 @@ This file captures design decisions related to a specific design document. Desig
 - Naming: if the design doc is `<name>.md`, the decisions file is `<name>_design_decisions.md`
 - One design decisions file per design document (not per directory)
 - References must be to design documents and/or EROs, never to stories (which are transient)
-- Pre-2026-09-16 EROs are frozen in `memory-bank/specifications/design/historical-archive/`; reference them at their archive path. New EROs are created under the live ERO directory.
 
 ## Format
 
