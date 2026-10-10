@@ -2,6 +2,8 @@
 
 This script automates the process of issuing a new Epic Restraining Order (ERO) to the project. It generates the next available ERO number by scanning existing EROs, creates a new ERO file from the template, and updates the relevant toc.md file.
 
+> **Note:** The pre-2026-09-16 EROs were moved to `memory-bank/specifications/design/historical-archive/` and are frozen. This script does not scan or write to that archive. New EROs are created fresh under `memory-bank/specifications/<ero_location>/eros/`, aligned with the current organization and goals; because the live directory starts empty, numbering restarts at ERO001.
+
 ## Parameters
 
 | Name                  | Type   | Description                                                                                                                                   | Required | Default Value             |
@@ -37,7 +39,7 @@ This script automates the process of issuing a new Epic Restraining Order (ERO) 
    - Create a toc.md file with the standard ERO TOC header containing a list-formatted EROs section
 
 4. Scan for existing ERO files to determine the highest ERO number:
-   - List all files in the ERO directory matching the pattern "ERONNN\_\*.md" where NNN is a three-digit number
+   - List all files in the live ERO directory (the frozen `historical-archive/` is never scanned) matching the pattern "ERONNN\_\*.md" where NNN is a three-digit number
    - Extract the numeric portion (NNN) from each filename
    - Identify the maximum ERO number found
    - If no ERO files exist, use 0 as the maximum
@@ -56,7 +58,7 @@ This script automates the process of issuing a new Epic Restraining Order (ERO) 
 8. Process related epics:
    - If related_epics is empty, prepare an empty table placeholder
    - For each epic filename:
-     - Verify the epic file exists in `memory-bank/epics/`
+     - Verify the epic file exists in `memory-bank/historical-archive/epics/` (epics are archived and frozen; see `memory-bank/historical-archive/README.md`)
      - Extract the epic number from the filename
      - If found: create link `[Epic<NNN>_<name>.md](../epics/Epic<NNN>_<name>.md) - <status>`
      - If not found: use text `Epic<NNN>_<name>.md (not yet defined)`
@@ -150,7 +152,7 @@ Specific error conditions handled:
 - implementation_status: "Implemented"
 - related_epics: ["Epic001_data-persistence.md"]
 - related_documents:
-  - doc_path: "specifications/architecture/database_design.md", description: "Database Architecture Design"
+  - doc_path: "specifications/architecture/backend/foundation/database/overview.md", description: "Database Architecture Design"
 - ero_location: "architecture"
 
 **Expected output:**

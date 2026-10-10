@@ -1,3 +1,0 @@
-types
-    # Negative minimum length for String constraint - should fail analysis
-    BadMin = String(minimum=-1)

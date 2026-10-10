@@ -1,0 +1,23 @@
+# Agent runtime state
+.kilo/agent-manager.json
+.kilo/plans/
+.kilo/worktrees/
+/worktrees
+
+# Credentials and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Common generated content
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+node_modules/
+dist/
+build/
+coverage/
+*.log

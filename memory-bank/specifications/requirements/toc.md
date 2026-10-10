@@ -1,6 +1,3 @@
-# Requirements - Table of Contents
+# Requirements Table of Contents
 
-<!-- Add requirements entries below. Format:
-**[<file>.md](<file>.md)**
-: Brief description of the requirements covered.
--->
+No project requirements have been recorded yet.

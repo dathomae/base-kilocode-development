@@ -1,5 +1,11 @@
 # Epic Story Template
 
+> **Suspended pending a decision.** Epics are not part of the current planning framework. The
+> former `memory-bank/epics/` directory was moved to `memory-bank/historical-archive/epics/` in
+> the 2026-09-16 planning reorganization and is frozen. This template is retained in case
+> epics return as a live concept; until then, the paths in the examples below refer to the
+> pre-reorganization layout.
+
 Epic stories group related stories into larger initiatives. Each epic is a single markdown file stored in `memory-bank/epics/`.
 
 ## File Naming Convention
@@ -30,9 +36,9 @@ Explain the high-level objective this epic achieves. Describe the end state when
 
 List links to relevant documents. These links are relative to the `memory-bank` directory:
 
-- [requirements](specifications/requirements/requirements.md)
-- [architecture](specifications/architecture/architecture.md)
-- [design](specifications/design/design.md)
+- [requirements](../../memory-bank/specifications/requirements/README.md)
+- [architecture](../../memory-bank/specifications/architecture/README.md)
+- [design](../../memory-bank/specifications/design/README.md)
 
 ### 4. Dependencies
 
@@ -123,11 +129,11 @@ Database Layer Implementation
 
 ## Ultimate Goal
 
-Create a complete, tested database layer that provides consistent data access across all services. This layer will abstract database operations, enforce transactional boundaries, and support both relational and time-series data stores.
+Create a complete, tested database layer that provides consistent data access across all components. This layer will abstract database operations, enforce transactional boundaries, and support both relational and time-series data stores.
 
 ## References
 
-- [Database Design](../specifications/architecture/database_design.md)
+- [Database Design](../specifications/architecture/backend/foundation/database/overview.md)
 - [Storage Interface](../specifications/design/storage_interface.md)
 - [ERO001: Database Technology Selection](../specifications/design/ERO001_database-technology-selection.md)
 - [Story013_storage-interface.md](../stories/Story013_storage-interface.md) - Completed
@@ -152,7 +158,7 @@ Stories in this epic can generally be worked on in parallel, with the following 
 1. **Story042** depends on **Story041** - The SQL preprocessor requires the schema to be defined first
 2. **StoryXXX_migration-system** should follow **Story041** and **Story042** - Migration system needs to understand both schema and query patterns
 
-Stories from **Epic002: Service Infrastructure** may be interleaved with these stories as the service layer and database layer are developed in parallel.
+Stories from **Epic002: Service Infrastructure** may be interleaved with these stories as the domain layer and database layer are developed in parallel.
 
 ## Constraints
 

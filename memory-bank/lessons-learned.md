@@ -1,6 +1,3 @@
 # Lessons Learned
 
-<!-- Add lessons below. Format:
-**Lesson Title**
-: Longer description of the lesson, possibly containing examples.
--->
+Capture durable lessons that should constrain future planning and implementation.

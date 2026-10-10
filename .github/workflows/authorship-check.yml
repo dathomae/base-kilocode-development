@@ -1,0 +1,63 @@
+name: Authorship Check
+
+# Proves every commit on agent-main / story branches was authored by the GitHub App
+# installation. See resources/agent/git-workflow.md for the protected-branch model.
+# The check-run context is `authorship` and it is a required status check on
+# `agent-main`. It is NOT required on `main` (planning commits there are human-authored)
+# and NOT a required-check rule on `story/*` (a story branch is force-pushed after its
+# merge-based rebase onto agent-main, so a freshly pushed tip has no check run yet).
+#
+# The evaluated range is the PR/push range `base..head` MINUS every commit already
+# reachable from `main` (the R3-3 main-reachability exemption). A merge-based main-sync PR
+# carries human-authored commits from `main`, so it passes; every App-authored story
+# commit is still checked.
+on:
+  pull_request:
+    branches: [agent-main]
+  push:
+    branches: [agent-main, "story/**"]
+
+jobs:
+  authorship:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify commits are App-authored
+        env:
+          EXPECTED_EMAIL: ${{ vars.AGENT_BOT_EMAIL }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${EXPECTED_EMAIL:-}" ]; then
+            echo "::error::Repository variable AGENT_BOT_EMAIL is not set; run scripts/setup-agent-github.py"
+            exit 1
+          fi
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="${{ github.event.pull_request.base.ref }}"
+          else
+            BASE_REF="agent-main"
+          fi
+
+          # Fail closed: any failure to resolve a range is a failure.
+          git fetch --no-tags origin "$BASE_REF" main
+          BASE="$(git merge-base HEAD "origin/$BASE_REF")"
+          HEAD_SHA="$(git rev-parse HEAD)"
+          MAIN="$(git rev-parse origin/main)"
+
+          # R3-3: exclude commits already reachable from `main`.
+          echo "Checking commits in ${BASE}..${HEAD_SHA} not reachable from main@${MAIN} against <${EXPECTED_EMAIL}>"
+
+          offenders="$(git log --format='%H%x09%ae%x09%an' "${BASE}..${HEAD_SHA}" --not "${MAIN}" \
+            | awk -F'\t' -v e="$EXPECTED_EMAIL" '$2 != e { print "  " $1 "  " $3 " <" $2 ">" }')"
+
+          if [ -n "$offenders" ]; then
+            echo "::error::Commits are not authored by the GitHub App (expected <${EXPECTED_EMAIL}>):"
+            echo "$offenders"
+            exit 1
+          fi
+
+          echo "All commits not reachable from main are App-authored."

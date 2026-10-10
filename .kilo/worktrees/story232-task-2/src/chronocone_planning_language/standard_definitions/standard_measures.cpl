@@ -1,3 +1,0 @@
-measures
-    Daily = Interval(starts_at=Midnight, unit=DayOfWeek)
-    Weekly = Interval(starts_at=StartOfWeek, unit=Duration)

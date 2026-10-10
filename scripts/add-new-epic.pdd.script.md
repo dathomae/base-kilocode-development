@@ -1,5 +1,11 @@
 # Add New Epic
 
+> **Suspended pending a decision.** The `memory-bank/epics/` directory was moved to
+> `memory-bank/historical-archive/epics/` in the 2026-09-16 planning reorganization and is
+> frozen. The current planning framework under `memory-bank/planning/` has plans and stories
+> but no epics concept. Do not run this script until it is decided whether epics return as a
+> live concept; if they do, update the epic paths in this script to the new location first.
+
 This script automates the process of adding a new epic to the project. It generates the next available epic number by scanning existing epics in the memory-bank/epics directory, creates a new epic file from the template, updates the epics toc.md, and manages story associations with appropriate linking based on story file existence.
 
 ## Parameters
@@ -57,7 +63,7 @@ This script automates the process of adding a new epic to the project. It genera
 
 8. For each story in the stories list, determine the link format:
    - Construct the expected story filename: `Story<NNN>_<story_name>.md` (note: story number is unknown, use placeholder or check if any story file exists with this name pattern)
-   - Search for any existing story files matching pattern `*_<story_name>.md` in `memory-bank/stories/` and `memory-bank/stories/finished-stories/`
+   - Search for any existing story files matching pattern `*_<story_name>.md` in `memory-bank/planning/stories/active-stories/` and `memory-bank/planning/stories/finished-stories/`
    - If found: use link format `[Story<NNN>_<story_name>.md](../stories/Story<NNN>_<story_name>.md)` with the actual story number
    - If not found: use text `StoryXXX_<story_name>.md (not yet defined)` where XXX is a placeholder indicating the story doesn't exist yet
    - If associated_ero is provided for the story, note the ERO reference for inclusion in the story table
@@ -67,7 +73,7 @@ This script automates the process of adding a new epic to the project. It genera
      - requirements: `[description](specifications/requirements/<doc_path>)`
      - architecture: `[description](specifications/architecture/<doc_path>)`
      - design: `[description](specifications/design/<doc_path>)`
-     - ero: `[description](specifications/design/<doc_path>)` or other appropriate location
+     - ero: `[description](specifications/design/historical-archive/<doc_path>)` for pre-2026-09-16 EROs (they are archived), or the live ERO directory for new ones
 
 10. Process the dependencies list:
     - For each dependency, format the link:

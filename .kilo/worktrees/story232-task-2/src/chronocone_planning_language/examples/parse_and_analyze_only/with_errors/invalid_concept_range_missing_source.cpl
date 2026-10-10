@@ -1,7 +1,0 @@
-# Invalid Concept Range - Missing Source
-# Concept Range references a concept that does not exist.
-# From Story128/Story129: CPL Concepts Parser/Analyzer - Concept Range
-
-concepts
-	# Subset references MissingConcept which is not defined
-	Subset=[MissingConcept[Foo..Bar]]

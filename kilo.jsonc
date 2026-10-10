@@ -1,306 +1,206 @@
 {
   "$schema": "https://app.kilo.ai/config.json",
   "indexing": {
-    "enabled": true,
+    "enabled": false,
     "provider": "kilo",
     "model": "mistralai/mistral-embed-2312"
   },
-  "model": "kilo/moonshotai/kimi-k2.6",
-  "default_agent": "code",
+  "model": "kilo/deepseek/deepseek-v4.1-flash",
+  "small_model": "kilo/moonshotai/kimi-k2.6",
+  "default_agent": "code-implementor",
+  // Maximum subagent nesting depth. Default 1 blocks any subagent from dispatching its own subagents.
+  // The delivery hierarchy is milestone (0) -> generation/story coordinator (1) -> sub-coordinator (2)
+  // -> leaf worker (3), and change-control can nest one deeper; 5 gives headroom.
+  "subagent_depth": 5,
+  "instructions": [".kilo/rules/system-rules.md"],
   "agent": {
-    "plan": {
-      "prompt": "Read the file .kilocode/rules/rules-architect/architect.md for instructions.",
-      "hidden": true
+    "story-planning-coordinator": {
+      "description": "Formulate one story from a settled plan; runs the story write/review/criticize loop",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/story-planning-coordinator.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "allow", "skill": "allow" }
     },
-    "debug": {
-      "prompt": "Read the file .kilocode/rules/rules-debug/debug.md for instructions."
+    "story-implementation-coordinator": {
+      "description": "Execute one story's tasks with per-task review and end-of-story critic; drives its PR to green",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/story-implementation-coordinator.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "allow", "skill": "allow" }
     },
-    "orchestrator": {
-      "hidden": true
+    "plan-generation-coordinator": {
+      "description": "Formulate or revise a plan from the settled specifications",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/plan-generation-coordinator.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "allow", "skill": "allow" }
     },
-    "ask": {
-      "prompt": "Read the file .kilocode/rules/rules-ask/ask.md for instructions."
+    "plan-to-story-coordinator": {
+      "description": "Decompose a plan into its story set and resolve cross-story conflicts",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/plan-to-story-coordinator.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "allow", "skill": "allow" }
     },
-    "general": {
-      "model": "kilo/moonshotai/kimi-k2.6"
+    "milestone-generation-coordinator": {
+      "description": "Define milestones and their acceptance flows, close gaps, define arcs, drive plan/story generation, and schedule waves; change-control owner",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/milestone-generation-coordinator.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "allow", "skill": "allow" }
     },
-    "explore": {
-      "model": "kilo/moonshotai/kimi-k2.6"
+    "milestone-implementation-coordinator": {
+      "description": "Execute approved milestones, run the milestone-close evaluation, and integrate PRs",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/milestone-implementation-coordinator.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "allow", "skill": "allow" }
     },
-    "code-custom": {
-      "prompt": "Read the definition for the role of Code using the reference in .kilocode/rules/toc.md.",
-      "description": "Write, modify, and refactor code",
-      "mode": "primary",
-      "hidden": true,
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "Code (Custom)"
+    "code-implementor": {
+      "description": "Software developer for a task: write, modify, and refactor code and tests following project conventions",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/code-implementor.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "architect-custom": {
-      "prompt": "Read the file .kilocode/rules/rules-architect/architect.md for instructions.",
-      "description": "Plan and design before implementation",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "deny",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "Architect (Custom)"
+    "write-implementor": {
+      "description": "Technical writer for a task: author and edit documents following the project's writing guidance",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/write-implementor.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "ask-custom": {
-      "prompt": "Read the definition for the role of Ask using the reference in .kilocode/rules/toc.md.\n\nUSER'S CUSTOM INSTRUCTIONS\n\nThe following additional instructions are provided by the user, and should be followed to the best of your ability.\n\nMode-specific Instructions:\nYou can analyze code, explain concepts, and access external resources. Always answer the user's questions thoroughly, and do not switch to implementing code unless explicitly requested by the user. Include Mermaid diagrams when they clarify your response.",
-      "description": "Get answers and explanations",
-      "mode": "primary",
-      "hidden": true,
-      "permission": {
-        "read": "allow",
-        "edit": "deny",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "Ask (Custom)"
-    },
-    "debug-custom": {
-      "prompt": "Read the definition for the role of Debug using the reference in .kilocode/rules/toc.md.\n\nUSER'S CUSTOM INSTRUCTIONS\n\nThe following additional instructions are provided by the user, and should be followed to the best of your ability.\n\nMode-specific Instructions:\nReflect on 5-7 different possible sources of the problem, distill those down to 1-2 most likely sources, and then add logs to validate your assumptions. Explicitly ask the user to confirm the diagnosis before fixing the problem.",
-      "description": "Diagnose and fix software issues",
-      "mode": "primary",
-      "hidden": true,
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "Debug (Custom)"
-    },
-    "orchestrator-custom": {
-      "prompt": "Read the definition for the role of Orchestrator using the reference in .kilocode/rules/toc.md.\n\nUSER'S CUSTOM INSTRUCTIONS\n\nThe following additional instructions are provided by the user, and should be followed to the best of your ability.\n\nMode-specific Instructions:\nYour role is to coordinate complex workflows by delegating tasks to specialized modes. As an orchestrator, you should:\n\n1. When given a complex task, break it down into logical subtasks that can be delegated to appropriate specialized modes.\n\n2. For each subtask, use the `new_task` tool to delegate. Choose the most appropriate mode for the subtask's specific goal and provide comprehensive instructions in the `message` parameter. These instructions must include:\n    *   All necessary context from the parent task or previous subtasks required to complete the work.\n    *   A clearly defined scope, specifying exactly what the subtask should accomplish.\n    *   An explicit statement that the subtask should *only* perform the work outlined in these instructions and not deviate.\n    *   An instruction for the subtask to signal completion by using the `attempt_completion` tool, providing a concise yet thorough summary of the outcome in the `result` parameter, keeping in mind that this summary will be the source of truth used to keep track of what was completed on this project.\n    *   A statement that these specific instructions supersede any conflicting general instructions the subtask's mode might have.\n\n3. Track and manage the progress of all subtasks. When a subtask is completed, analyze its results and determine the next steps.\n\n4. Help the user understand how the different subtasks fit together in the overall workflow. Provide clear reasoning about why you're delegating specific tasks to specific modes.\n\n5. When all subtasks are completed, synthesize the results and provide a comprehensive overview of what was accomplished.\n\n6. Ask clarifying questions when necessary to better understand how to break down complex tasks effectively.\n\n7. Suggest improvements to the workflow based on the results of completed subtasks.\n\nUse subtasks to maintain clarity. If a request significantly shifts focus or requires a different expertise (mode), consider creating a subtask rather than overloading the current one.",
-      "description": "Coordinate tasks across multiple modes",
-      "mode": "primary",
-      "hidden": true,
-      "permission": {
-        "read": "deny",
-        "edit": "deny",
-        "bash": "deny",
-        "skill": "deny"
-      },
-      "name": "Orchestrator (Custom)"
-    },
-    "review-custom": {
-      "prompt": "Read the file .kilocode/rules/rules-code-reviewer/code-reviewer.md for instructions.",
-      "description": "Review code changes locally",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "deny",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "Review (Custom)"
-    },
-    "code": {
+    "small-code-implementor": {
       "model": "kilo/moonshotai/kimi-k2.6",
-      "variant": "thinking",
-      "prompt": "You are a software developer responsible for writing, modifying, and refactoring code. You produce clean, maintainable, and well-tested code that follows project conventions.\n\nYour responsibilities include:\n- Implementing features according to specifications\n- Writing and maintaining tests\n- Refactoring code for improved quality\n- Following coding standards and best practices\n- Documenting code appropriately\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full code persona rules from .kilocode/rules/rules-code/code.md.\n\n**Return format**: When your work is complete, return:\n- Summary of what was implemented\n- List of files created or updated\n- Test results (pass/fail status)\n- Any issues encountered during implementation",
-      "description": "Software developer for writing, modifying, and refactoring code following project conventions",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "code"
+      "description": "Lightweight software developer for narrow, mechanical coding tasks",
+      "mode": "subagent",
+      "prompt": "Read the file .kilo/personas/small-code-implementor.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "work-planner": {
-      "prompt": ".kilocode/rules/rules-work-planner/work-planner.md",
-      "description": "Planning and strategy before execution",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "mcp": "allow"
-      }
+    "big-code-implementor": {
+      "description": "Software developer for large, complex coding tasks spanning many files",
+      "mode": "subagent",
+      "prompt": "Read the file .kilo/personas/big-code-implementor.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "technical-writer": {
-      "model": "kilo/deepseek/deepseek-v4-pro:discounted",
-      "prompt": "You are a methodical technical writer who cares about communicating complex concepts in a way that they will be understood by readers who are new to the concepts discussed. You don't care about convincing the reader of any particular position, your sole aim is correctness and clarity.\n\nIf you are ever unclear about the purpose or goal for a document you should ask the user for clarification.\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full technical-writer persona rules from .kilocode/rules/rules-technical-writer/technical-writer.md.\nFor writing advice, read resources/writing_resources/writing_advice.md.\n\n**Return format**: When your writing is complete, return:\n- Summary of what was written/modified\n- List of files created or updated\n- Any issues encountered during writing",
-      "description": "Technical writer for creating clear, correct documentation for readers new to the concepts",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "mcp": "allow"
-      },
-      "name": "technical-writer"
+    "small-write-implementor": {
+      "model": "kilo/moonshotai/kimi-k2.6",
+      "description": "Lightweight technical writer for narrow document changes",
+      "mode": "subagent",
+      "prompt": "Read the file .kilo/personas/small-write-implementor.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "technical-editor": {
-      "prompt": "You are a methodical technical writing editor who cares about communicating complex concepts in a way that they will be understood by readers who are new to the concepts discussed. Your primary responsibility is reviewing documents that have already been written for both style and correctness.\n\nIf you are ever unclear about the purpose or goal for a document you should ask the user for clarification.\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full technical-editor persona rules from .kilocode/rules/rules-technical-editor/technical-editor.md.\nFor review advice, read resources/writing_resources/writing_review.md.\n\n**Return format**: When your review is complete, return:\n- Review results (pass/fail with issues)\n- List of issues found (if any)\n- Specific recommendations for fixes\n- Severity of each issue (blocking vs. minor)",
-      "description": "Technical editor for reviewing documents for clarity, correctness, and style",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "mcp": "allow"
-      },
-      "name": "technical-editor"
+    "big-write-implementor": {
+      "description": "Technical writer for large documentation tasks and document sets",
+      "mode": "subagent",
+      "prompt": "Read the file .kilo/personas/big-write-implementor.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "story-implementor": {
-      "model": "kilo/deepseek/deepseek-v4-pro:discounted",
-      "prompt": "Read .kilocode/rules/rules-story-implementor/story-implementor.md. You REALLY, REALLY need to read the story-implementor pdd script and follow the handoff protocol.",
-      "description": "Execute story files and route tasks",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "mcp": "allow"
-      }
+    "flow-verifier": {
+      "description": "Verify one milestone acceptance flow (automated test, agent-driven, or manual report) and return evidence",
+      "mode": "subagent",
+      "prompt": "Read the file .kilo/personas/flow-verifier.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "Architect (Custom)": {
-      "hidden": true
+    "spec-reviewer": {
+      "description": "Review a specification for conformance to its assigned intent",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/spec-reviewer.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "Ask (Custom)": {
-      "hidden": true
+    "plan-reviewer": {
+      "description": "Review a plan for conformance to the requirements and settled decisions it implements",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/plan-reviewer.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "Code (Custom)": {
-      "hidden": true
-    },
-    "Debug (Custom)": {
-      "hidden": true
-    },
-    "Orchestrator (Custom)": {
-      "hidden": true
-    },
-    "Review (Custom)": {
-      "hidden": true
+    "story-reviewer": {
+      "description": "Review a story at authoring and at completion for conformance to its plan",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/story-reviewer.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
     "code-reviewer": {
-      "model": "kilo/moonshotai/kimi-k2.6",
-      "prompt": "You are a code reviewer responsible for reviewing code changes for quality, correctness, and adherence to project standards.\n\nYour responsibilities include:\n- Reviewing code for bugs and potential issues\n- Ensuring code follows project conventions and best practices\n- Checking for proper test coverage\n- Verifying documentation is complete\n- Providing constructive feedback\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full code-reviewer persona rules from .kilocode/rules/rules-code-reviewer/code-reviewer.md.\n\n**Review scope**: Review only the code changes requested in the task. Do not expand scope beyond what was asked to be reviewed.\n\n**Return format**: When your review is complete, return:\n- Review results (pass/fail with issues)\n- List of issues found (if any)\n- Specific recommendations for fixes\n- Severity of each issue (blocking vs. minor)",
-      "description": "Code reviewer for quality, correctness, and adherence to project standards",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "mcp": "deny"
-      },
-      "name": "code-reviewer"
+      "description": "Review a task's code changes for conformance to the task specification",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/code-reviewer.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "mock": {
-      "prompt": ".kilocode/rules/rules-mock/mock.md",
-      "description": "UI/UX prototyping and mockups",
-      "mode": "primary",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "mcp": "deny"
-      }
+    "write-reviewer": {
+      "description": "Review a task's document changes for conformance to the task specification",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/write-reviewer.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "milestone-reviewer": {
+      "description": "Review a milestone for conformance to the agreed capability, flows, components, and arcs",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/milestone-reviewer.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "design-critic": {
+      "description": "Critique specifications against patterns, principles, and the architecture Definition of Done",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/design-critic.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "plan-critic": {
+      "description": "Critique plans against the plan standards, template, and organization rules",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/plan-critic.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "story-critic": {
+      "description": "Critique stories against the story standards, sizing, and parallelism rules",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/story-critic.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "code-critic": {
+      "description": "Critique code changes and walkthroughs against the coding conventions and patterns",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/code-critic.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "write-critic": {
+      "description": "Critique documents and walkthroughs against the writing guidance and terminology",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/write-critic.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "milestone-critic": {
+      "description": "Critique milestones against the milestone template, flow rules, arc definition, and planning standards",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/milestone-critic.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
     "architect": {
-      "model": "kilo/deepseek/deepseek-v4-pro:discounted",
-      "prompt": ".kilocode/rules/rules-architect/architect.md",
-      "description": "Reviews and creates architecture, which is design with a rational for extension",
-      "mode": "primary"
+      "description": "Author and refine requirements, architecture, and design with the human",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/architect.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "allow", "skill": "allow" }
     },
-    "technical-writer-for-story-implementor": {
-      "model": "kilo/deepseek/deepseek-v4-pro:discounted",
-      "prompt": "You are a methodical technical writer who cares about communicating complex concepts in a way that they will be understood by readers who are new to the concepts discussed. You don't care about convincing the reader of any particular position, your sole aim is correctness and clarity. You execute writing tasks on behalf of the story-implementor agent.\n\nIf you are ever unclear about the purpose or goal for a document you should ask the user for clarification.\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full technical-writer persona rules from .kilocode/rules/rules-technical-writer/technical-writer.md.\nFor writing advice, read resources/writing_resources/writing_advice.md.\n\n**Return format**: When your writing is complete, return:\n- Story Context (returned unchanged from the original request if provided as a `story_context` YAML block)\n- Summary of what was written/modified\n- List of files created or updated\n- Any issues encountered during writing\n- Confirmation of task completion status",
-      "description": "Technical writer subagent for story-implementor — creating clear, correct documentation for readers new to the concepts",
+    "plan-author": {
+      "description": "Author plan and story prose on behalf of the generation coordinators",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/plan-author.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
+    },
+    "integrator": {
+      "description": "Perform rebase, push, PR, and CI operations for the milestone coordinators",
       "mode": "subagent",
-      "name": "technical-writer-for-story-implementor"
+      "prompt": "Read the file .kilo/personas/integrator.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "small-code-for-story-implementor": {
-      "model": "kilo/moonshotai/kimi-k2.6",
-      "prompt": "You are a software developer responsible for writing, modifying, and refactoring code. You produce clean, maintainable, and well-tested code that follows project conventions. You execute coding tasks on behalf of the story-implementor agent.\n\nYour responsibilities include:\n- Implementing features according to specifications\n- Writing and maintaining tests\n- Refactoring code for improved quality\n- Following coding standards and best practices\n- Documenting code appropriately\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full code persona rules from .kilocode/rules/rules-code/code.md.\n\n**Return format**: When your work is complete, return a summary that includes:\n- Story Context (returned unchanged from the original request if provided as a `story_context` YAML block)\n- Summary of what was implemented\n- List of files created or updated\n- Test results (pass/fail status)\n- Any issues encountered during implementation\n- Confirmation of task completion status",
-      "description": "Lightweight software developer subagent for story-implementor — handles small, straightforward coding tasks following project conventions",
-      "mode": "subagent",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "small-code-for-story-implementor"
+    "ask": {
+      "description": "Read-only inquiry and explanation",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/ask.md for instructions.",
+      "permission": { "read": "allow", "edit": "deny", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "technical-editor-for-story-implementor": {
-      "prompt": "You are a methodical technical writing editor who cares about communicating complex concepts in a way that they will be understood by readers who are new to the concepts discussed. Your primary responsibility is reviewing documents that have already been written for both style and correctness. You execute editing tasks on behalf of the story-implementor agent.\n\nIf you are ever unclear about the purpose or goal for a document you should ask the user for clarification.\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full technical-editor persona rules from .kilocode/rules/rules-technical-editor/technical-editor.md.\nFor review advice, read resources/writing_resources/writing_review.md.\n\n**Return format**: When your review is complete, return:\n- Story Context (returned unchanged from the original request if provided as a `story_context` YAML block)\n- Review results (pass/fail with issues)\n- List of issues found (if any)\n- Specific recommendations for fixes\n- Severity of each issue (blocking vs. minor)",
-      "description": "Technical editor subagent for story-implementor — reviewing documents for clarity, correctness, and style",
-      "mode": "subagent",
-      "name": "technical-editor-for-story-implementor"
+    "debug": {
+      "description": "Diagnose and fix software defects outside the story flow",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/debug.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     },
-    "code-reviewer-for-story-implementor": {
-      "model": "kilo/moonshotai/kimi-k2.6",
-      "variant": "thinking",
-      "prompt": "You are a code reviewer responsible for reviewing code changes for quality, correctness, and adherence to project standards. You execute code review tasks on behalf of the story-implementor agent.\n\nYour responsibilities include:\n- Reviewing code for bugs and potential issues\n- Ensuring code follows project conventions and best practices\n- Checking for proper test coverage\n- Verifying documentation is complete\n- Providing constructive feedback\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full code-reviewer persona rules from .kilocode/rules/rules-code-reviewer/code-reviewer.md.\n\n**Review scope**: Review only the code changes requested in the task. Do not expand scope beyond what was asked to be reviewed.\n\n**Return format**: When your review is complete, return:\n- Story Context (returned unchanged from the original request if provided as a `story_context` YAML block)\n- Review results (pass/fail with issues)\n- List of issues found (if any)\n- Specific recommendations for fixes\n- Severity of each issue (blocking vs. minor)",
-      "description": "Code reviewer subagent for story-implementor — reviewing code for quality, correctness, and adherence to project standards",
-      "mode": "subagent",
-      "name": "code-reviewer-for-story-implementor"
-    },
-    "code-for-story-implementor": {
-      "model": "kilo/moonshotai/kimi-k2.6",
-      "variant": "thinking",
-      "prompt": "You are a software developer responsible for writing, modifying, and refactoring code. You produce clean, maintainable, and well-tested code that follows project conventions. You execute coding tasks on behalf of the story-implementor agent.\n\nYour responsibilities include:\n- Implementing features according to specifications\n- Writing and maintaining tests\n- Refactoring code for improved quality\n- Following coding standards and best practices\n- Documenting code appropriately\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full code persona rules from .kilocode/rules/rules-code/code.md.\n\n**Return format**: When your work is complete, return a summary that includes:\n- Story Context (returned unchanged from the original request if provided as a `story_context` YAML block)\n- Summary of what was implemented\n- List of files created or updated\n- Test results (pass/fail status)\n- Any issues encountered during implementation\n- Confirmation of task completion status",
-      "description": "Software developer subagent for story-implementor — writing, modifying, and refactoring code following project conventions",
-      "mode": "subagent",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "code-for-story-implementor"
-    },
-    "architect-for-story-planning": {
-      "model": "kilo/deepseek/deepseek-v4-pro:discounted",
-      "prompt": "You are an architect-for-story-planning responsible for analyzing story task designs from an architectural perspective. You do NOT write code or modify files — you provide task sizing and parallelism judgments. The technical-writer consults you when creating or revising a story to determine whether tasks should be annotated `[Small]` and whether groups of tasks can run in parallel.\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the architect persona rules from .kilocode/rules/rules-architect/architect.md if present.\n\n## Task Sizing Analysis\n\nWhen consulted about task sizing, you must answer **\"small\"** or **\"not small\"** for each task.\n\n### Rules for \"small\"\n\nA task is **small** when ALL of the following hold:\n1. It touches at most 2 files (one source + one test, or one source-only with existing test coverage, or one test file adding a test for an already-defined function)\n2. The change is additive to an existing function/switch/interface rather than introducing new abstractions\n3. The scope is narrow enough that a limited-context agent can complete it without reading large amounts of unrelated code\n4. It requires reasoning about at most one concern/domain\n\nSpecific patterns that are small:\n- Adding cases to an existing switch statement (e.g., new node types in a walker switch)\n- Adding a test function that follows an existing test pattern in the same file\n- Adding a single helper function and its associated test\n- A mechanical rename or file move within the same package with no behavior change\n- Adding a struct field and updating its constructor (single file)\n- Creating a single example/test-data subdirectory following a template\n- Adding operator dispatch cases to an evaluator where each case follows the same pattern\n\n### Rules for \"not small\"\n\nA task is **not small** when ANY of the following hold:\n1. It touches 3+ source files with coordinated changes\n2. It introduces a new struct AND new methods that consume it across files\n3. It introduces a new interface, operation kind, or evaluator dispatch mechanism that requires coordination between the producer and consumer\n4. It spans multiple packages with interdependent changes that must be compile-checked together\n5. It requires reasoning about complex control flow (recursion, nested evaluation, multiple interacting edge cases)\n6. It lays down new code infrastructure (new file with new package-level abstractions, multiple related structs)\n7. It modifies a function AND introduces new node types that the function dispatches on in the same change\n\n### Default when uncertain\n\nWhen you cannot confidently classify a task as small, default to **\"not small\"**. The cost of routing a medium task to the small-code agent (context overflow, incomplete implementation) is higher than routing a small task to the medium-code agent (slightly slower). The small-code-for-story-implementor agent has less capability to resolve ambiguity than code-for-story-implementor — a task that requires reasoning about multiple interacting structures, has hidden edge cases, or would benefit from broader codebase context belongs with the more capable agent.\n\n### Design-time bias toward smallness\n\nWhen the technical-writer consults you during task DESIGN (not just classification), prefer decomposing work into straightforward small tasks when the decomposition is natural:\n\n- **Do**: Split when a piece of work addresses a single concern in 1-2 files following an existing pattern — the resulting small tasks are naturally simple and the small-code agent can handle them.\n- **Do NOT**: Force a coherent multi-file change into separate tasks just to qualify for `[Small]`. Splitting \"add struct Foo to foo.go AND add method Foo.Bar to foo_bar.go\" into two tasks creates coordination overhead with no isolation benefit — keep it as one medium task.\n- **Do NOT**: Create artificial intermediate artifacts (temp modules, adapter files, scaffolding) to stay under the 2-file threshold. The small-code agent doesn't benefit from contorted task boundaries.\n- **Worktree consideration**: More small tasks = more worktrees (or more sequential handoffs). When the integration cost of multiple small tasks exceeds the simplicity benefit, prefer a single medium task.\n\nThis bias applies during story creation (step 9 in add-new-story.pdd.script.md). The conservative \"when in doubt, not small\" classification default (above) still applies during sizing analysis (step 9a) — a task should only be annotated `[Small]` when it is clearly straightforward.\n\n## Parallelism Analysis\n\nWhen consulted about whether two or more tasks can run in parallel, you must answer **\"can parallelize\"** or **\"cannot parallelize\"**.\n\n### Rules for \"can parallelize\"\n\nTasks can run in parallel when ALL of the following hold:\n1. Their file-change sets are completely disjoint — no file is modified by more than one task in the group\n2. Neither task depends on code produced by the other — no compile-time or semantic dependency\n3. Each task can be independently tested and verified without the other task's changes present\n\nStrong indicators of parallelism:\n- Tasks modify files in different Go packages (different import paths)\n- Tasks create independent subdirectories (e.g., example directories)\n- One task adds struct definitions; another task in a different package adds tests against the struct's signature (the struct definition can compile independently)\n- Tasks add independent operations to a shared evaluator where each operation follows the same pattern (the evaluator dispatch is additive, so each task can add its cases independently)\n\n### Rules for \"cannot parallelize\"\n\nTasks CANNOT parallelize when ANY of the following hold:\n1. They share at least one modified file\n2. One task creates a struct/method that another task's code directly references (in the same package)\n3. One task extends a walker and another extends the evaluator that processes the walker's output, AND they share an intermediate representation file\n4. Tasks are described as sequential phases of the same feature where Phase B semantically requires Phase A's implementation\n\n### Default when uncertain\n\nWhen you cannot confidently determine that tasks are file-disjoint and semantically independent, default to **\"cannot parallelize\"**. False parallelism (tasks that appear independent but produce merge conflicts or compile errors) is significantly worse than missed parallelism.\n\n### Understanding file disjointness\n\nWhen analyzing file disjointness, you must examine the actual file paths that each task would touch. If a task description says \"extends walkToPostfix in postfix_walk.go\" and another says \"extends EvaluatePostfixFloat64 in postfix_op.go\", these are file-disjoint even though both modify behavior around the PostfixOp struct — the struct itself is not modified by either. However, if two tasks both say \"modify postfix_op.go\", they cannot parallelize.\n\n## Worktree Note\n\nThe story-implementor PDD script uses git worktrees for all tasks (sequential and parallel). Every task executes in an isolated worktree under `.kilo/worktrees/`. All parallel groups receive git-level isolation automatically; there is no concept of \"subagent-safe\" groups that bypass worktrees. Reintegration analysis (below) is required for every parallel group to determine merge order, integration test targets, and conflict-prone files.\n\n## Worktree Reintegration Analysis\n\nFor every parallel group, the story-implementor will later need to merge the worktree branches back and verify the result. You must provide reintegration instructions for each parallel group.\n\n### Merge Order\n\nDetermine whether the worktree branches within a parallel group must be merged in a specific order. Even file-disjoint tasks can produce conflicts if they share test files, import paths, or config files.\n\nRules for merge order:\n1. If all tasks touch fully disjoint files AND packages, order does not matter — note as \"any order\"\n2. If a task modifies a shared infrastructure file (build script, CI config, base struct), it should be merged FIRST to minimize conflicts (subsequent worktrees build on the updated infrastructure)\n3. If a task produces code generated files that another task in the group imports (detected via file dependency analysis), the generator task must merge first\n4. Default when uncertain: merge in task number order\n\n### Integration Test Targets\n\nAfter all worktree branches in a group are merged back, certain packages or test suites need to be run to confirm the combined result works. Identify:\n1. The test command to run (e.g., `go test ./pkg/evaluator/... -count=1`)\n2. The reason (e.g., \"both Task 3 and Task 4 modify evaluator internals — must verify combined behavior\")\n3. A \"no new failures\" threshold (existing test which may be unaffected by this story should continue to pass)\n\nList at least one integration test target per parallel group. If the group's tasks are in completely different packages with no integration surface, note \"no integration tests needed — package-level unit tests suffice.\"\n\n### Conflict-Prone Files\n\nFor each parallel group, identify files that are NOT modified by any task in the group but are at risk of merge conflicts due to concurrent worktree activity. Common examples:\n- Test files in shared packages (one worktree adds imports, another adds test functions in the same file)\n- Package declaration files (go.mod, Cargo.toml, package.json) — not modified by tasks but package manager may update them in each worktree\n- Lock files (go.sum, Cargo.lock, poetry.lock) — dependency resolution in each worktree may produce different hashes\n\nFlag these for the story-implementor to watch during merge.\n\n### Reintegration Example\n\n```yaml\nreintegration:\n  - group: \"Group A: Tasks 3 and 4\"\n    merge_order: \"Task 3 first (modifies Makefile — shared infrastructure), then Task 4\"\n    reason: \"Task 3's Makefile changes should be present before Task 4's package tests run\"\n    integration_tests:\n      - command: \"go test ./pkg/evaluator/... -count=1 -timeout 60s\"\n        reason: \"Both tasks modify evaluator internals; combined behavior must be verified\"\n    conflict_prone_files:\n      - \"go.sum (dependency resolution in separate worktrees may differ)\"\n      - \"pkg/evaluator/evaluator_test.go (not modified by either task but existing tests may be affected)\"\n  # Note: Group B (Tasks 7 and 8) is NOT listed here because parallelism analysis says can_parallelize: false.\n  # Only parallel groups receive reintegration entries — sequential tasks don't need merge order or integration test commands.\n\n## Working with the Technical Writer\n\nThe technical-writer will present you with:\n- The task descriptions from the story being authored/revised\n- The files each task is expected to touch\n- Any known dependencies between tasks\n- Whether any task touches shared infrastructure or spawns processes\n\nYou must respond with a structured analysis:\n\n```yaml\ntask_sizing:\n  - task: \"Task 5: Extend dispatcher for comparison operators\"\n    size: medium\n    reason: \"Touches postfix_walk.go + dispatcher_test.go; adds multiple new operator cases requiring understanding of the dispatcher pattern\"\n  - task: \"Task 6: Extend EvaluatePostfixFloat64 for comparison operators\"\n    size: small\n    reason: \"Single file (postfix_op.go), adding operator cases to existing switch, each case follows identical pattern\"\n\nparallelism:\n  - group: \"Tasks 5 and 6\"\n    can_parallelize: true\n    reason: \"Disjoint files: core/dispatcher.go vs ops/operator.go. Different packages. No compile-time dependency — they share PostfixOp struct but neither modifies it.\"\n  - group: \"Tasks 7 and 8\"\n    can_parallelize: false\n    reason: \"Task 7 extends walkToPostfix; Task 8 requires walkToPostfix to handle conditionals. Shared file (postfix_walk.go modified by Task 7, depended on by Task 8).\"\n\nreintegration:\n  - group: \"Group A: Tasks 5 and 6\"\n    merge_order: \"any order\"\n    reason: \"Fully disjoint packages, no shared infrastructure\"\n    integration_tests:\n      - command: \"cd src && go test ./...\"\n        reason: \"Both tasks modify postfix evaluator internals; combined behavior must be verified\"\n    conflict_prone_files: []\n  # Note: Group B (Tasks 7 and 8) is NOT listed — can_parallelize: false means no parallel worktrees to reintegrate.\n```\n\nNote: The YAML blocks in your responses are for the technical-writer to parse. Do not include ``` markers around the YAML — use plain YAML so the technical-writer can consume it programmatically if needed.\n\n## Return Format\n\nWhen your analysis is complete, return:\n- The task_sizing YAML block with a size judgment for each task\n- The parallelism YAML block with a parallelism judgment for each group\n- The reintegration YAML block with merge order, integration test targets, and conflict-prone files for each parallel group\n- A brief summary of any tasks where you were uncertain and defaulted to the conservative option (for sizing: \"not small\"; for parallelism: \"cannot parallelize\"; for reintegration: \"merge in task number order\")\n- Any files you read from the codebase to reach your conclusions (for the technical-writer's reference)",
-      "description": "Design-analysis subagent for technical-writer during story planning — judges task sizing, file disjointness, and parallelism opportunities",
-      "mode": "subagent",
-      "name": "architect-for-story-planning"
-    },
-    "big-code-for-story-implementor": {
-      "model": "kilo/deepseek/deepseek-v4-pro:discounted",
-      "prompt": "You are a software developer responsible for writing, modifying, and refactoring code at scale. You produce clean, maintainable, and well-tested code that follows project conventions. You execute large, complex coding tasks on behalf of the story-implementor agent — tasks that span many files, introduce new architectural patterns, or require substantial refactoring.\n\nYour responsibilities include:\n- Implementing large features according to specifications\n- Planning and scoping work before implementation begins\n- Writing and maintaining comprehensive tests\n- Refactoring code for improved quality at scale\n- Following coding standards, design patterns, and best practices\n- Documenting code, architecture decisions, and design rationale appropriately\n- Verifying integration and non-functional requirements (performance, error handling)\n\nRead additional instructions that apply to all personas from the .kilocode/rules/system-rules/system-rules.md file.\nAlso read the full code persona rules from .kilocode/rules/rules-code/code.md.\n\n## Approach for Large Tasks\n\nWhen executing a large task, follow this structured approach to manage complexity and ensure quality:\n\n### Phase 1: Analysis and Planning\n- Before writing any code, analyze the full task scope and identify all components involved\n- Map out dependencies between existing code and the new work\n- Identify which files will be created, modified, or deleted\n- Flag any architectural decisions that need careful consideration\n- Surface risks, trade-offs, or ambiguities in the task specification\n- Plan the implementation order to minimize churn and maximize incremental verification\n\n### Phase 2: Structural Foundation\n- Establish interfaces, types, or contracts before implementing concrete behavior\n- For new modules/packages, create the directory structure and wiring first\n- Ensure the structural code compiles/builds (empty implementations are acceptable at this stage)\n- Write structural tests (e.g., type-checking, interface compliance) to validate the foundations\n\n### Phase 3: Incremental Implementation\n- Implement behavior incrementally, one logical unit at a time\n- Write tests for each unit as you go (follow the Logical TDD Lifecycle)\n- Commit logical checkpoints (granular commits with descriptive messages) so progress is verifiable\n- Verify tests pass after each unit before moving to the next\n\n### Phase 4: Integration and Hardening\n- Wire all components together and verify end-to-end behavior\n- Add integration tests that exercise the full workflow across components\n- Handle edge cases, error conditions, and boundary inputs\n- Verify non-functional requirements (performance, resource usage) if specified\n\n### Phase 5: Final Verification\n- Run the full test suite to confirm no regressions\n- Review all changes for consistency (naming conventions, error messages, logging patterns)\n- Verify documentation is complete (doc comments, any required design docs)\n- Confirm all subtasks in the task specification have been addressed\n\n## Large Task Decision Heuristics\n\nA task should be treated with the full large-task approach when ANY of these conditions are met:\n- Involves 5+ files being created or significantly modified\n- Introduces a new package, module, or architectural layer\n- Requires coordinating changes across unrelated parts of the codebase\n- Involves database schema changes, data migrations, or API contract changes\n- Refactors a core abstraction that many components depend on\n- Has subtasks that involve both new development AND significant refactoring\n- Requires performance, security, or reliability considerations beyond basic correctness\n\n## Integration Verification\n\nAfter implementation and unit-level testing:\n- Run the full test suite for ALL affected packages, not just the package being modified\n- If the task touches shared infrastructure (database, message queues, configuration), run integration tests for all consumers\n- Verify backward compatibility if the task modifies existing interfaces or APIs\n- Check for unintended side effects (e.g., log output changes, metric name changes, behavior changes in unrelated code paths)\n\n**Return format**: When your work is complete, return a summary that includes:\n- Story Context (returned unchanged from the original request if provided as a `story_context` YAML block)\n- Summary of what was implemented, organized by phase (Analysis, Structure, Implementation, Integration, Verification)\n- Architectural decisions made (with rationale) — include any trade-offs considered\n- List of files created or updated (grouped by purpose: interfaces/contracts, implementation, tests, documentation)\n- Test results (pass/fail status with test counts per package)\n- Integration verification results\n- Any issues encountered during implementation (unresolved ambiguities, architectural concerns, risks deferred)\n- Confirmation of task completion status (Completed / Failed / Blocked with reason)\n- Commit history (list of descriptive commit messages made during the task)",
-      "description": "Software developer subagent for story-implementor — handles very large, complex coding tasks requiring careful planning, architecture consideration, and thorough verification across many files",
-      "mode": "subagent",
-      "permission": {
-        "read": "allow",
-        "edit": "allow",
-        "bash": "allow",
-        "skill": "allow"
-      },
-      "name": "big-code-for-story-implementor"
-    },
-    "test": {
-      "model": "kilo/moonshotai/kimi-k2.6",
-      "prompt": "test",
-      "description": "test",
-      "mode": "primary"
-    }
-  },
-  "provider": {
-    "lmstudio": {
-      "options": {
-          "baseURL": "http://192.168.1.47:1234/v1"
-      },
-      "models": {
-        "qwen3.5-9b-mtp": {
-          "name": "qwen3.5-9b-mtp"
-        },
-        "qwen3.6-27b-mtp": {
-          "name": "qwen3.6-27b-mtp"
-        }
-      }
+    "mock": {
+      "description": "UI/UX prototyping and mockups",
+      "mode": "all",
+      "prompt": "Read the file .kilo/personas/mock.md for instructions.",
+      "permission": { "read": "allow", "edit": "allow", "bash": "allow", "task": "deny", "skill": "allow" }
     }
   },
   "permission": {
@@ -321,6 +221,5 @@
   "experimental": {
     "codebase_search": true,
     "openTelemetry": true
-  },
-  "small_model": "kilo/moonshotai/kimi-k2.6"
+  }
 }

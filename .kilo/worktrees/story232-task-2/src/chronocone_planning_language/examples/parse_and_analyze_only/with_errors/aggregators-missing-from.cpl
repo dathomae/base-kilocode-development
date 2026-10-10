@@ -1,7 +1,0 @@
-# Missing From Clause Error Example
-
-concepts
-    Product = [Values[A, B]]
-
-aggregators
-    to [Product] = sum(Demand)
