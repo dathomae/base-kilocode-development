@@ -29,7 +29,8 @@ updated only when the installed value still matches the prior lock.
 
 ## Composition
 
-Create a project composition file from
+Follow [`project-setup.md`](project-setup.md) for the complete recipes for core-only,
+hardware/manufacturing, complex-system, and combined projects. Create a project composition file from
 `resources/templates/kilocode-composition.template.json`, pointing at local checkouts or unpacked
 release artifacts. Then run:
 

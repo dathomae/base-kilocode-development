@@ -44,7 +44,8 @@ The following operations are performed by **`story-implementation-coordinator`**
    ```bash
    current_branch=$(git branch --show-current)
    ```
-   If `current_branch` is `main` or `master`, stop immediately and warn the user. Do not proceed without explicit user confirmation that they intend to run on `main`.
+   If `current_branch` is `main` or `master`, stop immediately. This guard has no agent-side or
+   user-confirmation override: switch to `agent-main` or a branch created from it before continuing.
 
 6. **Read and parse the story.** Read the story file and extract:
    - **taskKindRegistry**: load `resources/agent/task-kinds.json`; verify every persona and contract
@@ -310,7 +311,7 @@ During execution, if an error is encountered, execution pauses and the user is a
 - Worktree deletion fails (orphaned directories, locked worktree).
 - `.kilo/setup-script.sh` execution fails in a worktree (task marked `Blocked`).
 - `worktrees/` symlink creation fails.
-- Not-on-main guard triggered without user confirmation.
+- Not-on-main guard triggered; switch to `agent-main` or a branch created from it.
 - CI failure (re-dispatch implementor with failure log; bounded retries).
 - End-of-story test failure (Operation 28 step 1).
 - Story toc.md or tracking register update failures.

@@ -10,4 +10,5 @@
 - [`resources/writing_resources/`](resources/writing_resources/) — writing and review guidance.
 - [`scripts/`](scripts/) — reusable agent workflows and setup utilities.
 - [`memory-bank/toc.md`](memory-bank/toc.md) — empty project documentation scaffold.
-- [`AGENT_REPOSITORY_SETUP.md`](AGENT_REPOSITORY_SETUP.md) — optional GitHub App workflow setup.
+- [`AGENT_REPOSITORY_SETUP.md`](AGENT_REPOSITORY_SETUP.md) — GitHub App and protected-branch setup,
+  required before agent milestone implementation.
