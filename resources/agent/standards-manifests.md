@@ -46,7 +46,8 @@ empty; no figure-it-out story; toc and naming conventions.
 - `memory-bank/specifications/toc-format-spec.md`.
 - `memory-bank/concepts.md` — the Logical TDD lifecycle.
 
-Checks: task sizing and `[Small]` routing; parallel groups are genuinely file-disjoint; execution order;
+Checks: task sizing and `[Small]` routing; registered `[Kind: <id>]` routing and required task contracts;
+parallel groups are genuinely file-disjoint; execution order;
 reintegration entries with merge order and integration tests; footprint/dependency metadata complete and
 schedule-ready; **flow coverage** (`flows:`) present where the story covers a flow, and a flow test
 present only where the flow's functionality is expected to exist; acceptance criteria verifiable;
@@ -115,6 +116,8 @@ assignment and its inputs:
 | `milestone-reviewer` | the milestone + the human-approved stage decisions (capability, sequence, components, flows, arcs, gap resolutions) + the cited requirements; scope = the milestone's `Stage` |
 
 A reviewer that lacks the context it needs must terminate and report the omission rather than guess.
+Specialization-defined reviewers receive the inputs required by their task-kind contract; their pack
+documents those inputs alongside the contributed registry entry.
 
 ## Verifiers' inputs
 

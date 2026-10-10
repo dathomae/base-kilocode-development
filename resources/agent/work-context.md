@@ -1,9 +1,10 @@
 # Work Context
 
 The work context is the structured handoff a coordinator passes to every subagent it dispatches. It
-generalizes the old `story_context` so the same schema serves coding, writing, review, and critic
-tasks at every level. Coordinators must include it; subagents must return it unchanged with their
-result so the coordinator can correlate results without re-deriving context.
+generalizes the old `story_context` so the same schema serves core and specialization-defined work,
+review, verification, and criticism at every level. Coordinators must include it; subagents must
+return it unchanged with their result so the coordinator can correlate results without re-deriving
+context.
 
 Related: [`report-formats.md`](report-formats.md), [`persona-registry.md`](persona-registry.md),
 [`escalation-policy.md`](escalation-policy.md), [`git-workflow.md`](git-workflow.md).
@@ -13,7 +14,8 @@ Related: [`report-formats.md`](report-formats.md), [`persona-registry.md`](perso
 ```yaml
 work_context:
   work_id: <stable id, e.g. StoryNNN-Task3 or PlanFoo-R2>
-  artifact: code | document | plan | story | spec | milestone
+  artifact: code | document | plan | story | spec | milestone | <registered artifact>
+  task_kind: <registered task-kind id; required for task-level implementation work>
   level: spec | plan | milestone | story | task
   assignment: <one-sentence statement of what the subagent must produce>
   source_root: <directory where build/test commands run>
@@ -26,6 +28,7 @@ work_context:
   upstream_decisions: [<settled decisions the work must implement, by reference>]
   acceptance_criteria: [<verifiable criteria for this work>]
   constraints: [<algorithmic, memory, package, or procedure constraints>]
+  task_contract: <specialization-defined object; required when the task kind names a contract schema>
   story_context: <unchanged passthrough when the work is part of a story>
   expected_return: <what the subagent must return; see report-formats.md>
   blocked_conditions: [<conditions under which the subagent must return Blocked — needs decision>]
@@ -53,6 +56,12 @@ work_context:
    the coordinator selects the persona (subagent type) and passes context only.
 8. **Size hints.** A coordinator may set `sizing: small | medium | large` to record its intended
    implementor tier; it is advisory and the coordinator retains the ladder decision.
+9. **Task kinds.** For task-level implementation, `task_kind` must name an entry in
+   `resources/agent/task-kinds.json`. The registry supplies the artifact type, implementor ladder,
+   reviewer, optional independent verifier, critic, and optional contract schema. An unknown task kind
+   is blocking.
+10. **Specialized contracts.** When the registry entry names `contract_schema`, `task_contract` is
+    required and must satisfy it before dispatch. Missing domain values are not inferred.
 
 ## Example (coding task inside a story)
 
@@ -60,6 +69,7 @@ work_context:
 work_context:
   work_id: Story042-Task2
   artifact: code
+  task_kind: code
   level: task
   assignment: Implement notification delivery retries per the story task.
   source_root: src

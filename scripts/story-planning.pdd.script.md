@@ -58,7 +58,7 @@ This script is executed by the **`story-planning-coordinator`** persona. It is i
      - `paths.read_only`: `[plan_file, <referenced specs>, STORY_TEMPLATE]`
      - `standards`: `[STORY_TEMPLATE, resources/agent/artifact-standards.md]`
      - `upstream_decisions`: `[plan §Settled decisions, plan §Scope, referenced spec sections]`
-     - `acceptance_criteria`: `[Complete story draft with Goal, References, Dependencies, Dependent Stories, structured footprint/dependency metadata, Tasks with [Small] routing, Task Sizing, Parallel Execution, Execution Order, Reintegration, Constraints, Intent, Acceptance Criteria, and Logical TDD notes]`
+     - `acceptance_criteria`: `[Complete story draft with Goal, References, Dependencies, Dependent Stories, structured footprint/dependency metadata, Tasks with [Small] sizing and registered [Kind: <id>] routing where applicable, complete specialization contracts, Task Sizing, Parallel Execution, Execution Order, Reintegration, Constraints, Intent, Acceptance Criteria, and Logical TDD notes]`
      - `expected_return`: Story draft content, list of files it expects to touch, and any escalation triggers (categories 1–5)
      - `blocked_conditions`: [A missing upstream decision, an open question in the plan, a requirement to make a design or architecture decision]
    - Instruct `plan-author` to produce a draft that includes:
@@ -67,7 +67,9 @@ This script is executed by the **`story-planning-coordinator`** persona. It is i
      - **Dependencies** (`blocked-by`): hard prerequisites by story id.
      - **Dependent Stories**: stories blocked by this one.
      - **Structured footprint/dependency metadata**: hard `blocked-by`, soft preferred-ordering dependencies, expected `footprint` (files/packages with `shared-infra` flags), and `conflicts-with` (leave empty; computed by `milestone-generation-coordinator`).
-     - **Tasks**: numbered tasks with statuses and `[Small]` routing annotations where appropriate.
+     - **Tasks**: numbered tasks with statuses, `[Small]` sizing annotations where appropriate, and
+       `[Kind: <id>]` for specialization-defined work. Load `resources/agent/task-kinds.json`; include
+       every field required by a selected kind's `contract_schema`.
      - **Task Sizing subsection**: which tasks are `[Small]` and why.
      - **Parallel Execution subsection**: genuinely file-disjoint groups with rationale.
      - **Execution Order subsection**: dependency graph showing sequential chains and parallel branches.
@@ -90,7 +92,10 @@ This script is executed by the **`story-planning-coordinator`** persona. It is i
      - `upstream_decisions`: same as step 5
      - `expected_return`: Report per `resources/agent/report-formats.md`
    - **`story-reviewer`**: Judge conformance to intent — does the story correctly and completely implement its plan section, with verifiable acceptance criteria and a task breakdown that reaches them? (See `resources/agent/report-formats.md`, Review report.)
-   - **`story-critic`**: Judge conformance to standards — story template, task sizing and `[Small]` routing, parallel-execution and reintegration rules, footprint/dependency schema, empty `Open Questions`, no figure-it-out items. (See `resources/agent/report-formats.md`, Critic report, and `resources/agent/standards-manifests.md`.)
+   - **`story-critic`**: Judge conformance to standards — story template, task sizing, `[Small]` and
+     registered `[Kind: <id>]` routing, specialization contracts, parallel-execution and reintegration
+     rules, footprint/dependency schema, empty `Open Questions`, no figure-it-out items. (See
+     `resources/agent/report-formats.md`, Critic report, and `resources/agent/standards-manifests.md`.)
    - **`design-critic`**: Judge whether the story avoids requiring a design or architecture decision, and whether it is consistent with applicable specs. (See `resources/agent/report-formats.md`, Critic report.) A task that asks the implementor to "figure out", "design", "choose", or "evaluate" an approach is a category 1 or 5 escalation trigger.
 
 8. **Collect findings and classify dispositions.**
@@ -119,6 +124,8 @@ This script is executed by the **`story-planning-coordinator`** persona. It is i
       - No task is a figure-it-out item (no "investigate/evaluate/choose/design/determine" where the subject is a requirements, architecture, or design matter).
       - Footprint/dependency metadata is present, specific, and sufficient for `milestone-generation-coordinator` to schedule without reading prose.
       - Every task implements an already-settled decision.
+      - Every specialized task kind is registered, explicitly annotated when required, and carries a
+        complete contract conforming to the registry entry's `contract_schema`.
       - Acceptance criteria are verifiable.
       - Dependencies are consistent with other stories in the plan.
     - If any gate fails, return to step 9 for revision or escalate per step 10 as appropriate.
@@ -150,6 +157,7 @@ This script is executed by the **`story-planning-coordinator`** persona. It is i
     - Summary statistics:
       - Total tasks
       - Tasks annotated as `[Small]`
+      - Tasks grouped by registered task kind
       - Parallel groups declared
       - Execution order graph
       - Number of review-fix iterations performed
@@ -170,6 +178,7 @@ The script outputs:
 - Summary statistics:
   - Total number of tasks
   - Number of tasks annotated as `[Small]`
+  - Number of tasks by registered task kind
   - Number of parallel groups declared
   - Execution order graph
   - Number of review-fix iterations performed

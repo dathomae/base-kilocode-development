@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KiloCode project composition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "output", "packs"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": 1 },
+    "output": { "type": "string", "minLength": 1 },
+    "packs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "name", "version"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "version": { "type": "string" }
+        }
+      }
+    }
+  }
+}

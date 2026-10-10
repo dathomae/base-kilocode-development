@@ -100,16 +100,19 @@ These apply to every artifact at every level.
 - **Required elements:** goal; references; dependencies (hard `blocked-by`) and dependent stories;
   **structured footprint/dependency metadata** — hard `blocked-by`, soft preferred-ordering
   dependencies, expected `footprint` (files/packages with shared-infra flags), and `conflicts-with`
-  (computed by `milestone-generation-coordinator`, may be empty); tasks with statuses and `[Small]` routing
-  annotations; task sizing; parallel execution groups; execution order; reintegration; constraints;
+  (computed by `milestone-generation-coordinator`, may be empty); tasks with statuses, `[Small]` sizing
+  annotations, and `[Kind: <id>]` annotations where required by the resolved task-kind registry; task
+  sizing; parallel execution groups; execution order; reintegration; constraints;
   intent; acceptance criteria; test-first (Logical TDD) notes for coding tasks. Follow
   `resources/templates/stories.md`.
 - **Complete when:** the `Open Questions` section is empty; every task implements an already-settled
-  decision; each task is sized and routed; the footprint/dependency metadata is present and specific
+  decision; each task is sized and routed; every specialized task kind is registered and its required
+  contract is complete; the footprint/dependency metadata is present and specific
   enough for `milestone-generation-coordinator` to compute a schedule without reading prose; dependencies
   are consistent with other stories in the plan.
 - **Common failures:** a task that says "figure out X"; missing footprint metadata; dependencies that
-  contradict another story; a task whose acceptance criteria are not verifiable.
+  contradict another story; a task whose acceptance criteria are not verifiable; an unknown task kind;
+  a specialized task missing its declared contract.
 
 ## Arc
 
@@ -176,6 +179,6 @@ A milestone is reviewed repeatedly as it matures. The `milestone-reviewer` (inte
 `story planning`, or `complete`); an element belonging to a later stage is not yet applicable and is not a
 finding. At **milestone close** (stage `complete`) the reviewers and critics run at milestone scope:
 `story-reviewer` and `plan-reviewer` ask whether the delivered increment matches what the milestone claims;
-`milestone-reviewer`/`milestone-critic` check the milestone artifact; `design-critic`, `code-critic`, and
-`write-critic` check standards conformance and walkthrough anomalies; and the flow verification results are
+`milestone-reviewer`/`milestone-critic` check the milestone artifact; `design-critic` and every critic
+registered by the delivered task kinds check standards conformance and walkthrough anomalies; and the flow verification results are
 checked against the §4 flow definitions. See `scripts/milestone-close.pdd.script.md`.

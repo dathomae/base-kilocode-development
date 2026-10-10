@@ -1,0 +1,38 @@
+{
+  "$schema": "../extensions/task-kind.schema.json",
+  "schema_version": 1,
+  "task_kinds": {
+    "code": {
+      "description": "Software source and automated tests",
+      "artifact": "code",
+      "explicit_annotation_required": false,
+      "implementors": [
+        "small-code-implementor",
+        "code-implementor",
+        "big-code-implementor"
+      ],
+      "default_implementor": 1,
+      "failure_retries_per_implementor": 0,
+      "reviewer": "code-reviewer",
+      "verifier": null,
+      "critic": "code-critic",
+      "contract_schema": null
+    },
+    "document": {
+      "description": "Project documentation and other prose artifacts",
+      "artifact": "document",
+      "explicit_annotation_required": false,
+      "implementors": [
+        "small-write-implementor",
+        "write-implementor",
+        "big-write-implementor"
+      ],
+      "default_implementor": 1,
+      "failure_retries_per_implementor": 0,
+      "reviewer": "write-reviewer",
+      "verifier": null,
+      "critic": "write-critic",
+      "contract_schema": null
+    }
+  }
+}

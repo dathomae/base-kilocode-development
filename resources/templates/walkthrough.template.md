@@ -8,7 +8,7 @@ under the story file's stem plus `.walkthrough.md`
 
 `story-implementation-coordinator` writes the walkthrough when it believes the story is complete,
 **before** the user is asked for feedback. Keep it factual and concise; it is the durable record of
-what happened, not a restatement of the story. `code-critic`/`write-critic` read it specifically for
+what happened, not a restatement of the story. Every critic registered by the story's task kinds reads it specifically for
 anomalies: unexplained deviations, silent scope changes, skipped verification, and decisions made
 without authority.
 

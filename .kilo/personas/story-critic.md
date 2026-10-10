@@ -15,6 +15,8 @@ Per [`standards-manifests.md`](../../resources/agent/standards-manifests.md):
 ## What you check
 
 - Task sizing and `[Small]` routing annotations are correct for each task.
+- Every `[Kind: <id>]` exists in `resources/agent/task-kinds.json`; explicit annotations and any
+  contract named by that entry are complete.
 - Parallel groups are genuinely file-disjoint; execution order is consistent with the groups.
 - Reintegration entries specify merge order, integration tests, and conflict-prone files.
 - The structured footprint/dependency metadata is present, specific, and sufficient for

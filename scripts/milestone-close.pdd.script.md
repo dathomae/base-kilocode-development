@@ -78,9 +78,9 @@ completeness by `resources/agent/artifact-standards.md` (Milestone section).
     this scope and must not be raised as a finding.
    - **design-critic** — does the delivered functionality conform to the applicable requirements,
      architecture, design, patterns, and shared vocabulary?
-   - **code-critic** and/or **write-critic** — do the changes conform to the coding/writing standards,
-     and do the **walkthroughs** show anomalies (unexplained deviations, silent scope changes, skipped
-     verification, decisions without authority)?
+   - **Every distinct critic registered by the milestone's task kinds** — do the changes conform to
+     the applicable standards, and do the **walkthroughs** show anomalies (unexplained deviations,
+     silent scope changes, skipped verification, decisions without authority)?
    - **story-reviewer** and **plan-reviewer** — does the milestone deliver what it claims, and is it
      consistent with the plans and specs it implements?
    Wait for all results.

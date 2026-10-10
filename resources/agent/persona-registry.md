@@ -15,7 +15,7 @@ artifacts live in `memory-bank/planning/arcs/` (arc files) and `memory-bank/plan
 Related: [`escalation-policy.md`](escalation-policy.md), [`change-control.md`](change-control.md),
 [`artifact-standards.md`](artifact-standards.md), [`standards-manifests.md`](standards-manifests.md),
 [`work-context.md`](work-context.md), [`report-formats.md`](report-formats.md),
-[`git-workflow.md`](git-workflow.md).
+[`task-kinds.json`](task-kinds.json), [`git-workflow.md`](git-workflow.md).
 
 ## Registration model
 
@@ -40,6 +40,10 @@ The registration model keeps one explicit source of truth and avoids accidental 
    session (top-level agents cannot invoke other top-level agents) is confirmed in the fresh-session
    verification (plan step 13). Fallback if it is not: register dispatchable personas as
    `mode: subagent` plus a separate `mode: primary` alias that reads the same rules file.
+6. **Specialization registration.** Composed packs contribute uniquely named agent entries to
+   `kilo.jsonc` and task kinds to `resources/agent/task-kinds.json`. The pack composer rejects name
+   collisions. Coordinators route specialized work from that resolved registry; this core inventory
+   lists only the personas shipped by the core pack.
 
 ## Naming conventions
 
@@ -61,11 +65,11 @@ coordinator-dispatchable.
 | Persona | Mode | Level | Dispatches | Escalates to | Input → Output |
 |---|---|---|---|---|---|
 | `story-planning-coordinator` | all | story (formulate) | `plan-author`, `story-reviewer`, `story-critic`, `design-critic` | `plan-to-story-coordinator`, else human | plan + settled decisions → story file, toc entry |
-| `story-implementation-coordinator` | all | story (execute) | `small`/`code`/`big-code-implementor`, `small`/`write`/`big-write-implementor`, `code-reviewer`, `write-reviewer`, `story-reviewer`, `code-critic`, `write-critic`, `integrator` | `milestone-implementation-coordinator`, else human | story → implemented story, walkthrough, PR, status |
+| `story-implementation-coordinator` | all | story (execute) | implementors/reviewers/verifiers/critics from the resolved task-kind registry; `story-reviewer`; `integrator` | `milestone-implementation-coordinator`, else human | story → implemented story, walkthrough, PR, status |
 | `plan-generation-coordinator` | all | plan (formulate) | `plan-author`, `plan-reviewer`, `plan-critic`, `design-critic` | `milestone-generation-coordinator`, else human | milestone + arc → arc plan |
 | `plan-to-story-coordinator` | all | plan (formulate) | `story-planning-coordinator`, `story-reviewer`, `story-critic`, `design-critic` | `milestone-generation-coordinator`, else human | plan (+ milestone flows) → story set, tocs, conflict resolution |
 | `milestone-generation-coordinator` | all | milestone (formulate) | `architect`; `plan-generation-coordinator`, `plan-to-story-coordinator`; `milestone-reviewer`, `milestone-critic`, `plan-reviewer`, `story-reviewer`, `plan-critic`, `story-critic` | human | milestone intent → milestone + flows + arcs + plans + stories + wave schedule |
-| `milestone-implementation-coordinator` | all | milestone (execute) | `story-implementation-coordinator`, `integrator`, `milestone-generation-coordinator` (consult); close evaluation: `flow-verifier`, `milestone-reviewer`, `milestone-critic`, `design-critic`, `code-critic`/`write-critic`, `story-reviewer`/`plan-reviewer` | human | milestone file → merged stories on `agent-main`, close evaluation, human merge |
+| `milestone-implementation-coordinator` | all | milestone (execute) | `story-implementation-coordinator`, `integrator`, `milestone-generation-coordinator` (consult); close evaluation: `flow-verifier`, `milestone-reviewer`, `milestone-critic`, `design-critic`, registered task-kind critics, `story-reviewer`/`plan-reviewer` | human | milestone file → merged stories on `agent-main`, close evaluation, human merge |
 
 The milestone-generation coordinator is the **change-control owner** during delivery and owns the
 milestone definition, its acceptance flows, the arcs, and the schedule; milestone-implementation pauses,

@@ -45,6 +45,23 @@ Findings also carry a **proposed disposition**: `fix` | `record` | `escalate` (s
 
 The verifier does not judge the milestone; it reports the flow's result with reproducible evidence.
 
+## Artifact-verification result (registered verifier → coordinator)
+
+Used when a specialization's task-kind entry names an independent verifier.
+
+- `work_context` (returned unchanged)
+- Artifact and revision verified
+- Task kind and contract schema used
+- Status: `Passed` | `Failed` | `Blocked`
+- Environment and dependency versions relevant to reproduction
+- Exact commands or procedures executed
+- Expected and observed result for every contract check
+- Generated artifacts and evidence paths
+- Failures or blockers, including the exact missing contract value or unavailable facility
+
+The verifier reports reproducible evidence for the registered task contract. It does not judge
+assignment intent or standards and does not expand the specialization's declared completion boundary.
+
 ## Review report (reviewer → coordinator)
 
 - `work_context` (returned unchanged)
@@ -69,8 +86,7 @@ critic's role) and do not propose design alternatives.
   proposed disposition
 - Adherence summary: which standards were checked, which **elements were not yet applicable** at this stage
   (belonging to a later stage), and which could not be assessed
-- For `code-critic`/`write-critic` on a completed story: the walkthrough anomaly findings, listed
-  separately
+- For every task-kind critic on a completed story: the walkthrough anomaly findings, listed separately
 
 Critics judge **conformance to standards** only. They do not re-litigate whether the artifact
 satisfies its assignment.
@@ -117,7 +133,7 @@ Produced by `scripts/milestone-close.pdd.script.md` at the end of a milestone:
   flow is blocking
 - Evaluation criteria: each criterion with pass/fail and evidence
 - Reviewer/critic verdicts: `milestone-reviewer`, `milestone-critic`, `story-reviewer`, `plan-reviewer`,
-  `design-critic`, and `code-critic`/`write-critic` — each verdict and its findings with severity and
+  `design-critic`, and every critic required by the delivered task kinds — each verdict and its findings with severity and
   disposition
 - Recorded divergences
 - Any unresolved blocking findings

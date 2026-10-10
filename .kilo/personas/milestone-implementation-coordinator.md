@@ -60,7 +60,8 @@ Per milestone: execute → verify → integrate → evaluate → hand off the me
 
 `story-implementation-coordinator`, `integrator`, and `milestone-generation-coordinator`
 (consult/schedule revision); for the close evaluation, `flow-verifier`, `milestone-reviewer`,
-`milestone-critic`, `design-critic`, `code-critic`/`write-critic`, and `story-reviewer`/`plan-reviewer`.
+`milestone-critic`, `design-critic`, every critic required by the milestone's resolved task kinds, and
+`story-reviewer`/`plan-reviewer`.
 
 ## Hold and escalation
 
